@@ -1,7 +1,7 @@
 {
     "name": "monthly-budget-tracker",
     "version": "1.0.0",
-    "description": "Test application to demonstrate capabilities of CNE library developed by Joshua Uzzell",
+    "description": "Test application to demonstrate capabilities of CnE library developed by Joshua Uzzell",
     "main": "src/app/index.html",
     "scripts": {
         "build": "webpack"
