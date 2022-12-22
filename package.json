@@ -1,0 +1,32 @@
+{
+    "name": "monthly-budget-tracker",
+    "version": "1.0.0",
+    "description": "Test application to demonstrate capabilities of CnE library developed by Joshua Uzzell",
+    "main": "src/app/index.html",
+    "scripts": {
+        "build": "webpack"
+    },
+    "keywords": [],
+    "author": "Joshua Uzzell <josh.uzzell@gmail.com>",
+    "license": "ISC",
+    "devDependencies": {
+        "webpack": "^5.75.0",
+        "webpack-cli": "^5.0.1", 
+        "html-webpack-plugin": "^5.5.0"
+    },
+    "dependencies": {
+        "expandables-js": "1.0.0"
+    }, 
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    }
+}
