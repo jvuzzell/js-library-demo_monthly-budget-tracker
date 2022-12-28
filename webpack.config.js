@@ -16,7 +16,12 @@ module.exports = {
   },
   devtool: 'source-map',
   module: {
-    rules: [],
+    rules: [
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader', 'sass-loader']
+      }
+    ],
   },
   watch: true, 
   watchOptions: {
