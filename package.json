@@ -23,7 +23,8 @@
         "html-webpack-plugin": "^5.5.0"
     },
     "dependencies": {
-        "expandables-js": "1.0.0"
+        "expandables-js": "1.1.1", 
+        "ui-cable-js" : "1.0.0"
     },
     "browserslist": {
         "production": [
