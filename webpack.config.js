@@ -1,5 +1,10 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+ 
+const PATHS = {
+  src : path.resolve(__dirname, 'src' ), 
+  icons : path.resolve(__dirname, 'src/app/assets/icons' )
+}
 
 module.exports = {
   mode: 'development',
@@ -18,8 +23,21 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.css$/,
+        test: /\.scss|.css$/,
         use: ['style-loader', 'css-loader', 'sass-loader']
+      }, 
+      {
+        test: /\.(png|svg|jpg|gif|jpe?g)$/, 
+        use: [
+          {
+            options: {
+              esModule: false,
+              name: "[name].[ext]",
+              outputPath: "images/"
+            },
+            loader: "file-loader"
+          }
+        ]
       }
     ],
   },
