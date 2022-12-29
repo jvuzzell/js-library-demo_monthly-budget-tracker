@@ -16,7 +16,6 @@
         "@testing-library/jest-dom": "^5.16.5",
         "@testing-library/user-event": "^14.4.3",
         "css-loader": "^6.7.3",
-        "file-loader": "^6.2.0",
         "html-loader": "^4.2.0",
         "html-webpack-plugin": "^5.5.0",
         "identity-obj-proxy": "^3.0.0",

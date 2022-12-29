@@ -27,17 +27,11 @@ module.exports = {
         use: ['style-loader', 'css-loader', 'sass-loader']
       }, 
       {
-        test: /\.(png|svg|jpg|gif|jpe?g)$/, 
-        use: [
-          {
-            options: {
-              esModule: false,
-              name: "[name].[ext]",
-              outputPath: "images/"
-            },
-            loader: "file-loader"
-          }
-        ]
+        test: /\.(png|svg|jpg|gif|jpe?g)$/,  
+        type: 'asset/resource',
+        generator: {
+          filename: 'image/[name][ext]'
+        }
       }
     ],
   },
