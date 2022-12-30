@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= htmlWebpackPlugin.options.title %></title> 
+    <title>Monthly Budget Tracker</title> 
 </head>
 <body>  
     <div class="main-content">
@@ -104,13 +104,10 @@
                                 </header> 
                             </div>
                         </div>
-
-                        <!-- Summary Line #1 -->
                         <div class="h-row">
                             <div class="v-col has-mg-bottom-0">
 
-                                <div data-inline-template="summary-line" data-expandable-container="collapsed">
-
+                                <div data-inline-template="summary-line" data-expandable-container="expanded">
                                     <div class="h-row">
                                         <div class="v-col trigger-margin has-text-center has-mg-bottom-0">
                                             <button class="btn-no-background" data-expandable-trigger="click">
@@ -124,20 +121,15 @@
                                                         <div class="summary-columns"> 
                                                             <div class="column"> 
                                                                 <label for="transaction-codes">Transaction Code</label>
-                                                                <select name="transaction-codes" data-transaction-codes>
-                                                                    <option value="volvo">Transaction Codes</option>
-                                                                    <option value="saab">Saab</option>
-                                                                    <option value="mercedes">Mercedes</option>
-                                                                    <option value="audi">Audi</option>
-                                                                </select>
+                                                                <select name="transaction-codes" data-transaction-codes></select>
                                                             </div>
                                                             <div class="column">
                                                                 <label for="transaction-summary">Transaction Summary</label>
-                                                                <input type="text" name="transaction-summary" placeholder="Transaction Summary" data-transaction-summary/>
+                                                                <input type="text" name="transaction-summary" placeholder="Add description of transaction" data-transaction-summary/>
                                                             </div>
                                                             <div class="column"> 
                                                                 <label for="transaction-date">Transaction Due Date</label>
-                                                                <input type="text" name="transaction-date" placeholder="15" data-transaction-date disabled/>
+                                                                <input type="text" name="transaction-date" placeholder="15th" data-transaction-date disabled/>
                                                             </div>
                                                             <div class="column">
                                                                 <label for="income">Income</label>
@@ -167,690 +159,46 @@
                                         <div class="v-col expandable-body has-mg-bottom-0 has-mg-top-20">
                                             <div data-expandable-target>
                                                 <div class="h-row">
-                                                    <div class="v-col has-mg-top-20 has-mg-bottom-20">
-                                                        <form data-inline-template="transaction-line" data-transaction-type="income">
-                                                            <div class="summary-columns"> 
-                                                                <div class="column"> 
-                                                                    <label for="transaction-codes">Transaction Code</label>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="transaction-summary">Transaction Summary</label>
-                                                                    <input type="text" name="transaction-summary" placeholder="Transaction Summary" data-transaction-summary/>
-                                                                </div>
-                                                                <div class="column"> 
-                                                                    <label for="transaction-codes">Transaction Due Date</label>
-                                                                    <select name="transaction-codes" data-transaction-due-date>
-                                                                        <option value="1">1</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="income">Income</label>
-                                                                    <input data-income type="text" name="income" placeholder="$0.00"/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="expense">Expense</label>
-                                                                    <input data-expense type="text" name="expense"  data-expense  disabled/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="balance">Balance</label>
-                                                                    <input data-balance type="text" name="balance" data-balance  disabled/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="transaction-status">Status</label>
-                                                                    <select name="transaction-status" data-transaction-status>
-                                                                        <option value="pending">Pending</option>
-                                                                        <option value="paid">Paid</option>
-                                                                        <option value="void">Void</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="column actions-column has-text-center">
-                                                                    <button class="btn-no-background" data-delete-transaction-line><img class="icon" src="<%=require('../../../../src/app/assets/icons/close.svg')%>"/></button>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                        <hr>
-                                                        <form data-inline-template="transaction-line" data-transaction-type="income">
-                                                            <div class="summary-columns"> 
-                                                                <div class="column"> 
-                                                                    <label for="transaction-codes">Transaction Code</label>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="transaction-summary">Transaction Summary</label>
-                                                                    <input type="text" name="transaction-summary" placeholder="Transaction Summary" data-transaction-summary/>
-                                                                </div>
-                                                                <div class="column"> 
-                                                                    <label for="transaction-codes">Transaction Due Date</label>
-                                                                    <select name="transaction-codes" data-transaction-due-date>
-                                                                        <option value="1">1</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="income">Income</label>
-                                                                    <input data-income type="text" name="income" placeholder="$0.00"/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="expense">Expense</label>
-                                                                    <input data-expense type="text" name="expense" disabled/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="balance">Balance</label>
-                                                                    <input data-balance type="text" name="balance"  disabled/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="transaction-status">Status</label>
-                                                                    <select name="transaction-status" data-transaction-status>
-                                                                        <option value="pending">Pending</option>
-                                                                        <option value="paid">Paid</option>
-                                                                        <option value="void">Void</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="column actions-column has-text-center">
-                                                                    <button class="btn-no-background" data-delete-transaction-line><img class="icon" src="<%=require('../../../../src/app/assets/icons/close.svg')%>"/></button>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                        <hr>
-                                                        <form data-inline-template="transaction-line" data-transaction-type="expense">
-                                                            <div class="summary-columns"> 
-                                                                <div class="column"> 
-                                                                    <label for="transaction-codes">Transaction Code</label>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="transaction-summary">Transaction Summary</label>
-                                                                    <input type="text" name="transaction-summary" placeholder="Transaction Summary" data-transaction-summary/>
-                                                                </div>
-                                                                <div class="column"> 
-                                                                    <label for="transaction-codes">Transaction Due Date</label>
-                                                                    <select name="transaction-codes" data-transaction-due-date>
-                                                                        <option value="1">1</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="income">Income</label>
-                                                                    <input data-income type="text" name="income" disabled/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="expense">Expense</label>
-                                                                    <input data-expense type="text" name="expense" placeholder="$0.00"/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="balance">Balance</label>
-                                                                    <input data-balance type="text" name="balance" disabled/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="transaction-status">Status</label>
-                                                                    <select name="transaction-status" data-transaction-status>
-                                                                        <option value="pending">Pending</option>
-                                                                        <option value="paid">Paid</option>
-                                                                        <option value="void">Void</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="column actions-column has-text-center">
-                                                                    <button class="btn-no-background" data-delete-transaction-line><img class="icon" src="<%=require('../../../../src/app/assets/icons/close.svg')%>"/></button>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                        <hr>
-                                                        <form data-inline-template="transaction-line" data-transaction-type="expense">
-                                                            <div class="summary-columns"> 
-                                                                <div class="column"> 
-                                                                    <label for="transaction-codes">Transaction Code</label>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="transaction-summary">Transaction Summary</label>
-                                                                    <input type="text" name="transaction-summary" placeholder="Transaction Summary" data-transaction-summary/>
-                                                                </div>
-                                                                <div class="column"> 
-                                                                    <label for="transaction-codes">Transaction Due Date</label>
-                                                                    <select name="transaction-codes" data-transaction-due-date>
-                                                                        <option value="1">1</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="income">Income</label>
-                                                                    <input data-income type="text" name="income" disabled/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="expense">Expense</label>
-                                                                    <input data-expense type="text" name="expense" placeholder="$0.00"/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="balance">Balance</label>
-                                                                    <input data-balance type="text" name="balance" disabled/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="transaction-status">Status</label>
-                                                                    <select name="transaction-status" data-transaction-status>
-                                                                        <option value="pending">Pending</option>
-                                                                        <option value="paid">Paid</option>
-                                                                        <option value="void">Void</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="column actions-column has-text-center">
-                                                                    <button class="btn-no-background" data-delete-transaction-line><img class="icon" src="<%=require('../../../../src/app/assets/icons/close.svg')%>"/></button>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-            
+                                                    <div class="v-col has-mg-top-0 has-mg-bottom-20" data-transaction-line-container></div>
+                                                </div>  
+                                                <div class="h-row has-text-center" data-transaction-controls>
+                                                    <div class="v-col has-mg-top-0">
+                                                        <button class="has-underline" data-add-credit><strong class="no-underline">+</strong> Add Credit</button><button class="has-underline" data-add-debit><strong class="no-underline has-large-font-size">-</strong> Add Debit</button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-        
+                                    <hr>
                                 </div>
-                                <!-- End Summary Line-->
-                                <hr class="has-mg-top-20">
+
+
                             </div>
                         </div>
-                        <!-- End Summary Line #1 -->
-
-                        <!-- Summary Line #1 -->
-                        <div class="h-row">
-                            <div class="v-col has-mg-bottom-0">
-
-                                <div data-inline-template="summary-line" data-expandable-container="collapsed">
-
-                                    <div class="h-row">
-                                        <div class="v-col trigger-margin has-text-center has-mg-bottom-0">
-                                            <button class="btn-no-background" data-expandable-trigger="click">
-                                                <img class="icon" src="<%=require('../../../../src/app/assets/icons/caret-right.svg')%>" alt="Expand Summary Line"/>
-                                            </button>
-                                        </div>
-                                        <div class="v-col expandable-body has-mg-bottom-0"> 
-                                            <div class="h-row">
-                                                <div class="v-col has-mg-bottom-0"> 
-                                                    <form>
-                                                        <div class="summary-columns"> 
-                                                            <div class="column"> 
-                                                                <label for="transaction-codes">Transaction Code</label>
-                                                                <select name="transaction-codes" data-transaction-codes>
-                                                                    <option value="volvo">Transaction Codes</option>
-                                                                    <option value="saab">Saab</option>
-                                                                    <option value="mercedes">Mercedes</option>
-                                                                    <option value="audi">Audi</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="column">
-                                                                <label for="transaction-summary">Transaction Summary</label>
-                                                                <input type="text" name="transaction-summary" placeholder="Transaction Summary" data-transaction-summary/>
-                                                            </div>
-                                                            <div class="column"> 
-                                                                <label for="transaction-date">Transaction Due Date</label>
-                                                                <input type="text" name="transaction-date" placeholder="15" data-transaction-date disabled/>
-                                                            </div>
-                                                            <div class="column">
-                                                                <label for="income">Income</label>
-                                                                <input type="text" name="income" placeholder="$0.00" data-income disabled/>
-                                                            </div>
-                                                            <div class="column">
-                                                                <label for="expense">Expense</label>
-                                                                <input type="text" name="expense" placeholder="$0.00" data-expense disabled/>
-                                                            </div>
-                                                            <div class="column">
-                                                                <label for="balance">Balance</label>
-                                                                <input type="text" name="balance" placeholder="$0.00" data-balance disabled/>
-                                                            </div>
-                                                            <div class="column">
-                                                                <label for="status">Status</label>
-                                                                <input type="text" name="status" placeholder="Pending" data-status disabled/>
-                                                            </div>
-                                                            <div class="column actions-column has-text-center">
-                                                                <button class="btn-no-background" data-delete-summary-line><img class="icon" src="<%=require('../../../../src/app/assets/icons/close.svg')%>"/></button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="v-col trigger-margin has-text-center has-mg-bottom-0"><!-- Placeholder --></div>
-                                        <div class="v-col expandable-body has-mg-bottom-0 has-mg-top-20">
-                                            <div data-expandable-target>
-                                                <div class="h-row">
-                                                    <div class="v-col has-mg-top-20 has-mg-bottom-20">
-                                                        <form data-inline-template="transaction-line" data-transaction-type="income">
-                                                            <div class="summary-columns"> 
-                                                                <div class="column"> 
-                                                                    <label for="transaction-codes">Transaction Code</label>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="transaction-summary">Transaction Summary</label>
-                                                                    <input type="text" name="transaction-summary" placeholder="Transaction Summary" data-transaction-summary/>
-                                                                </div>
-                                                                <div class="column"> 
-                                                                    <label for="transaction-codes">Transaction Due Date</label>
-                                                                    <select name="transaction-codes" data-transaction-due-date>
-                                                                        <option value="1">1</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="income">Income</label>
-                                                                    <input data-income type="text" name="income" placeholder="$0.00"/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="expense">Expense</label>
-                                                                    <input data-expense type="text" name="expense"  data-expense  disabled/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="balance">Balance</label>
-                                                                    <input data-balance type="text" name="balance" data-balance  disabled/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="transaction-status">Status</label>
-                                                                    <select name="transaction-status" data-transaction-status>
-                                                                        <option value="pending">Pending</option>
-                                                                        <option value="paid">Paid</option>
-                                                                        <option value="void">Void</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="column actions-column has-text-center">
-                                                                    <button class="btn-no-background" data-delete-transaction-line><img class="icon" src="<%=require('../../../../src/app/assets/icons/close.svg')%>"/></button>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                        <hr>
-                                                        <form data-inline-template="transaction-line" data-transaction-type="income">
-                                                            <div class="summary-columns"> 
-                                                                <div class="column"> 
-                                                                    <label for="transaction-codes">Transaction Code</label>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="transaction-summary">Transaction Summary</label>
-                                                                    <input type="text" name="transaction-summary" placeholder="Transaction Summary" data-transaction-summary/>
-                                                                </div>
-                                                                <div class="column"> 
-                                                                    <label for="transaction-codes">Transaction Due Date</label>
-                                                                    <select name="transaction-codes" data-transaction-due-date>
-                                                                        <option value="1">1</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="income">Income</label>
-                                                                    <input data-income type="text" name="income" placeholder="$0.00"/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="expense">Expense</label>
-                                                                    <input data-expense type="text" name="expense" disabled/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="balance">Balance</label>
-                                                                    <input data-balance type="text" name="balance"  disabled/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="transaction-status">Status</label>
-                                                                    <select name="transaction-status" data-transaction-status>
-                                                                        <option value="pending">Pending</option>
-                                                                        <option value="paid">Paid</option>
-                                                                        <option value="void">Void</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="column actions-column has-text-center">
-                                                                    <button class="btn-no-background" data-delete-transaction-line><img class="icon" src="<%=require('../../../../src/app/assets/icons/close.svg')%>"/></button>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                        <hr>
-                                                        <form data-inline-template="transaction-line" data-transaction-type="expense">
-                                                            <div class="summary-columns"> 
-                                                                <div class="column"> 
-                                                                    <label for="transaction-codes">Transaction Code</label>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="transaction-summary">Transaction Summary</label>
-                                                                    <input type="text" name="transaction-summary" placeholder="Transaction Summary" data-transaction-summary/>
-                                                                </div>
-                                                                <div class="column"> 
-                                                                    <label for="transaction-codes">Transaction Due Date</label>
-                                                                    <select name="transaction-codes" data-transaction-due-date>
-                                                                        <option value="1">1</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="income">Income</label>
-                                                                    <input data-income type="text" name="income" disabled/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="expense">Expense</label>
-                                                                    <input data-expense type="text" name="expense" placeholder="$0.00"/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="balance">Balance</label>
-                                                                    <input data-balance type="text" name="balance" disabled/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="transaction-status">Status</label>
-                                                                    <select name="transaction-status" data-transaction-status>
-                                                                        <option value="pending">Pending</option>
-                                                                        <option value="paid">Paid</option>
-                                                                        <option value="void">Void</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="column actions-column has-text-center">
-                                                                    <button class="btn-no-background" data-delete-transaction-line><img class="icon" src="<%=require('../../../../src/app/assets/icons/close.svg')%>"/></button>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                        <hr>
-                                                        <form data-inline-template="transaction-line" data-transaction-type="expense">
-                                                            <div class="summary-columns"> 
-                                                                <div class="column"> 
-                                                                    <label for="transaction-codes">Transaction Code</label>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="transaction-summary">Transaction Summary</label>
-                                                                    <input type="text" name="transaction-summary" placeholder="Transaction Summary" data-transaction-summary/>
-                                                                </div>
-                                                                <div class="column"> 
-                                                                    <label for="transaction-codes">Transaction Due Date</label>
-                                                                    <select name="transaction-codes" data-transaction-due-date>
-                                                                        <option value="1">1</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="income">Income</label>
-                                                                    <input data-income type="text" name="income" disabled/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="expense">Expense</label>
-                                                                    <input data-expense type="text" name="expense" placeholder="$0.00"/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="balance">Balance</label>
-                                                                    <input data-balance type="text" name="balance" disabled/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="transaction-status">Status</label>
-                                                                    <select name="transaction-status" data-transaction-status>
-                                                                        <option value="pending">Pending</option>
-                                                                        <option value="paid">Paid</option>
-                                                                        <option value="void">Void</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="column actions-column has-text-center">
-                                                                    <button class="btn-no-background" data-delete-transaction-line><img class="icon" src="<%=require('../../../../src/app/assets/icons/close.svg')%>"/></button>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-            
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-        
-                                </div>
-                                <!-- End Summary Line-->
-                                <hr class="has-mg-top-20">
-                            </div>
-                        </div>
-                        <!-- End Summary Line #1 -->
-
-                        <!-- Summary Line #1 -->
-                        <div class="h-row">
-                            <div class="v-col">
-
-                                <div data-inline-template="summary-line" data-expandable-container="collapsed">
-
-                                    <div class="h-row">
-                                        <div class="v-col trigger-margin has-text-center has-mg-bottom-0">
-                                            <button class="btn-no-background" data-expandable-trigger="click">
-                                                <img class="icon" src="<%=require('../../../../src/app/assets/icons/caret-right.svg')%>" alt="Expand Summary Line"/>
-                                            </button>
-                                        </div>
-                                        <div class="v-col expandable-body has-mg-bottom-0"> 
-                                            <div class="h-row">
-                                                <div class="v-col has-mg-bottom-0"> 
-                                                    <form>
-                                                        <div class="summary-columns"> 
-                                                            <div class="column"> 
-                                                                <label for="transaction-codes">Transaction Code</label>
-                                                                <select name="transaction-codes" data-transaction-codes>
-                                                                    <option value="volvo">Transaction Codes</option>
-                                                                    <option value="saab">Saab</option>
-                                                                    <option value="mercedes">Mercedes</option>
-                                                                    <option value="audi">Audi</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="column">
-                                                                <label for="transaction-summary">Transaction Summary</label>
-                                                                <input type="text" name="transaction-summary" placeholder="Transaction Summary" data-transaction-summary/>
-                                                            </div>
-                                                            <div class="column"> 
-                                                                <label for="transaction-date">Transaction Due Date</label>
-                                                                <input type="text" name="transaction-date" placeholder="15" data-transaction-date disabled/>
-                                                            </div>
-                                                            <div class="column">
-                                                                <label for="income">Income</label>
-                                                                <input type="text" name="income" placeholder="$0.00" data-income disabled/>
-                                                            </div>
-                                                            <div class="column">
-                                                                <label for="expense">Expense</label>
-                                                                <input type="text" name="expense" placeholder="$0.00" data-expense disabled/>
-                                                            </div>
-                                                            <div class="column">
-                                                                <label for="balance">Balance</label>
-                                                                <input type="text" name="balance" placeholder="$0.00" data-balance disabled/>
-                                                            </div>
-                                                            <div class="column">
-                                                                <label for="status">Status</label>
-                                                                <input type="text" name="status" placeholder="Pending" data-status disabled/>
-                                                            </div>
-                                                            <div class="column actions-column has-text-center">
-                                                                <button class="btn-no-background" data-delete-summary-line><img class="icon" src="<%=require('../../../../src/app/assets/icons/close.svg')%>"/></button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="v-col trigger-margin has-text-center has-mg-bottom-0"><!-- Placeholder --></div>
-                                        <div class="v-col expandable-body has-mg-bottom-0 has-mg-top-20">
-                                            <div data-expandable-target>
-                                                <div class="h-row">
-                                                    <div class="v-col has-mg-top-20 has-mg-bottom-20">
-                                                        <form data-inline-template="transaction-line" data-transaction-type="income">
-                                                            <div class="summary-columns"> 
-                                                                <div class="column"> 
-                                                                    <label for="transaction-codes">Transaction Code</label>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="transaction-summary">Transaction Summary</label>
-                                                                    <input type="text" name="transaction-summary" placeholder="Transaction Summary" data-transaction-summary/>
-                                                                </div>
-                                                                <div class="column"> 
-                                                                    <label for="transaction-codes">Transaction Due Date</label>
-                                                                    <select name="transaction-codes" data-transaction-due-date>
-                                                                        <option value="1">1</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="income">Income</label>
-                                                                    <input data-income type="text" name="income" placeholder="$0.00"/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="expense">Expense</label>
-                                                                    <input data-expense type="text" name="expense"  data-expense  disabled/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="balance">Balance</label>
-                                                                    <input data-balance type="text" name="balance" data-balance  disabled/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="transaction-status">Status</label>
-                                                                    <select name="transaction-status" data-transaction-status>
-                                                                        <option value="pending">Pending</option>
-                                                                        <option value="paid">Paid</option>
-                                                                        <option value="void">Void</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="column actions-column has-text-center">
-                                                                    <button class="btn-no-background" data-delete-transaction-line><img class="icon" src="<%=require('../../../../src/app/assets/icons/close.svg')%>"/></button>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                        <hr>
-                                                        <form data-inline-template="transaction-line" data-transaction-type="income">
-                                                            <div class="summary-columns"> 
-                                                                <div class="column"> 
-                                                                    <label for="transaction-codes">Transaction Code</label>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="transaction-summary">Transaction Summary</label>
-                                                                    <input type="text" name="transaction-summary" placeholder="Transaction Summary" data-transaction-summary/>
-                                                                </div>
-                                                                <div class="column"> 
-                                                                    <label for="transaction-codes">Transaction Due Date</label>
-                                                                    <select name="transaction-codes" data-transaction-due-date>
-                                                                        <option value="1">1</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="income">Income</label>
-                                                                    <input data-income type="text" name="income" placeholder="$0.00"/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="expense">Expense</label>
-                                                                    <input data-expense type="text" name="expense" disabled/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="balance">Balance</label>
-                                                                    <input data-balance type="text" name="balance"  disabled/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="transaction-status">Status</label>
-                                                                    <select name="transaction-status" data-transaction-status>
-                                                                        <option value="pending">Pending</option>
-                                                                        <option value="paid">Paid</option>
-                                                                        <option value="void">Void</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="column actions-column has-text-center">
-                                                                    <button class="btn-no-background" data-delete-transaction-line><img class="icon" src="<%=require('../../../../src/app/assets/icons/close.svg')%>"/></button>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                        <hr>
-                                                        <form data-inline-template="transaction-line" data-transaction-type="expense">
-                                                            <div class="summary-columns"> 
-                                                                <div class="column"> 
-                                                                    <label for="transaction-codes">Transaction Code</label>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="transaction-summary">Transaction Summary</label>
-                                                                    <input type="text" name="transaction-summary" placeholder="Transaction Summary" data-transaction-summary/>
-                                                                </div>
-                                                                <div class="column"> 
-                                                                    <label for="transaction-codes">Transaction Due Date</label>
-                                                                    <select name="transaction-codes" data-transaction-due-date>
-                                                                        <option value="1">1</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="income">Income</label>
-                                                                    <input data-income type="text" name="income" disabled/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="expense">Expense</label>
-                                                                    <input data-expense type="text" name="expense" placeholder="$0.00"/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="balance">Balance</label>
-                                                                    <input data-balance type="text" name="balance" disabled/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="transaction-status">Status</label>
-                                                                    <select name="transaction-status" data-transaction-status>
-                                                                        <option value="pending">Pending</option>
-                                                                        <option value="paid">Paid</option>
-                                                                        <option value="void">Void</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="column actions-column has-text-center">
-                                                                    <button class="btn-no-background" data-delete-transaction-line><img class="icon" src="<%=require('../../../../src/app/assets/icons/close.svg')%>"/></button>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                        <hr>
-                                                        <form data-inline-template="transaction-line" data-transaction-type="expense">
-                                                            <div class="summary-columns"> 
-                                                                <div class="column"> 
-                                                                    <label for="transaction-codes">Transaction Code</label>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="transaction-summary">Transaction Summary</label>
-                                                                    <input type="text" name="transaction-summary" placeholder="Transaction Summary" data-transaction-summary/>
-                                                                </div>
-                                                                <div class="column"> 
-                                                                    <label for="transaction-codes">Transaction Due Date</label>
-                                                                    <select name="transaction-codes" data-transaction-due-date>
-                                                                        <option value="1">1</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="income">Income</label>
-                                                                    <input data-income type="text" name="income" disabled/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="expense">Expense</label>
-                                                                    <input data-expense type="text" name="expense" placeholder="$0.00"/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="balance">Balance</label>
-                                                                    <input data-balance type="text" name="balance" disabled/>
-                                                                </div>
-                                                                <div class="column">
-                                                                    <label for="transaction-status">Status</label>
-                                                                    <select name="transaction-status" data-transaction-status>
-                                                                        <option value="pending">Pending</option>
-                                                                        <option value="paid">Paid</option>
-                                                                        <option value="void">Void</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="column actions-column has-text-center">
-                                                                    <button class="btn-no-background" data-delete-transaction-line><img class="icon" src="<%=require('../../../../src/app/assets/icons/close.svg')%>"/></button>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-            
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-        
-                                </div>
-                                <!-- End Summary Line-->
-                                <hr class="has-mg-top-20">
-                            </div>
-                        </div>
-                        <!-- End Summary Line #1 -->
 
                     </div>
                 </div>
             </div> 
-            <div class="h-row">
-                <div class="v-col">
-                    <div class="h-row ">
-                        <div class="v-col lg-6">
-                            <button class="icon-left btn-has-background-mint" type="button">
-                                <img src="<%=require('../../../../src/app/assets/icons/add.svg')%>">
-                                Add Transaction
-                            </button>
 
-                        </div> 
-                        <div class="v-col lg-2 has-text-right">
-                            <button class="icon-left btn-has-background-mint" type="button">
-                                <img src="<%=require('../../../../src/app/assets/icons/add.svg')%>">
-                                Save Budget
-                            </button>
-                            <button class="icon-left btn-has-background-mint" type="button">
-                                <img src="<%=require('../../../../src/app/assets/icons/add.svg')%>">
-                                Finalize
-                            </button>
-                        </div>
-                    </div>
+            <div class="h-row" data-inline-template="budget-sheet-footer">
+                <div class="v-col lg-6">
+                    <button class="icon-left btn-has-background-mint" type="button">
+                        <img src="<%=require('../../../../src/app/assets/icons/add.svg')%>">
+                        Add Transaction
+                    </button>
+                </div> 
+                <div class="v-col lg-2 has-text-right">
+                    <button class="icon-left btn-has-background-mint" type="button">
+                        <img src="<%=require('../../../../src/app/assets/icons/add.svg')%>">
+                        Save Budget
+                    </button>
+                    <button class="icon-left btn-has-background-mint" type="button">
+                        <img src="<%=require('../../../../src/app/assets/icons/add.svg')%>">
+                        Finalize
+                    </button>
                 </div>
             </div>
+
 
         </div>
     </div>
