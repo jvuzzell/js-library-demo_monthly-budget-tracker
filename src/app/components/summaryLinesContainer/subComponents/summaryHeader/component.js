@@ -1,3 +1,4 @@
+import "./component.css"; 
 import { ComponentBuilder as Builder, ComponentConfigs } from 'ui-cable-js/ComponentBuilder'; 
 (function(
     Builder,
@@ -6,12 +7,12 @@ import { ComponentBuilder as Builder, ComponentConfigs } from 'ui-cable-js/Compo
 
     // State of individual modules
     var initialState = {
-        componentName : 'exampleComponent', 
+        componentName : 'summaryLineHeader', 
         heading : 'Hello Obi'
     };
 
     // Return registered module (object) to developer
-    ComponentConfigs.exampleComponent = {
+    ComponentConfigs.summaryLineHeader = {
 
         eventBus : [ 'GlobalComponentEvents' ],
         state : initialState, 
@@ -25,19 +26,11 @@ import { ComponentBuilder as Builder, ComponentConfigs } from 'ui-cable-js/Compo
         },  
         dispatch : {
 
-        },
-        template : `
-            <div>
-                <h1 data-heading></h1>
-                <form>
-                    <input data-update-heading type="text"/>
-                </form>
-            </div>
-        `
+        }
         
     }
 
-    Builder.registerComponent( ComponentConfigs.exampleComponent );
+    Builder.registerComponent( ComponentConfigs.summaryLineHeader );
 
 })(
     Builder,

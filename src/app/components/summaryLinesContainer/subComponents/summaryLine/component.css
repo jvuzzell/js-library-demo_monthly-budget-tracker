@@ -18,11 +18,15 @@
     text-align: center;
 }
 
-[data-inline-template="summary-line"][ data-expandable-container ] + hr {
+[data-inline-template="summary-line"][ data-expandable-container ] > hr {
     margin-bottom: 20px;
 }
 
-[data-inline-template="summary-line"][ data-expandable-container="collapsed" ] + hr {
+[data-inline-template="summary-line"][ data-expandable-container="expanded" ] > hr {
+    margin-top: 20px; 
+} 
+
+[data-inline-template="summary-line"][ data-expandable-container="collapsed" ] > hr {
     margin-top: 0; 
 } 
 

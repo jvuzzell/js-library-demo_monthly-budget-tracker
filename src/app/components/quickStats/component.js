@@ -1,4 +1,3 @@
-import "./component.css"; 
 import { ComponentBuilder as Builder, ComponentConfigs } from 'ui-cable-js/ComponentBuilder'; 
 (function(
     Builder,
@@ -7,12 +6,12 @@ import { ComponentBuilder as Builder, ComponentConfigs } from 'ui-cable-js/Compo
 
     // State of individual modules
     var initialState = {
-        componentName : 'exampleComponent', 
+        componentName : 'quickStats', 
         heading : 'Hello Obi'
     };
 
     // Return registered module (object) to developer
-    ComponentConfigs.exampleComponent = {
+    ComponentConfigs.quickStats = {
 
         eventBus : [ 'GlobalComponentEvents' ],
         state : initialState, 
@@ -38,7 +37,7 @@ import { ComponentBuilder as Builder, ComponentConfigs } from 'ui-cable-js/Compo
         
     }
 
-    Builder.registerComponent( ComponentConfigs.exampleComponent );
+    Builder.registerComponent( ComponentConfigs.quickStats );
 
 })(
     Builder,
