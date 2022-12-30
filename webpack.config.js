@@ -9,8 +9,9 @@ const PATHS = {
 }
 
 const htmlFileRegex = new RegExp(/(src\/app\/pages\/)|(\/index.html)/, 'ig');
-var htmlFiles = [];
-var directories = ['src/app/pages/'];
+let htmlFiles = [];
+let directories = ['src/app/pages/'];
+
 while (directories.length > 0) {
   let directory = directories.pop();
   let dirContents = fs.readdirSync(directory).map(file => path.join(directory, file));
