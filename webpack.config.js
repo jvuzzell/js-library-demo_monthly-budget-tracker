@@ -1,9 +1,22 @@
-const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const path = require('path');
+var fs = require('fs');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { Console } = require('console');
  
 const PATHS = {
   src : path.resolve(__dirname, 'src' ), 
   icons : path.resolve(__dirname, 'src/app/assets/icons' )
+}
+
+const htmlFileRegex = new RegExp(/(src\/app\/pages\/)|(\/index.html)/, 'ig');
+var htmlFiles = [];
+var directories = ['src/app/pages/'];
+while (directories.length > 0) {
+  let directory = directories.pop();
+  let dirContents = fs.readdirSync(directory).map(file => path.join(directory, file));
+  
+  htmlFiles.push(...dirContents.filter(file => file.endsWith('.html')));
+  directories.push(...dirContents.filter(file => fs.statSync(file).isDirectory()));
 }
 
 module.exports = {
@@ -25,12 +38,12 @@ module.exports = {
       {
         test: /\.scss|.css$/,
         use: ['style-loader', 'css-loader', 'sass-loader']
-      }, 
+      },  
       {
         test: /\.(png|svg|jpg|gif|jpe?g)$/,  
         type: 'asset/resource',
         generator: {
-          filename: 'image/[name][ext]'
+          filename: 'image/[contenthash]_[name][ext]'
         }
       }
     ],
@@ -41,17 +54,13 @@ module.exports = {
     poll: 1000,
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      title: 'Monthly Budget Tracker',
-      filename: 'index.html',
-      template: 'src/app/pages/home/index.html',
-      chunks: [ 'index' ]
-    }), 
-    new HtmlWebpackPlugin({
-      title: 'Budget Reports',
-      filename: 'reports.html',
-      template: 'src/app/pages/reports/index.html', 
-      chunks: [ 'reports' ]
-    })
+    // Build a new plugin instance for each .html file found
+    ...htmlFiles.map(htmlFile =>
+      new HtmlWebpackPlugin({
+        template: htmlFile,
+        filename: htmlFile.replace( htmlFileRegex, "" ) + ".html", 
+        chunks: [ htmlFile ]
+      })
+  )
   ],
 }
