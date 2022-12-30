@@ -1,0 +1,31 @@
+.trigger-margin {
+    width: 50px; 
+    margin-top: 5px; 
+}
+
+[data-inline-template="summary-line"] .expandable-body {
+    width: calc(100% - 50px);
+    padding-left: 0;
+} 
+
+[data-inline-template="summary-line"]  [data-expandable-target] {
+    background-color: var(--gray);
+} 
+
+[data-inline-template="summary-line"] form select[disabled], 
+[data-inline-template="summary-line"] form textarea[disabled], 
+[data-inline-template="summary-line"] form input[disabled] {
+    text-align: center;
+}
+
+[data-inline-template="summary-line"][ data-expandable-container ] + hr {
+    margin-bottom: 20px;
+}
+
+[data-inline-template="summary-line"][ data-expandable-container="collapsed" ] + hr {
+    margin-top: 0; 
+} 
+
+[data-inline-template="summary-line"] .actions-column button {
+    margin-top: 7px; 
+}
