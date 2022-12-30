@@ -1,31 +1,32 @@
 const path = require('path');
 var fs = require('fs');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { Console } = require('console');
+const { ContextExclusionPlugin } = require('webpack');
  
-const PATHS = {
-  src : path.resolve(__dirname, 'src' ), 
-  icons : path.resolve(__dirname, 'src/app/assets/icons' )
-}
-
 const htmlFileRegex = new RegExp(/(src\/app\/pages\/)|(\/index.html)/, 'ig');
 let htmlFiles = [];
+let entryPoints = {};
 let directories = ['src/app/pages/'];
 
 while (directories.length > 0) {
   let directory = directories.pop();
   let dirContents = fs.readdirSync(directory).map(file => path.join(directory, file));
-  
+
   htmlFiles.push(...dirContents.filter(file => file.endsWith('.html')));
   directories.push(...dirContents.filter(file => fs.statSync(file).isDirectory()));
 }
 
+htmlFiles.map(file => {
+    let name = file.replace( htmlFileRegex, "" );
+    entryPoints[ name ] = path.resolve(
+      __dirname, file.replace( ".html", ".js" )
+    );
+  }
+); 
+
 module.exports = {
   mode: 'development',
-  entry: {
-    index: path.resolve(__dirname, 'src/app/pages/home/index.js'), 
-    reports: path.resolve(__dirname, 'src/app/pages/reports/index.js')
-  },
+  entry: entryPoints,
   output: {
     path: path.resolve(__dirname, 'public'),
     filename: '[name]_[contenthash].js',
@@ -55,12 +56,11 @@ module.exports = {
     poll: 1000,
   },
   plugins: [
-    // Build a new plugin instance for each .html file found
     ...htmlFiles.map(htmlFile =>
       new HtmlWebpackPlugin({
         template: htmlFile,
         filename: htmlFile.replace( htmlFileRegex, "" ) + ".html", 
-        chunks: [ htmlFile ]
+        chunks: [ htmlFile.replace( htmlFileRegex, "" ) ]
       })
   )
   ],
