@@ -99,12 +99,16 @@ em, .has-italic-font-style {
   font-style: italic !important;
 }
 
-.has-uppercase-font-style {
-  text-transform: uppercase !important;
+.is-uppercase {
+  text-transform: uppercase;
 }
 
-u, .has-underline-font-style {
-  text-decoration: underline !important;
+u, .has-underline {
+  text-decoration: underline;
+} 
+
+.no-underline {
+    text-decoration: none; 
 }
 
 .text-align-right {

@@ -9,7 +9,7 @@ button,
 
 button + button {
      margin-left: 5px; 
-}
+} 
 
 .btn-no-background {
     padding: 0; 
@@ -48,4 +48,13 @@ button[class*='has-background']:hover {
 button[class*='has-background']:active { 
     box-shadow: var(--solid-dropshadow-active);
     transform: translateY(0px);
+} 
+
+button.has-underline { 
+    opacity: 1; 
+    transition: all var(--transition-speed-fast) ease-in;
+}
+
+button.has-underline:hover { 
+    opacity: 0.5;
 }

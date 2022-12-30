@@ -1,7 +1,8 @@
 :root {
     /* Transition Speeds */
     --transition-speed: 300ms; 
-    --transition-speed-fast: 225ms; 
+    --transition-speed-medium: 225ms; 
+    --transition-speed-fast: 175ms; 
 
     /* Color */
     --main-color: #e05206; 
