@@ -1,0 +1,19 @@
+/* Background Color */
+
+.has-background-color-white {
+    background-color: white;
+}
+
+/* Color */
+.has-white-color {
+    color: white;
+}
+
+/* Border Color */
+.has-border-white-color {
+    border-color: white !important;
+}
+ 
+.btn-has-background-mint { 
+    background-color: var(--mint);
+}

@@ -1,0 +1,10 @@
+import "./assets/styles/variables.css";
+import "./assets/styles/reset.css"; 
+import "./assets/styles/main.css";
+import "./assets/styles/font.css";
+import "./assets/styles/grid.css";
+import "./assets/styles/icons.css"; 
+import "./assets/styles/margin-padding.css";
+import "./assets/styles/form.css";  
+import "./assets/styles/button-anchors.css";  
+import "./assets/styles/color-palette.css";

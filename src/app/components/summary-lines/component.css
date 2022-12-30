@@ -1,0 +1,14 @@
+.summary-columns{ 
+    display: grid;
+    grid-template-columns: 1.5fr 2.55fr .5fr repeat(3, 1fr) 1fr .5fr;
+    grid-column-gap: 20px;
+}
+
+.summary-columns .column label {
+    font: 0px/0px sans-serif; 
+    height: 0;
+    margin: 0; 
+    white-space: nowrap;  
+    visibility: hidden; 
+    display: block;
+}
