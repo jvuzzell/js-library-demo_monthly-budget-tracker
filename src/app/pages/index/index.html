@@ -47,7 +47,7 @@
             </div>
             <div class="h-row even-6 has-mg-bottom-20">
                 <div class="v-col lg-2 lg-x-4 has-text-center">
-                    <div class="standard-card" data-inline-template="quick-stat" ref="total-income">
+                    <div class="standard-card" data-inline-template="quickStats" data-ref="total-income">
                         <div class="h-row">
                             <div class="v-col">
                                 <p class="has-x-large-font-size" data-amount>$100</p>
@@ -57,7 +57,7 @@
                     </div>
                 </div>
                 <div class="v-col lg-2 lg-x-4 has-text-center">
-                    <div class="standard-card" data-inline-template="quick-stat" ref="total-expense">
+                    <div class="standard-card" data-inline-template="quickStats" data-ref="total-expense">
                         <div class="h-row">
                             <div class="v-col">
                                 <p class="has-x-large-font-size"data-amount>$100</p>
@@ -67,7 +67,7 @@
                     </div>
                 </div>
                 <div class="v-col lg-2 lg-x-4 has-text-center">
-                    <div class="standard-card" data-inline-template="quick-stat" ref="monthly-balance">
+                    <div class="standard-card" data-inline-template="quickStats" data-ref="monthly-balance">
                         <div class="h-row">
                             <div class="v-col">
                                 <p class="has-x-large-font-size" data-amount>$100</p>
@@ -86,11 +86,11 @@
             </div>
             <div class="h-row">
                 <div class="v-col">
-                    <div data-inline-template="summary-lines"> 
+                    <div data-inline-template="summaryLinesContainer"> 
 
                         <div class="h-row">
                             <div class="v-col">
-                                <header data-inline-template="summary-header"> 
+                                <header data-inline-template="summaryHeader"> 
                                     <div class="summary-columns has-text-center">
                                         <div class="column has-medium-font-size has-semibold-font-weight">Transaction Code</div>
                                         <div class="column has-medium-font-size has-semibold-font-weight">Summary</div>
@@ -107,7 +107,7 @@
                         <div class="h-row">
                             <div class="v-col has-mg-bottom-0">
 
-                                <div data-inline-template="summary-line" data-expandable-container="expanded">
+                                <div data-inline-template="summaryLine" data-expandable-container="expanded">
                                     <div class="h-row">
                                         <div class="v-col trigger-margin has-text-center has-mg-bottom-0">
                                             <button class="btn-no-background" data-expandable-trigger="click">
@@ -171,35 +171,31 @@
                                     </div>
                                     <hr>
                                 </div>
-
-
                             </div>
                         </div>
 
+                        <div class="h-row" data-inline-template="budgetSheetFooter">
+                            <div class="v-col lg-6">
+                                <button class="icon-left btn-has-background-mint" type="button">
+                                    <img src="<%=require('../../../../src/app/assets/icons/add.svg')%>">
+                                    Add Transaction
+                                </button>
+                            </div> 
+                            <div class="v-col lg-2 has-text-right">
+                                <button class="icon-left btn-has-background-mint" type="button">
+                                    <img src="<%=require('../../../../src/app/assets/icons/add.svg')%>">
+                                    Save Budget
+                                </button>
+                                <button class="icon-left btn-has-background-mint" type="button">
+                                    <img src="<%=require('../../../../src/app/assets/icons/add.svg')%>">
+                                    Finalize
+                                </button>
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
             </div> 
-
-            <div class="h-row" data-inline-template="budget-sheet-footer">
-                <div class="v-col lg-6">
-                    <button class="icon-left btn-has-background-mint" type="button">
-                        <img src="<%=require('../../../../src/app/assets/icons/add.svg')%>">
-                        Add Transaction
-                    </button>
-                </div> 
-                <div class="v-col lg-2 has-text-right">
-                    <button class="icon-left btn-has-background-mint" type="button">
-                        <img src="<%=require('../../../../src/app/assets/icons/add.svg')%>">
-                        Save Budget
-                    </button>
-                    <button class="icon-left btn-has-background-mint" type="button">
-                        <img src="<%=require('../../../../src/app/assets/icons/add.svg')%>">
-                        Finalize
-                    </button>
-                </div>
-            </div>
-
-
         </div>
     </div>
 

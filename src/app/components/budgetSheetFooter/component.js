@@ -7,8 +7,7 @@ import { ComponentBuilder as Builder, ComponentConfigs } from 'ui-cable-js/Compo
 
     // State of individual modules
     var initialState = {
-        componentName : 'budgetSheetFooter', 
-        heading : 'Hello Obi'
+        componentName : 'budgetSheetFooter'
     };
 
     // Return registered module (object) to developer
@@ -21,10 +20,10 @@ import { ComponentBuilder as Builder, ComponentConfigs } from 'ui-cable-js/Compo
         },
         hooks : {
 
-     
-
         },  
         dispatch : {
+ 
+            
 
         }
         

@@ -25,15 +25,7 @@ import { ComponentBuilder as Builder, ComponentConfigs } from 'ui-cable-js/Compo
         },  
         dispatch : {
 
-        },
-        template : `
-            <div>
-                <h1 data-heading></h1>
-                <form>
-                    <input data-update-heading type="text"/>
-                </form>
-            </div>
-        `
+        }
         
     }
 

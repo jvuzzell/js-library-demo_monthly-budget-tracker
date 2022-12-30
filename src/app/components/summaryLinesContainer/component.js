@@ -10,8 +10,7 @@ import { ComponentBuilder as Builder, ComponentConfigs } from 'ui-cable-js/Compo
 
     // State of individual modules
     var initialState = {
-        componentName : 'summaryLinesContainer', 
-        heading : 'Hello Obi'
+        componentName : 'summaryLinesContainer'
     };
 
     // Return registered module (object) to developer
