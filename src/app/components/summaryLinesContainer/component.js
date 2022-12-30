@@ -1,4 +1,7 @@
 import "./component.css"; 
+import "./subComponents/summaryHeader/component.js";
+import "./subComponents/summaryLine/component.js";
+import "./subComponents/transactionLine/component.js";
 import { ComponentBuilder as Builder, ComponentConfigs } from 'ui-cable-js/ComponentBuilder'; 
 (function(
     Builder,
@@ -7,12 +10,11 @@ import { ComponentBuilder as Builder, ComponentConfigs } from 'ui-cable-js/Compo
 
     // State of individual modules
     var initialState = {
-        componentName : 'exampleComponent', 
-        heading : 'Hello Obi'
+        componentName : 'summaryLinesContainer'
     };
 
     // Return registered module (object) to developer
-    ComponentConfigs.exampleComponent = {
+    ComponentConfigs.summaryLinesContainer = {
 
         eventBus : [ 'GlobalComponentEvents' ],
         state : initialState, 
@@ -26,19 +28,11 @@ import { ComponentBuilder as Builder, ComponentConfigs } from 'ui-cable-js/Compo
         },  
         dispatch : {
 
-        },
-        template : `
-            <div>
-                <h1 data-heading></h1>
-                <form>
-                    <input data-update-heading type="text"/>
-                </form>
-            </div>
-        `
+        }
         
     }
 
-    Builder.registerComponent( ComponentConfigs.exampleComponent );
+    Builder.registerComponent( ComponentConfigs.summaryLinesContainer );
 
 })(
     Builder,

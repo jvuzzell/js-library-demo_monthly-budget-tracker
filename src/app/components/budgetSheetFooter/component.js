@@ -1,3 +1,4 @@
+import "./component.css"; 
 import { ComponentBuilder as Builder, ComponentConfigs } from 'ui-cable-js/ComponentBuilder'; 
 (function(
     Builder,
@@ -6,12 +7,11 @@ import { ComponentBuilder as Builder, ComponentConfigs } from 'ui-cable-js/Compo
 
     // State of individual modules
     var initialState = {
-        componentName : 'exampleComponent', 
-        heading : 'Hello Obi'
+        componentName : 'budgetSheetFooter'
     };
 
     // Return registered module (object) to developer
-    ComponentConfigs.exampleComponent = {
+    ComponentConfigs.budgetSheetFooter = {
 
         eventBus : [ 'GlobalComponentEvents' ],
         state : initialState, 
@@ -20,24 +20,16 @@ import { ComponentBuilder as Builder, ComponentConfigs } from 'ui-cable-js/Compo
         },
         hooks : {
 
-     
-
         },  
         dispatch : {
+ 
+            
 
-        },
-        template : `
-            <div>
-                <h1 data-heading></h1>
-                <form>
-                    <input data-update-heading type="text"/>
-                </form>
-            </div>
-        `
+        }
         
     }
 
-    Builder.registerComponent( ComponentConfigs.exampleComponent );
+    Builder.registerComponent( ComponentConfigs.budgetSheetFooter );
 
 })(
     Builder,
