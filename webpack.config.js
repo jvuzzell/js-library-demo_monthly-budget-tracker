@@ -30,7 +30,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'public'),
     filename: '[name]_[contenthash].js',
-    clean: true,
+    clean: false,
     assetModuleFilename: '[name][ext]',
     publicPath: '/'
   },
@@ -45,7 +45,7 @@ module.exports = {
         test: /\.(png|svg|jpg|gif|jpe?g)$/,  
         type: 'asset/resource',
         generator: {
-          filename: 'image/[contenthash]_[name][ext]'
+          filename: 'images/[name][ext]'
         }
       }
     ],
