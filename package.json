@@ -29,7 +29,7 @@
     },
     "dependencies": {
         "expandables-js": "1.1.1",
-        "ui-cable-js": "1.0.0"
+        "ui-cable-js": "1.0.2"
     },
     "browserslist": {
         "production": [
