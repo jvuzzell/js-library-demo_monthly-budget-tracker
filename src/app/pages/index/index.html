@@ -96,14 +96,17 @@
             <hr>
 
             <div class="h-row">
-                <div class="v-col has-mg-bottom-40">
-                    <h2>Monthly Transactions</h2>
-                </div>
-            </div>
-            <div class="h-row">
                 <div class="v-col">
                     <div data-inline-template="budgetSheetContainer"> 
-
+                        <div class="h-row">
+                            <div class="v-col lg-2 has-mg-bottom-40">
+                                <h2>Monthly Transactions</h2>
+                            </div> 
+                            <div class="v-col lg-6 has-text-right">
+                                <button id="expandExpandables" class="has-underline"><strong>+</strong> Expand Transactions</button>
+                                <button id="collapseExpandables" class="has-underline"><strong>-</strong> Collapse Transactions</button>
+                            </div>
+                        </div>
                         <div class="h-row">
                             <div class="v-col">
                                 <header data-inline-template="summaryHeader"> 

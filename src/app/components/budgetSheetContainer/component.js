@@ -1,5 +1,6 @@
 import "./component.css"; 
 import { ComponentBuilder as Builder, ComponentConfigs } from 'ui-cable-js/ComponentBuilder'; 
+import { Expandables } from 'expandables-js';
 (function(
     Builder,
     ComponentConfigs
@@ -21,7 +22,44 @@ import { ComponentBuilder as Builder, ComponentConfigs } from 'ui-cable-js/Compo
     ComponentConfigs.budgetSheetContainer = {
 
         eventBus : [ 'GlobalComponentEvents' ],
-        state : initialState,
+        state : initialState, 
+        props : {
+            eventListeners : {
+
+                expandAndCollapseTransactions: { 
+
+                    onClickCollapse : { 
+
+                        eventInit : function( componentKey, component ) { 
+
+                            const inlineTemplateNode = component.get.inlineTemplateNode();
+
+                            inlineTemplateNode.querySelector( '#collapseExpandables' ).addEventListener( 'click', event => {
+                                Expandables.collapseAll( '[data-inline-template=budgetSheetContainer]' );
+                            });
+
+                        }
+
+                    }, 
+
+                    onClickExpand : { 
+
+                        eventInit : function( componentKey, component ) { 
+
+                            const inlineTemplateNode = component.get.inlineTemplateNode();
+
+                            inlineTemplateNode.querySelector( '#expandExpandables' ).addEventListener( 'click', event => {
+                                Expandables.expandAll( '[data-inline-template=budgetSheetContainer]' );
+                            });
+
+                        }  
+
+                    }
+
+                }
+
+            }
+        },
         dispatch : {
               
             update : function( notifierKey, delta ) {
