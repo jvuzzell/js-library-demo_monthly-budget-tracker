@@ -40,5 +40,5 @@
 }
 
 [data-inline-template="summaryLine"][ data-expandable-container="expanded" ] [data-transaction-line-container] {
-    margin-top: 20px;
+    margin-top: 10px;
 }

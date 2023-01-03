@@ -8,7 +8,6 @@ import { ComponentBuilder as Builder, ComponentConfigs } from 'ui-cable-js/Compo
     // State of individual modules
     var initialState = {
         componentName : 'budgetSheetContainer', 
-        manifest: {}, 
         budgetSheetId: 0, 
         month: 1,  
         year: 1, 
@@ -22,17 +21,12 @@ import { ComponentBuilder as Builder, ComponentConfigs } from 'ui-cable-js/Compo
     ComponentConfigs.budgetSheetContainer = {
 
         eventBus : [ 'GlobalComponentEvents' ],
-        state : initialState, 
-        props : {
-
-        },
-        hooks : {},  
+        state : initialState,
         dispatch : {
               
             update : function( notifierKey, delta ) {
 
                 if( notifierKey.includes( '_summaryLine_' ) ) { 
-                    console.error( delta );
                     this.calcStats( delta );
                 }
 

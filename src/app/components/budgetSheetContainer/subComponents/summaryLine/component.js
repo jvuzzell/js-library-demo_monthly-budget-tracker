@@ -106,7 +106,6 @@ import { initExpandables } from "expandables-js";
                         let inlineTemplateNode = component.get.inlineTemplateNode(); 
                         inlineTemplateNode.querySelector( 'form' ).addEventListener( 'keydown', event => {
                             if(event.keyCode == 13){
-                                alert( 'world' );
                                 event.preventDefault();
                                 event.stopPropagation();
                             }
@@ -300,15 +299,17 @@ import { initExpandables } from "expandables-js";
                                     <div class="summary-columns"> 
                                         <div class="column"> 
                                             <label for="transaction-codes">Transaction Code</label>
-                                            <select name="transaction-codes" data-transaction-codes></select>
+                                            <select name="transaction-codes" data-transaction-codes>
+                                                <option value="null">Transaction Code</option>
+                                            </select>
                                         </div>
                                         <div class="column">
                                             <label for="transaction-summary">Transaction Summary</label>
-                                            <input type="text" name="transaction-summary" placeholder="Add description of transaction" data-transaction-summary/>
+                                            <input type="text" name="transaction-summary" placeholder="Add transaction summary" data-transaction-summary/>
                                         </div>
                                         <div class="column"> 
                                             <label for="transaction-date">Transaction Due Date</label>
-                                            <input type="text" name="transaction-date" placeholder="15th" data-transaction-date disabled/>
+                                            <input type="text" name="transaction-date" placeholder="1st" data-transaction-date disabled/>
                                         </div>
                                         <div class="column">
                                             <label for="income">Income</label>
@@ -335,10 +336,10 @@ import { initExpandables } from "expandables-js";
                         </div>
                     </div>
                     <div class="v-col trigger-margin has-text-center has-mg-bottom-0"><!-- Placeholder --></div>
-                    <div class="v-col expandable-body has-mg-bottom-0 has-mg-top-20">
+                    <div class="v-col expandable-body has-mg-bottom-0 has-mg-top-10">
                         <div data-expandable-target>
                             <div class="h-row">
-                                <div class="v-col has-mg-top-0 has-mg-bottom-20" data-transaction-line-container></div>
+                                <div class="v-col has-mg-top-0 has-mg-bottom-10" data-transaction-line-container></div>
                             </div>  
                             <div class="h-row has-text-center" data-transaction-controls>
                                 <div class="v-col has-mg-top-0">

@@ -47,7 +47,7 @@
 /* Card Styling */
 
 .standard-card {
-    padding: 20px 20px 0 20px; /* Omit padding on bottom because of margin on v-col */
+    padding: 10px 20px 0 20px; /* Omit padding on bottom because of margin on v-col */
     border-radius: var(--border-radius-lg); 
     border: var(--card-border); 
     box-shadow: var(--solid-dropshadow-lg);

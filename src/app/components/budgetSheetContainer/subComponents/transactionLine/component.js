@@ -10,9 +10,9 @@ import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'u
         componentName : 'transactionLine', 
         summaryLineKey : null,
         summaryLineId : null,
-        description : 'Add description of micro-transaction', 
+        description : '', 
         lineType : 'credit', 
-        amount : 1.00, 
+        amount : 0.00, 
         status : 'pending', 
         dueDate : 1, 
         void : false
@@ -73,15 +73,6 @@ import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'u
 
                 }, 
 
-            }, 
-
-            updateStatus : {
-
-                
-            }, 
-
-            updateDueDate : {
-
             }
 
         }
@@ -122,8 +113,6 @@ import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'u
                 }; 
 
                 this.parent().commit.state( transaction, false ); 
-
-                // @todo manifest transaction line
 
             },
 
@@ -208,12 +197,12 @@ import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'u
 
         },
         template : `
-            <form data-inline-template="transactionLine" data-transaction-type="credit">
+            <form class="has-mg-bottom-10" data-inline-template="transactionLine" data-transaction-type="credit">
                 <div class="summary-columns"> 
                     <div class="column"><!-- placeholder --></div>
                     <div class="column">
                         <label for="transaction-summary">Transaction Summary</label>
-                        <input type="text" name="transaction-summary" placeholder="Transaction Summary" data-transaction-summary/>
+                        <input type="text" name="transaction-summary" placeholder="Add description of individual credit/debit" data-transaction-summary/>
                     </div>
                     <div class="column"> 
                         <label for="transaction-codes">Transaction Due Date</label>
@@ -236,13 +225,15 @@ import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'u
                             <option value="pending">Pending</option>
                             <option value="paid">Paid</option>
                             <option value="void">Void</option>
+                            <option value="past-due">Past Due</option>
+                            <option value="adjusted">Adjusted</option>
                         </select>
                     </div>
                     <div class="column actions-column has-text-center">
                         <button class="btn-no-background" data-delete-transaction-line><img class="icon" src="images/close.svg"/></button>
                     </div>
                 </div> 
-                <hr class="has-mg-top-20">
+                <hr class="has-mg-top-10 has-mg-bottom-10">
             </form>
         `
         
