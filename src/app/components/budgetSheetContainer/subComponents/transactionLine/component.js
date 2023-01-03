@@ -43,6 +43,21 @@ import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'u
 
                     }
 
+                }, 
+                preventSubmitOnKeyPress : { 
+
+                    eventInit : function( componentKey, component ) { 
+
+                        let inlineTemplateNode = component.get.inlineTemplateNode(); 
+                        inlineTemplateNode.addEventListener( 'keydown', event => {
+                            if(event.keyCode == 13){
+                                event.preventDefault();
+                                event.stopPropagation();
+                            }
+                        });
+
+                    }
+
                 }
 
             }, 

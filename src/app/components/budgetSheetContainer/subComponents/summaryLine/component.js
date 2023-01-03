@@ -77,6 +77,7 @@ import { initExpandables } from "expandables-js";
     
                         let inlineTemplateNode = component.get.inlineTemplateNode();
                         let mount = false;
+
                         inlineTemplateNode.querySelector( '[data-add-credit]' ).addEventListener( 'click', (event) => {  
                             component.dispatch.setTransactions( componentKey, mount, [{ lineType : 'credit' }] ); 
                         });
@@ -97,6 +98,22 @@ import { initExpandables } from "expandables-js";
     
                     }
     
+                }, 
+                preventSubmitOnKeyPress : { 
+
+                    eventInit : function( componentKey, component ) { 
+
+                        let inlineTemplateNode = component.get.inlineTemplateNode(); 
+                        inlineTemplateNode.querySelector( 'form' ).addEventListener( 'keydown', event => {
+                            if(event.keyCode == 13){
+                                alert( 'world' );
+                                event.preventDefault();
+                                event.stopPropagation();
+                            }
+                        });
+
+                    }
+
                 }
     
             }
