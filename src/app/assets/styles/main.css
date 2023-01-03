@@ -33,6 +33,15 @@
     padding-left: 20px;
     padding-right: 20px;
     margin: 0 auto;
+} 
+
+@media (max-width: 1920px) {
+
+    .content-lock {
+        padding-left: 40px; 
+        padding-right: 40px;
+    }
+
 }
 
 /* Card Styling */
