@@ -44,21 +44,34 @@ import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'u
                     }
 
                 }, 
-                preventSubmitOnKeyPress : { 
+
+                onKeyPressEnter : { 
 
                     eventInit : function( componentKey, component ) { 
 
-                        let inlineTemplateNode = component.get.inlineTemplateNode(); 
+                        const inlineTemplateNode = component.get.inlineTemplateNode(); 
+                        const lineType = inlineTemplateNode.dataset.transactionType;
+                        const selector = ( lineType === 'credit' ) ? '[data-income]' : '[data-expense]';
+                        const input = inlineTemplateNode.querySelector( selector );
+
                         inlineTemplateNode.addEventListener( 'keydown', event => {
                             if(event.keyCode == 13){
                                 event.preventDefault();
                                 event.stopPropagation();
+
+                                const newAmount =  input.value;
+                                const currAmount = component.get.state( 'amount' );
+                                component.commit.state({
+                                    amount : newAmount, 
+                                    derivative : parseFloat( newAmount ) - parseFloat( currAmount )
+                                })
+
                             }
                         });
 
                     }
 
-                }
+                }, 
 
             }, 
 
