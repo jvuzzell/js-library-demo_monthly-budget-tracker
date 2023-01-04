@@ -8,46 +8,45 @@ import { initExpandables } from "expandables-js";
     ComponentConfigs
 ){
 
-    // State of individual modules
-    var initialState = {
-        componentName : 'summaryLine', 
-        budgetSheetId : 0, 
-        billingCode : 'Freelance Income', 
-        description : '', 
-        dueDate : 1, 
-        totalCredit : 0.00, 
-        totalDebit : 0.00, 
-        balance : 0.00,
-        status : 'pending', 
-        transactionManifest : []
-    }; 
-
     ComponentProps.summaryLine = {
-        transactionTemplates : {
+        defaultState : {
+            componentName : 'summaryLine', 
+            budgetSheetId : 0, 
+            billingCode : 'Freelance Income', 
+            description : '', 
+            dueDate : 1, 
+            totalCredit : 0.00, 
+            totalDebit : 0.00, 
+            balance : 0.00,
+            status : 'pending', 
+            transactionManifest : []
+        },
+
+        transactionSummaryTemplates : {
             'Freelance Service' : {
                 description : 'Project Type A', 
                 transactionTemplates : [
                     {
-                        name : 'Payment Installment 1', 
-                        defaultAmount : 120.50,  
+                        description : 'Client Payment Installment 1', 
+                        amount : 120.50,  
                         dueDate : 15, 
                         lineType : 'credit'
                     }, 
                     { 
-                        name : 'Payment Installment 2', 
-                        defaultAmount : 120.50,  
+                    description : 'Client Payment Installment 2', 
+                        amount : 120.50,  
                         dueDate : 1, 
                         lineType : 'credit'
                     }, 
                     { 
-                        name : 'Payment Installment 3', 
-                        defaultAmount : 120.50, 
+                        description : 'Client Payment Installment 3', 
+                        amount : 120.50, 
                         dueDate : 20,
                         lineType : 'credit'
                     }, 
                     { 
-                        name : 'Supplies', 
-                        defaultAmount : 33.44, 
+                        description : 'Supplies', 
+                        amount : 33.44, 
                         dueDate : 2,
                         lineType : 'debit'
                     }
@@ -57,8 +56,14 @@ import { initExpandables } from "expandables-js";
                 description : 'Birthday', 
                 transactionTemplates : [
                     {
-                        name : 'Venmo from Paul', 
-                        defaultAmount : 99.57, 
+                        description : 'Venmo from Paul', 
+                        amount : 99.57, 
+                        dueDate : 20,
+                        lineType : 'credit'
+                    }, 
+                    {
+                        description : 'Venmo from Paul', 
+                        amount : 99.57, 
                         dueDate : 20,
                         lineType : 'credit'
                     }
@@ -124,6 +129,25 @@ import { initExpandables } from "expandables-js";
 
                 }
 
+            }, 
+
+            useTransactionTemplate : { 
+
+                onSelectTemplate : { 
+
+                    eventInit : function( componentKey, component ) { 
+
+                        const inlineTemplateNode = component.get.inlineTemplateNode(); 
+                        inlineTemplateNode.querySelector( '[data-transaction-codes]' ).addEventListener( 'change', event => {
+                            
+                            component.dispatch.useTransactionTemplate( event.target.value );
+
+                        });
+
+                    }
+
+                }
+                    
             }
 
         }
@@ -132,10 +156,18 @@ import { initExpandables } from "expandables-js";
     ComponentConfigs.summaryLine = {
 
         eventBus : [ 'GlobalComponentEvents' ],
-        state : initialState, 
+        state : ComponentProps.summaryLine.defaultState, 
         props : ComponentProps.summaryLine,
         hooks : {
-             
+
+            onMount : function( state ) { 
+       
+                if ( !state.firstRenderFlag ) { return }; 
+                const summaryLineNode = this.parent().get.inlineTemplateNode();
+                this.parent().dispatch.loadTransactionTemplateSelect( summaryLineNode );           
+
+            }, 
+
             onUpdate : function( state ) {  
                  
                 if( state.firstRenderFlag ) { return; }
@@ -164,8 +196,7 @@ import { initExpandables } from "expandables-js";
                 summaryState.transactionManifest.map( transactionKey => {  
                     Builder.getComponentByKey( transactionKey ).dispatch.deleteLine();
                 });
-                
-                // Remove element
+
                 this.parent().get.inlineTemplateNode().remove(); 
 
                 if( 
@@ -241,14 +272,20 @@ import { initExpandables } from "expandables-js";
                 }
 
                 transactions.map( transaction => { 
+                     
+                    ComponentConfigs.transactionLine.state = {
+                        ...ComponentProps.transactionLine.defaultTransaction,
+                        ...transaction
+                    };
 
-                    let transactionTemplate = Builder.templateToHTML( ComponentConfigs.transactionLine.template );  
-                    transactionTemplate.setAttribute( 'data-transaction-type', transaction.lineType );
+                    let transactionLineNode = Builder.templateToHTML( ComponentConfigs.transactionLine.template );  
+                    transactionLineNode.setAttribute( 'data-transaction-type', transaction.lineType );
+
                     let summaryLineNode = Builder.getComponentByKey( summaryLineKey ).get.inlineTemplateNode(); 
-                    summaryLineNode.querySelector( '[data-transaction-line-container]' ).appendChild( transactionTemplate );
+                    summaryLineNode.querySelector( '[data-transaction-line-container]' ).appendChild( transactionLineNode );
 
                     Builder.registerComponent( ComponentConfigs.transactionLine );  
-                    
+
                 });
 
             },  
@@ -312,6 +349,33 @@ import { initExpandables } from "expandables-js";
                 summaryLineNode.querySelector( 'input[data-expense]' ).value = summaryState.totalDebit;
                 summaryLineNode.querySelector( 'input[data-balance]' ).value = summaryState.balance;
 
+            },  
+
+            loadTransactionTemplateSelect : function( summaryLineNode ) {
+   
+                let transactionSummaryTemplates = this.parent().get.props( 'transactionSummaryTemplates' ); 
+                for( let templateKey in transactionSummaryTemplates ) { 
+                    let option = document.createElement( 'option' );
+                    option.text = templateKey; 
+                    summaryLineNode.querySelector( '[data-transaction-codes]' ).add( option );
+                }
+
+                return summaryLineNode;
+                
+            },
+
+            useTransactionTemplate : function( templateName ) {
+            
+                const summaryState = this.parent().get.state(); 
+                summaryState.transactionManifest.map( transactionKey => {  
+                    Builder.getComponentByKey( transactionKey ).dispatch.deleteLine();
+                }); 
+
+                let transactionSummaryTemplates = this.parent().get.props( 'transactionSummaryTemplates' ); 
+                let transactionSummaryTemplate = transactionSummaryTemplates[ templateName ]; 
+                this.setTransactions( summaryState.key, transactionSummaryTemplate.transactionTemplates );
+                 
+                this.parent().get.inlineTemplateNode().querySelector( '[data-transaction-summary]' ).value = transactionSummaryTemplate.description;
             }
 
         },
@@ -339,8 +403,8 @@ import { initExpandables } from "expandables-js";
                                             <input type="text" name="transaction-summary" placeholder="Add transaction summary" data-transaction-summary/>
                                         </div>
                                         <div class="column"> 
-                                            <label for="transaction-date">Transaction Due Date</label>
-                                            <input type="text" name="transaction-date" placeholder="1st" data-transaction-date disabled/>
+                                            <label for="transaction-due-date">Transaction Due Date</label>
+                                            <input type="text" name="transaction-due-date" placeholder="1st" data-transaction-due-date disabled/>
                                         </div>
                                         <div class="column">
                                             <label for="income">Income</label>
@@ -383,8 +447,6 @@ import { initExpandables } from "expandables-js";
                 <hr>
             </div>
         ` 
-
-        
     }
 
     Builder.registerComponent( ComponentConfigs.summaryLine );

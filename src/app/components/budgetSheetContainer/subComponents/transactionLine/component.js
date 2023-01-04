@@ -6,20 +6,20 @@ import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'u
 ){
 
     // State of individual components
-    var initialState = {
-        componentName : 'transactionLine', 
-        summaryLineKey : null,
-        summaryLineId : null,
-        description : '', 
-        lineType : 'credit', 
-        amount : 0.00, 
-        status : 'pending', 
-        dueDate : 1, 
-        void : false
-    }; 
 
     ComponentProps.transactionLine = {
-        
+         
+        defaultTransaction : {
+            componentName : 'transactionLine', 
+            summaryLineKey : null,
+            summaryLineId : null,
+            description : '', 
+            lineType : 'credit', 
+            amount : 0.00, 
+            status : 'pending', 
+            dueDate : 1, 
+            void : false
+        }, 
         eventListeners : {
 
             updateAmounts : { 
@@ -98,7 +98,7 @@ import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'u
     ComponentConfigs.transactionLine = {
 
         eventBus : [ 'GlobalComponentEvents' ],
-        state : initialState, 
+        state : ComponentProps.transactionLine.defaultTransaction, 
         props : ComponentProps.transactionLine,
         hooks : {
 
