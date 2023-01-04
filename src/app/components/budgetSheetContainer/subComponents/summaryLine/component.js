@@ -23,28 +23,32 @@ import { initExpandables } from "expandables-js";
     }; 
 
     ComponentProps.summaryLine = {
-        billingCode : {
+        transactionTemplates : {
             'Freelance Service' : {
                 description : 'Project Type A', 
                 transactionTemplates : [
                     {
                         name : 'Payment Installment 1', 
-                        defaultAmount : 120.50, 
+                        defaultAmount : 120.50,  
+                        dueDate : 15, 
                         lineType : 'credit'
                     }, 
                     { 
                         name : 'Payment Installment 2', 
-                        defaultAmount : 120.50, 
+                        defaultAmount : 120.50,  
+                        dueDate : 1, 
                         lineType : 'credit'
                     }, 
                     { 
                         name : 'Payment Installment 3', 
                         defaultAmount : 120.50, 
+                        dueDate : 20,
                         lineType : 'credit'
                     }, 
                     { 
                         name : 'Supplies', 
                         defaultAmount : 33.44, 
+                        dueDate : 2,
                         lineType : 'debit'
                     }
                 ]
@@ -55,18 +59,12 @@ import { initExpandables } from "expandables-js";
                     {
                         name : 'Venmo from Paul', 
                         defaultAmount : 99.57, 
+                        dueDate : 20,
                         lineType : 'credit'
                     }
                 ]
             }
-        }, 
-        statuses : {
-            'Pending ': 'Payments processing', 
-            'Paid' : 'Payment completed', 
-            'Past due' : 'Payment due date passed', 
-            'Void' : 'Payment canceled/refunded', 
-            'Adjusted' : 'Budget sheet reopened after finalization'
-        }, 
+        },
         eventListeners : {
 
             addTransactionLine : { 
@@ -74,35 +72,28 @@ import { initExpandables } from "expandables-js";
                 addCredit : { 
                     
                     eventInit : function( componentKey, component ) {
-    
                         let inlineTemplateNode = component.get.inlineTemplateNode();
-                        let mount = false;
 
                         inlineTemplateNode.querySelector( '[data-add-credit]' ).addEventListener( 'click', (event) => {  
-                            component.dispatch.setTransactions( componentKey, mount, [{ lineType : 'credit' }] ); 
+                            component.dispatch.setTransactions( componentKey, [{ lineType : 'credit' }] ); 
                         });
-    
                     }
     
                 }, 
                 addDebit : { 
                     
                     eventInit : function( componentKey, component ) {
-    
                         let inlineTemplateNode = component.get.inlineTemplateNode();
-                        let mount = false;
 
                         inlineTemplateNode.querySelector( '[data-add-debit]' ).addEventListener( 'click', (event) => {  
-                            component.dispatch.setTransactions( componentKey, mount, [{ lineType : 'debit' }] );
+                            component.dispatch.setTransactions( componentKey, [{ lineType : 'debit' }] );
                         });
-    
                     }
     
                 }, 
                 preventSubmitOnKeyPress : { 
 
                     eventInit : function( componentKey, component ) { 
-
                         let inlineTemplateNode = component.get.inlineTemplateNode(); 
                         inlineTemplateNode.querySelector( 'form' ).addEventListener( 'keydown', event => {
                             if(event.keyCode == 13){
@@ -110,11 +101,29 @@ import { initExpandables } from "expandables-js";
                                 event.stopPropagation();
                             }
                         });
+                    }
 
+                }, 
+    
+            }, 
+
+            deleteLine : {  
+
+                onClickDelete : {
+
+                    eventInit : function( componentKey, component ) {
+
+                        const inlineTemplateNode = component.get.inlineTemplateNode();  
+                        inlineTemplateNode.querySelector( '[data-delete-summary-line]' ).addEventListener( 'click', event => {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            component.dispatch.deleteLine(); 
+                        });
+    
                     }
 
                 }
-    
+
             }
 
         }
@@ -126,7 +135,7 @@ import { initExpandables } from "expandables-js";
         state : initialState, 
         props : ComponentProps.summaryLine,
         hooks : {
-
+             
             onUpdate : function( state ) {  
                  
                 if( state.firstRenderFlag ) { return; }
@@ -146,6 +155,28 @@ import { initExpandables } from "expandables-js";
                 if( publisher.get.state( 'summaryLineKey' ) === summaryState.key ) {
                     this.calcSummary( deltaState, publisher.get.state( 'lineType' ) ); 
                 }
+
+            }, 
+
+            deleteLine : function() {
+
+                const summaryState = this.parent().get.state(); 
+                summaryState.transactionManifest.map( transactionKey => {  
+                    Builder.getComponentByKey( transactionKey ).dispatch.deleteLine();
+                });
+                
+                // Remove element
+                this.parent().get.inlineTemplateNode().remove(); 
+
+                if( 
+                    document
+                    .querySelector( '[data-summary-line-container]' )
+                    .querySelectorAll( '[data-inline-template=summaryLine]' )
+                    .length === 0 
+                ) { 
+                    let budgetSheetContainer = Builder.getComponentByName( 'budgetSheetContainer' ); 
+                    budgetSheetContainer.dispatch.addSummaryLine();
+                } 
 
             },
 
@@ -168,7 +199,6 @@ import { initExpandables } from "expandables-js";
                         let currentCreditTotal = totalCredit; 
                         totalCredit = this.calcTotalCredit( derivative ); // Calc new credit
                         derivativeCredit = totalCredit - currentCreditTotal; // Calc difference between [new credit total] and [current credit total]
-
                         break; 
                 }
                 
@@ -204,18 +234,18 @@ import { initExpandables } from "expandables-js";
                 return parseFloat( totalCredit ) - parseFloat( totalDebit ); 
             },
 
-            setTransactions : function( summaryLineKey = null, mount = false, transactions = [{ lineType : 'credit' }]  ) { 
+            setTransactions : function( summaryLineKey = null, transactions = [{ lineType : 'credit' }]  ) { 
                 
                 if( summaryLineKey === null ) {
-                    summaryLineKey = this.createNewSummaryLine( mount );
+                    summaryLineKey = this.createNewSummaryLine();
                 }
 
                 transactions.map( transaction => { 
 
-                    let htmlTemplate = Builder.templateToHTML( ComponentConfigs.transactionLine.template );  
-                    htmlTemplate.setAttribute( 'data-transaction-type', transaction.lineType );
+                    let transactionTemplate = Builder.templateToHTML( ComponentConfigs.transactionLine.template );  
+                    transactionTemplate.setAttribute( 'data-transaction-type', transaction.lineType );
                     let summaryLineNode = Builder.getComponentByKey( summaryLineKey ).get.inlineTemplateNode(); 
-                    summaryLineNode.querySelector( '[data-transaction-line-container]' ).appendChild( htmlTemplate );
+                    summaryLineNode.querySelector( '[data-transaction-line-container]' ).appendChild( transactionTemplate );
 
                     Builder.registerComponent( ComponentConfigs.transactionLine );  
                     
@@ -224,14 +254,14 @@ import { initExpandables } from "expandables-js";
             },  
 
             manifestTransaction : function( transactionLineKey ) {
-                
+
                 let manifest = this.parent().get.state( 'transactionManifest' );  
                 manifest.push( transactionLineKey );
                 this.parent().commit.state({ transactionManifest : manifest });
 
             },
 
-            unmanifestTransaction : function( transactionLineKey ) {
+            unManifestTransaction : function( transactionLineKey ) {
 
                 let manifest = this.parent().get.state( 'transactionManifest' );
                 let updatedManifest = [];
@@ -251,16 +281,17 @@ import { initExpandables } from "expandables-js";
 
             },
 
-            createNewSummaryLine : function( mount = false ) {
+            createNewSummaryLine : function() {
                  
-                let htmlTemplate = Builder.templateToHTML( ComponentConfigs.summaryLine.template ); 
-                let containerNode = Builder.getComponentByName( 'budgetSheetContainer' ).get.inlineTemplateNode(); 
-                containerNode.querySelector( '[data-summary-line-container]' ).appendChild( htmlTemplate );
-
+                let summaryLineNode = Builder.templateToHTML( ComponentConfigs.summaryLine.template ); 
+                let containerNode = Builder.getComponentByName( 'budgetSheetContainer' ).get.inlineTemplateNode();  
+                containerNode.querySelector( '[data-summary-line-container]' ).appendChild( summaryLineNode );
+                
+                ComponentConfigs.summaryLine.state.transactionManifest = []; // clean-up
                 let newSummaryLines = Builder.registerComponent( ComponentConfigs.summaryLine ); 
                 let newSummaryLine = newSummaryLines[ Object.keys( newSummaryLines )[0] ];
                 let summaryLineKey = newSummaryLine.get.state( 'key' );
- 
+
                 initExpandables();
                 return summaryLineKey; 
                 
@@ -351,7 +382,8 @@ import { initExpandables } from "expandables-js";
                 </div>
                 <hr>
             </div>
-        `
+        ` 
+
         
     }
 

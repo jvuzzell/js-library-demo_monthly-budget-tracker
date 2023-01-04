@@ -89,8 +89,8 @@ import { Expandables } from 'expandables-js';
 
             }, 
 
-            addSummaryLine : function() {
-                Builder.getComponentByName( 'summaryLine' ).dispatch.setTransactions();
+            addSummaryLine : function( summaryLineKey = null, transactions = [{ lineType : 'credit' }]  ) { 
+                Builder.getComponentByName( 'summaryLine' ).dispatch.setTransactions( summaryLineKey, transactions );
             }
 
         }

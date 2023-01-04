@@ -73,6 +73,22 @@ import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'u
 
                 }, 
 
+                onDeleteLine : { 
+
+                    eventInit : function( componentKey, component ) {
+
+                        const inlineTemplateNode = component.get.inlineTemplateNode(); 
+                        inlineTemplateNode.querySelector( '[data-delete-transaction-line]' ).addEventListener( 'click', event => {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            component.dispatch.deleteLine(); 
+
+                        });
+
+                    }
+
+                }
+
             }
 
         }
@@ -116,8 +132,23 @@ import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'u
 
             },
 
-            loadServerSideRenderAttributes : function() { 
+            deleteLine : function() {
 
+                const transactionState = this.parent().get.state();
+                const amount = transactionState.amount;
+
+                this.parent().commit.state({
+                    amount : amount, 
+                    derivative : amount * -1, 
+                    void : true
+                });
+ 
+                this.parent().get.inlineTemplateNode().remove();
+
+            },
+
+            loadServerSideRenderAttributes : function() { 
+    
                 const templateNode = this.parent().get.inlineTemplateNode();  
                 const transactionKey = this.parent().get.state( 'key' );
                 const lineType = templateNode.getAttribute( 'data-transaction-type' ); 
@@ -140,11 +171,10 @@ import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'u
                  
                 amount = templateNode.querySelector( selector ).value;  
  
-                const summaryLineKey = templateNode.closest( '[data-inline-template="summaryLine"]' ).dataset.key;
+                const summaryLineKey = templateNode.closest( '[data-inline-template="summaryLine"]' ).dataset.key; 
                 const summaryLineComponent = Builder.getComponentByKey( summaryLineKey );
- 
                 summaryLineComponent.dispatch.manifestTransaction( transactionKey ); 
-            
+
                 this.parent().commit.state({  
                         summaryLineKey : summaryLineKey,
                         amount : parseFloat( amount ).toFixed( 2 ),   
@@ -171,6 +201,9 @@ import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'u
                 transactionLineNode.querySelector( '[data-transaction-summary]' ).value = transactionState.description;
                 transactionLineNode.querySelector( '[data-transaction-due-date]' ).value = transactionState.dueDate;
 
+                const summaryLineComponent = Builder.getComponentByKey( summaryLineKey );
+                summaryLineComponent.dispatch.manifestTransaction( transactionState.key );
+
                 // @todo Update selects for dueDate and status
                 
                 const newAmount = parseFloat( transactionState.amount ).toFixed(2); 
@@ -195,7 +228,8 @@ import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'u
 
             }
 
-        },
+        }, 
+
         template : `
             <form class="has-mg-bottom-10" data-inline-template="transactionLine" data-transaction-type="credit">
                 <div class="summary-columns"> 
@@ -260,7 +294,7 @@ import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'u
                         </select>
                     </div>
                     <div class="column actions-column has-text-center">
-                        <button class="btn-no-background" data-delete-transaction-line><img class="icon" src="images/close.svg"/></button>
+                        <button class="btn-no-background" role="button" data-delete-transaction-line><img class="icon" src="images/close.svg"/></button>
                     </div>
                 </div> 
                 <hr class="has-mg-top-10 has-mg-bottom-10">
