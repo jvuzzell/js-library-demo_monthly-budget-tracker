@@ -13,10 +13,10 @@
                 <div class="v-col">
                     <header>
                         <div class="h-row">
-                            <div class="v-col lg-2">
+                            <div class="v-col lg-4 lg-x-6" >
                                 <h1>Monthly Budget Tracker</h1>
                             </div>
-                            <div class="v-col lg-6">
+                            <div class="v-col lg-4 lg-x-6">
                                 <nav class="text-align-right">
                                     <ul class="inline">
                                         <li><a href="">Budget Tracker</a></li>
@@ -35,11 +35,27 @@
                         <div class="h-row">
                             <div class="v-col lg-4">
                                 <label for="report-year">Year</label>
-                                <select name="report-year" data-year></select>
+                                <select class="has-semibold-font-weight" name="report-year" data-year>
+                                    <option value="2022">2022</option>
+                                    <option value="2023">2023</option>
+                                </select>
                             </div>
                             <div class="v-col lg-4">
                                 <label for="report-month">Month</label>
-                                <select name="report-month" data-month></select>
+                                <select class="has-semibold-font-weight" name="report-month" data-month>
+                                    <option value="1">January</option>
+                                    <option value="2">February</option>
+                                    <option value="3">March</option>
+                                    <option value="4">April</option>
+                                    <option value="5">May</option>
+                                    <option value="6">June</option>
+                                    <option value="7">July</option>
+                                    <option value="8">August</option>
+                                    <option value="9">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                                </select>
                             </div>
                         </div>
                     </form>
@@ -49,8 +65,8 @@
                 <div class="v-col lg-2 lg-x-4 has-text-center">
                     <div class="standard-card" data-inline-template="quickStats" data-ref="total-income">
                         <div class="h-row">
-                            <div class="v-col">
-                                <p class="has-x-large-font-size" data-amount>$100</p>
+                            <div class="v-col has-mg-bottom-10">
+                                <p class="has-x-large-font-size has-mg-bottom-5" >$<span data-amount>0.00</span></p>
                                 <p class="has-medium-font-size has-semibold-font-weight" data-title>Total Income</p>
                             </div>
                         </div>
@@ -59,8 +75,8 @@
                 <div class="v-col lg-2 lg-x-4 has-text-center">
                     <div class="standard-card" data-inline-template="quickStats" data-ref="total-expense">
                         <div class="h-row">
-                            <div class="v-col">
-                                <p class="has-x-large-font-size"data-amount>$100</p>
+                            <div class="v-col has-mg-bottom-10">
+                                <p class="has-x-large-font-size has-mg-bottom-5">$<span data-amount>0.00</span></p>
                                 <p class="has-medium-font-size has-semibold-font-weight" data-title>Total Expenses</p>
                             </div>
                         </div>
@@ -69,8 +85,8 @@
                 <div class="v-col lg-2 lg-x-4 has-text-center">
                     <div class="standard-card" data-inline-template="quickStats" data-ref="monthly-balance">
                         <div class="h-row">
-                            <div class="v-col">
-                                <p class="has-x-large-font-size" data-amount>$100</p>
+                            <div class="v-col has-mg-bottom-10">
+                                <p class="has-x-large-font-size has-mg-bottom-5" >$<span data-amount>0.00</span></p>
                                 <p class="has-medium-font-size has-semibold-font-weight" data-title>Monthly Balance</p>
                             </div>
                         </div>
@@ -80,14 +96,17 @@
             <hr>
 
             <div class="h-row">
-                <div class="v-col has-mg-bottom-40">
-                    <h2>Monthly Transactions</h2>
-                </div>
-            </div>
-            <div class="h-row">
                 <div class="v-col">
-                    <div data-inline-template="summaryLinesContainer"> 
-
+                    <div data-inline-template="budgetSheetContainer"> 
+                        <div class="h-row">
+                            <div class="v-col lg-2 has-mg-bottom-40">
+                                <h2>Monthly Transactions</h2>
+                            </div> 
+                            <div class="v-col lg-6 has-text-right">
+                                <button id="expandExpandables" class="has-underline"><strong>+</strong> Expand Transactions</button>
+                                <button id="collapseExpandables" class="has-underline"><strong>-</strong> Collapse Transactions</button>
+                            </div>
+                        </div>
                         <div class="h-row">
                             <div class="v-col">
                                 <header data-inline-template="summaryHeader"> 
@@ -105,7 +124,7 @@
                             </div>
                         </div>
                         <div class="h-row">
-                            <div class="v-col has-mg-bottom-0">
+                            <div class="v-col has-mg-bottom-0" data-summary-line-container>
 
                                 <div data-inline-template="summaryLine" data-expandable-container="expanded">
                                     <div class="h-row">
@@ -121,15 +140,17 @@
                                                         <div class="summary-columns"> 
                                                             <div class="column"> 
                                                                 <label for="transaction-codes">Transaction Code</label>
-                                                                <select name="transaction-codes" data-transaction-codes></select>
+                                                                <select name="transaction-codes" data-transaction-codes>
+                                                                    <option value="null">Transaction Code</option>
+                                                                </select>
                                                             </div>
                                                             <div class="column">
                                                                 <label for="transaction-summary">Transaction Summary</label>
-                                                                <input type="text" name="transaction-summary" placeholder="Add description of transaction" data-transaction-summary/>
+                                                                <input type="text" name="transaction-summary" placeholder="Add transaction summary" data-transaction-summary/>
                                                             </div>
                                                             <div class="column"> 
                                                                 <label for="transaction-date">Transaction Due Date</label>
-                                                                <input type="text" name="transaction-date" placeholder="15th" data-transaction-date disabled/>
+                                                                <input type="text" name="transaction-date" placeholder="1st" data-transaction-date disabled/>
                                                             </div>
                                                             <div class="column">
                                                                 <label for="income">Income</label>
@@ -156,10 +177,79 @@
                                             </div>
                                         </div>
                                         <div class="v-col trigger-margin has-text-center has-mg-bottom-0"><!-- Placeholder --></div>
-                                        <div class="v-col expandable-body has-mg-bottom-0 has-mg-top-20">
+                                        <div class="v-col expandable-body has-mg-bottom-0 has-mg-top-15">
                                             <div data-expandable-target>
                                                 <div class="h-row">
-                                                    <div class="v-col has-mg-top-0 has-mg-bottom-20" data-transaction-line-container></div>
+                                                    <div class="v-col has-mg-top-0 has-mg-bottom-10" data-transaction-line-container>
+                                                        <form class="has-mg-bottom-10" data-inline-template="transactionLine" data-transaction-type="credit">
+                                                            <div class="summary-columns"> 
+                                                                <div class="column"><!-- placeholder --></div>
+                                                                <div class="column">
+                                                                    <label for="transaction-summary">Transaction Summary</label>
+                                                                    <input type="text" name="transaction-summary" placeholder="Add description of individual credit/debit" data-transaction-summary/>
+                                                                </div>
+                                                                <div class="column"> 
+                                                                    <label for="transaction-codes">Transaction Due Date</label>
+                                                                    <select name="transaction-codes" data-transaction-due-date>
+                                                                        <option value="1">1</option>
+                                                                        <option value="2">2</option>
+                                                                        <option value="3">3</option>
+                                                                        <option value="4">4</option>
+                                                                        <option value="5">5</option>
+                                                                        <option value="6">6</option>
+                                                                        <option value="7">7</option>
+                                                                        <option value="8">8</option>
+                                                                        <option value="9">9</option>
+                                                                        <option value="10">10</option>
+                                                                        <option value="11">11</option>
+                                                                        <option value="12">12</option>
+                                                                        <option value="13">13</option>
+                                                                        <option value="14">14</option>
+                                                                        <option value="15">15</option>
+                                                                        <option value="16">16</option>
+                                                                        <option value="17">17</option>
+                                                                        <option value="18">18</option>
+                                                                        <option value="19">19</option>
+                                                                        <option value="20">20</option>
+                                                                        <option value="21">21</option>
+                                                                        <option value="22">22</option>
+                                                                        <option value="23">23</option>
+                                                                        <option value="24">24</option>
+                                                                        <option value="25">25</option>
+                                                                        <option value="26">26</option>
+                                                                        <option value="27">27</option>
+                                                                        <option value="28">28</option>
+                                                                        <option value="29">29</option>
+                                                                        <option value="30">30</option>
+                                                                        <option value="31">31</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="column">
+                                                                    <label for="income">Income</label>
+                                                                    <input class="has-text-center" type="text" name="income" placeholder="0.00" data-income value=0 />
+                                                                </div>
+                                                                <div class="column">
+                                                                    <label for="expense">Expense</label>
+                                                                    <input class="has-text-center" type="text" name="expense"  placeholder="0.00" data-expense disabled />
+                                                                </div>
+                                                                <div class="column"><!-- placeholder --></div>
+                                                                <div class="column">
+                                                                    <label for="transaction-status">Status</label>
+                                                                    <select name="transaction-status" data-transaction-status>
+                                                                        <option value="pending">Pending</option>
+                                                                        <option value="paid">Paid</option>
+                                                                        <option value="void">Void</option>
+                                                                        <option value="past-due">Past Due</option>
+                                                                        <option value="adjusted">Adjusted</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="column actions-column has-text-center">
+                                                                    <button class="btn-no-background" data-delete-transaction-line><img class="icon" src="<%=require('../../../../src/app/assets/icons/close.svg')%>"/></button>
+                                                                </div>
+                                                            </div> 
+                                                            <hr class="has-mg-top-10 has-mg-bottom-10">
+                                                        </form>
+                                                    </div>
                                                 </div>  
                                                 <div class="h-row has-text-center" data-transaction-controls>
                                                     <div class="v-col has-mg-top-0">
@@ -176,17 +266,17 @@
 
                         <div class="h-row" data-inline-template="budgetSheetFooter">
                             <div class="v-col lg-6">
-                                <button class="icon-left btn-has-background-mint" type="button">
+                                <button class="icon-left btn-has-background-mint" type="button" data-trigger-add-summary>
                                     <img src="<%=require('../../../../src/app/assets/icons/add.svg')%>">
                                     Add Transaction
                                 </button>
                             </div> 
                             <div class="v-col lg-2 has-text-right">
-                                <button class="icon-left btn-has-background-mint" type="button">
+                                <button class="icon-left btn-has-background-mint" type="button" data-trigger-save-budget>
                                     <img src="<%=require('../../../../src/app/assets/icons/add.svg')%>">
                                     Save Budget
                                 </button>
-                                <button class="icon-left btn-has-background-mint" type="button">
+                                <button class="icon-left btn-has-background-mint" type="button" data-trigger-finalize-budget>
                                     <img src="<%=require('../../../../src/app/assets/icons/add.svg')%>">
                                     Finalize
                                 </button>
