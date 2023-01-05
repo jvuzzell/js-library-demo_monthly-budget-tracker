@@ -1,0 +1,6 @@
+[data-inline-template="transactionLine"] {
+    transition: background var(--transition-speed-fast) ease-in-out;
+}
+[data-inline-template="transactionLine"]:hover { 
+    background-color: var(--dark-gray);
+}

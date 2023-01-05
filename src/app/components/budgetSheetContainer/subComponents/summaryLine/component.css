@@ -38,7 +38,3 @@
     transition: all 175ms ease-out;
     transition-delay: 75ms;
 }
-
-[data-inline-template="summaryLine"][ data-expandable-container="expanded" ] [data-transaction-line-container] {
-    margin-top: 10px;
-}

@@ -231,8 +231,8 @@ import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'u
         }, 
 
         template : `
-            <form class="has-mg-bottom-10" data-inline-template="transactionLine" data-transaction-type="credit">
-                <div class="summary-columns"> 
+            <form class="has-mg-bottom-0 has-pd-top-10" data-inline-template="transactionLine" data-transaction-type="credit">
+                <div class="summary-columns has-mg-bottom-5"> 
                     <div class="column"><!-- placeholder --></div>
                     <div class="column">
                         <label for="transaction-summary">Transaction Summary</label>
@@ -297,7 +297,7 @@ import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'u
                         <button class="btn-no-background" role="button" data-delete-transaction-line><img class="icon" src="images/close.svg"/></button>
                     </div>
                 </div> 
-                <hr class="has-mg-top-10 has-mg-bottom-10">
+                <hr class="has-mg-top-0 has-mg-bottom-0">
             </form>
         `
         
