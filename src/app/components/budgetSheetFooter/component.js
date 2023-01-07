@@ -1,5 +1,5 @@
 import "./component.css"; 
-import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'ui-cable-js/ComponentBuilder'; 
+import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'ui-component-eventbus-js/ComponentBuilder'; 
 (function(
     Builder,
     ComponentConfigs
