@@ -33,8 +33,9 @@ import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'u
                         const selector = ( lineType === 'credit' ) ? '[data-income]' : '[data-expense]';
 
                         inlineTemplateNode.querySelector( selector ).addEventListener( 'change', event => {
-                            const newAmount =  event.target.value;
-                            const currAmount = component.get.state( 'amount' );
+                            const newAmount =  ( event.target.value === '' ) ? 0 : event.target.value;
+                            const currAmount = component.get.state( 'amount' ); 
+
                             component.commit.state({
                                 amount : newAmount, 
                                 derivative : parseFloat( newAmount ) - parseFloat( currAmount )
@@ -59,8 +60,9 @@ import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'u
                                 event.preventDefault();
                                 event.stopPropagation();
 
-                                const newAmount =  input.value;
+                                const newAmount =  ( input.value === '' ) ? 0 : input.value;
                                 const currAmount = component.get.state( 'amount' );
+            
                                 component.commit.state({
                                     amount : newAmount, 
                                     derivative : parseFloat( newAmount ) - parseFloat( currAmount )
