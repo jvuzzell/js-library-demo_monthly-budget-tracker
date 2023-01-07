@@ -1,5 +1,5 @@
 import "./component.css"; 
-import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'ui-cable-js/ComponentBuilder'; 
+import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'ui-component-eventbus-js/ComponentBuilder'; 
 (function(
     Builder,
     ComponentConfigs
@@ -209,7 +209,7 @@ import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'u
                 const newAmount = parseFloat( transactionState.amount ).toFixed(2); 
                 if( lineType === 'debit' ) { 
                     activeInput = transactionLineNode.querySelector( '[data-expense]' ); 
-                    activeInput.removeAttribute( 'disabled' );
+                    activeInput.removeAttribute( 'disabled' ); 
                     activeInput.value = newAmount;
                 } 
      
@@ -236,7 +236,7 @@ import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'u
                     <div class="column"><!-- placeholder --></div>
                     <div class="column">
                         <label for="transaction-summary">Transaction Summary</label>
-                        <input type="text" name="transaction-summary" placeholder="Add description of individual credit/debit" data-transaction-summary/>
+                        <input type="text" name="transaction-summary" placeholder="Add description of individual credit/debit" data-transaction-summary required/>
                     </div>
                     <div class="column"> 
                         <label for="transaction-codes">Transaction Due Date</label>
@@ -276,11 +276,11 @@ import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'u
                     </div>
                     <div class="column">
                         <label for="income">Income</label>
-                        <input class="has-text-center" type="text" name="income" data-income placeholder="0.00" disabled/>
+                        <input class="has-text-center" type="number" step=0.01 name="income" data-income placeholder="0.00" required disabled/>
                     </div>
                     <div class="column">
                         <label for="expense">Expense</label>
-                        <input class="has-text-center" type="text" name="expense" data-expense placeholder="0.00" disabled/>
+                        <input class="has-text-center" type="number" step=0.01 name="expense" data-expense placeholder="0.00" required disabled/>
                     </div>
                     <div class="column"><!-- placeholder --></div>
                     <div class="column">

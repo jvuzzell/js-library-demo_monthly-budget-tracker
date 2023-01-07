@@ -1,6 +1,6 @@
 .trigger-margin {
     width: 50px; 
-    margin-top: 5px; 
+    margin-top: 2px; 
 }
 
 [data-inline-template="summaryLine"] .expandable-body {
@@ -31,7 +31,7 @@
 } 
 
 [data-inline-template="summaryLine"] .actions-column button {
-    margin-top: 7px; 
+    margin-top: 3px; 
 } 
 
 [data-transaction-line-container] {

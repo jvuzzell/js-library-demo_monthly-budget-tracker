@@ -1,6 +1,6 @@
 import "../../../../../../node_modules/expandables-js/expandables.css";
 import "./component.css"; 
-import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'ui-cable-js/ComponentBuilder';  
+import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'ui-component-eventbus-js/ComponentBuilder';  
 import { initExpandables } from "expandables-js";
 
 (function(
@@ -400,7 +400,7 @@ import { initExpandables } from "expandables-js";
                                         </div>
                                         <div class="column">
                                             <label for="transaction-summary">Transaction Summary</label>
-                                            <input type="text" name="transaction-summary" placeholder="Add transaction summary" data-transaction-summary/>
+                                            <input type="text" name="transaction-summary" placeholder="Add transaction summary" data-transaction-summary required/>
                                         </div>
                                         <div class="column"> 
                                             <label for="transaction-due-date">Transaction Due Date</label>
@@ -408,15 +408,15 @@ import { initExpandables } from "expandables-js";
                                         </div>
                                         <div class="column">
                                             <label for="income">Income</label>
-                                            <input type="text" name="income" placeholder="$0.00" data-income disabled/>
+                                            <input type="number" step=0.01 name="income" data-income disabled/>
                                         </div>
                                         <div class="column">
                                             <label for="expense">Expense</label>
-                                            <input type="text" name="expense" placeholder="$0.00" data-expense disabled/>
+                                            <input type="number" step=0.01 name="expense" data-expense disabled/>
                                         </div>
                                         <div class="column">
                                             <label for="balance">Balance</label>
-                                            <input type="text" name="balance" placeholder="$0.00" data-balance disabled/>
+                                            <input type="number" step=0.01 name="balance" data-balance disabled/>
                                         </div>
                                         <div class="column">
                                             <label for="status">Status</label>
