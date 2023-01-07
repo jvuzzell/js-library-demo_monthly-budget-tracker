@@ -91,6 +91,10 @@ import { Expandables } from 'expandables-js';
 
             addSummaryLine : function( summaryLineKey = null, transactions = [{ lineType : 'credit' }]  ) { 
                 Builder.getComponentByName( 'summaryLine' ).dispatch.setTransactions( summaryLineKey, transactions );
+            }, 
+
+            saveBudgetSheet : function() {
+                console.error( 'nice doggie' );
             }
 
         }
