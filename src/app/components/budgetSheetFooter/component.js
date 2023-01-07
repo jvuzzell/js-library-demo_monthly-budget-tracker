@@ -18,11 +18,28 @@ import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'u
 
                 onButtonClick : {
 
-                    eventInit : function( componentKey, component ) {
+                    eventInit : ( componentKey, component ) => {
             
                         let inlineTemplateNode = component.get.inlineTemplateNode();
                         inlineTemplateNode.querySelector( '[data-trigger-add-summary]' ).addEventListener( 'click', (event) => {
                             component.dispatch.triggerAddSummaryLine();
+                        });
+
+                    }
+
+                }
+
+            }, 
+
+            triggerSaveBudgetSheet : { 
+
+                onSaveBudgetClick : {
+
+                    eventInit : ( componentKey, component ) => {
+            
+                        let inlineTemplateNode = component.get.inlineTemplateNode(); 
+                        inlineTemplateNode.querySelector( '[data-trigger-save-budget]' ).addEventListener( 'click', (event) => {
+                            component.dispatch.triggerSaveBudgetSheet();
                         });
 
                     }
@@ -41,17 +58,17 @@ import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'u
 
         eventBus : [ 'GlobalComponentEvents' ],
         state : initialState, 
-        props : ComponentProps.budgetSheetFooter,
-        hooks : {
-
-        },  
+        props : ComponentProps.budgetSheetFooter,  
         dispatch : {
             
             triggerAddSummaryLine : () => { 
-
                 let budgetSheetContainer = Builder.getComponentByName( 'budgetSheetContainer' ); 
                 budgetSheetContainer.dispatch.addSummaryLine();
+            },
 
+            triggerSaveBudgetSheet : () => {
+                let budgetSheetContainer = Builder.getComponentByName( 'budgetSheetContainer' ); 
+                budgetSheetContainer.dispatch.saveBudgetSheet();
             }
 
         }
