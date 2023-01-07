@@ -234,7 +234,8 @@ import { initExpandables } from "expandables-js";
                 }
                 
                 let newBalance = this.calcBalance( totalCredit, totalDebit );
-
+                 
+                this.updateTransactionColor( newBalance );
                 this.parent().commit.state({
                     totalCredit : parseFloat( totalCredit ).toFixed( 2 ), 
                     totalDebit : parseFloat( totalDebit ).toFixed( 2 ), 
@@ -249,6 +250,26 @@ import { initExpandables } from "expandables-js";
 
             },
             
+            updateTransactionColor( balance = 0 ) { 
+                
+                const templateNode = this.parent().get.inlineTemplateNode();
+
+                if( balance === 0 ) {
+                    templateNode.classList.remove( 'credit-background', 'debit-background' ); 
+                    return; 
+                }
+                console.error( 'con queso' );
+                if( balance > 0 ) { 
+                    templateNode.classList.add( 'credit-background' ); 
+                    templateNode.classList.remove( 'debit-background' ); 
+                } 
+                else { 
+                    templateNode.classList.add( 'debit-background' ); 
+                    templateNode.classList.remove( 'credit-background' ); 
+                }
+
+            }, 
+
             calcTotalCredit( derivativeCredit = 0 ) {
 
                 return parseFloat( this.parent().get.state( 'totalCredit' ) ) + parseFloat( derivativeCredit );
