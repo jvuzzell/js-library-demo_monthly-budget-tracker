@@ -6,5 +6,5 @@ import "../../components/budgetSheetContainer/subComponents/summaryLine/componen
 import "../../components/budgetSheetContainer/subComponents/transactionLine/component.js";
 import "../../components/budgetSheetSelector/component.js";
 import "../../components/budgetSheetFooter/component.js"; 
-import { initExpandables } from 'expandables-js';
+import { initExpandables } from 'expandables-js'; 
 initExpandables(); 
