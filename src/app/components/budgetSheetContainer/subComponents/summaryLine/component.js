@@ -171,7 +171,8 @@ import { initExpandables } from "expandables-js";
             onUpdate : function( state ) {  
                  
                 if( state.firstRenderFlag ) { return; }
-                this.parent().dispatch.renderTotals( state );
+                this.parent().dispatch.renderTotals( state ); 
+                this.parent().dispatch.updateTransactionColor( state.balance );
 
             }
 
@@ -211,14 +212,14 @@ import { initExpandables } from "expandables-js";
 
             },
 
-            calcSummary : function({ derivative = 0, amount = 0 }, lineType ) {
+            calcSummary : function({ derivative = 0.00, amount = 0.00 }, lineType ) {
 
                 let summaryState = this.parent().get.state();
                 let totalDebit = summaryState.totalDebit; 
                 let totalCredit = summaryState.totalCredit; 
                 let balance = summaryState.balance; 
-                let derivativeCredit = 0; // issue
-                let derivativeDebit = 0; // issue
+                let derivativeCredit = 0.00; // issue
+                let derivativeDebit = 0.00; // issue
 
                 switch( lineType ) { 
                     case 'debit' : 
@@ -234,8 +235,7 @@ import { initExpandables } from "expandables-js";
                 }
                 
                 let newBalance = this.calcBalance( totalCredit, totalDebit );
-                 
-                this.updateTransactionColor( newBalance );
+
                 this.parent().commit.state({
                     totalCredit : parseFloat( totalCredit ).toFixed( 2 ), 
                     totalDebit : parseFloat( totalDebit ).toFixed( 2 ), 
@@ -250,16 +250,15 @@ import { initExpandables } from "expandables-js";
 
             },
             
-            updateTransactionColor( balance = 0 ) { 
+            updateTransactionColor( balance = 0.00 ) { 
                 
                 const templateNode = this.parent().get.inlineTemplateNode();
-
-                if( balance === 0 ) {
+                if( balance == 0.00 ) {
                     templateNode.classList.remove( 'credit-background', 'debit-background' ); 
                     return; 
                 }
-                console.error( 'con queso' );
-                if( balance > 0 ) { 
+            
+                if( balance > 0.00 ) { 
                     templateNode.classList.add( 'credit-background' ); 
                     templateNode.classList.remove( 'debit-background' ); 
                 } 
@@ -270,19 +269,19 @@ import { initExpandables } from "expandables-js";
 
             }, 
 
-            calcTotalCredit( derivativeCredit = 0 ) {
+            calcTotalCredit( derivativeCredit = 0.00 ) {
 
                 return parseFloat( this.parent().get.state( 'totalCredit' ) ) + parseFloat( derivativeCredit );
 
             },
 
-            calcTotalDebit( derivativeDebit = 0 ) {
+            calcTotalDebit( derivativeDebit = 0.00 ) {
 
                 return parseFloat( this.parent().get.state( 'totalDebit' ) ) + parseFloat( derivativeDebit );
 
             }, 
 
-            calcBalance( totalCredit = 0, totalDebit = 0 ) {
+            calcBalance( totalCredit = 0.00, totalDebit = 0.00 ) {
                 return parseFloat( totalCredit ) - parseFloat( totalDebit ); 
             },
 
