@@ -94,7 +94,13 @@ import { Expandables } from 'expandables-js';
             }, 
 
             saveBudgetSheet : function() {
-                console.error( 'nice doggie' );
+                
+                console.log( Builder.getComponentsByName( 'summaryLine' ) );
+
+            }, 
+
+            finalizeBudgetSheet : function() {
+                
             }
 
         }
