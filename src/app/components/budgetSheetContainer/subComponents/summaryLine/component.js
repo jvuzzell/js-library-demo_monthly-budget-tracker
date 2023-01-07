@@ -23,6 +23,17 @@ import { initExpandables } from "expandables-js";
         },
 
         transactionSummaryTemplates : {
+            'Default' : {
+                description : '', 
+                transactionTemplates : [
+                    {
+                        description : '', 
+                        amount : 0,  
+                        dueDate : 1, 
+                        lineType : 'debit'
+                    }
+                ]
+            },
             'Freelance Service' : {
                 description : 'Project Type A', 
                 transactionTemplates : [
@@ -414,9 +425,7 @@ import { initExpandables } from "expandables-js";
                                     <div class="summary-columns"> 
                                         <div class="column"> 
                                             <label for="transaction-codes">Transaction Code</label>
-                                            <select name="transaction-codes" data-transaction-codes>
-                                                <option value="null">Transaction Code</option>
-                                            </select>
+                                            <select name="transaction-codes" data-transaction-codes></select>
                                         </div>
                                         <div class="column">
                                             <label for="transaction-summary">Transaction Summary</label>
