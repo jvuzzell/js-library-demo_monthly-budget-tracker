@@ -1,7 +1,9 @@
 import "../../../../../../node_modules/expandables-js/expandables.css";
 import "./component.css"; 
 import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'ui-component-eventbus-js/ComponentBuilder';  
-import { initExpandables } from "expandables-js";
+import { initExpandables } from "expandables-js"; 
+import CloseIcon from '../../../../assets/icons/close.svg'; 
+import CaretRight from '../../../../assets/icons/caret-right.svg';
 
 (function(
     Builder,
@@ -19,7 +21,8 @@ import { initExpandables } from "expandables-js";
             totalDebit : 0.00, 
             balance : 0.00,
             status : 'pending', 
-            transactionManifest : []
+            transactionManifest : [], 
+            void : false
         },
 
         transactionSummaryTemplates : {
@@ -77,6 +80,17 @@ import { initExpandables } from "expandables-js";
                         amount : 99.57, 
                         dueDate : 20,
                         lineType : 'credit'
+                    }
+                ]
+            }, 
+            'NewDebt' : {
+                description : 'Birthday', 
+                transactionTemplates : [
+                    {
+                        description : 'Venmo from Paul', 
+                        amount : 99.57, 
+                        dueDate : 20,
+                        lineType : 'debit'
                     }
                 ]
             }
@@ -192,30 +206,36 @@ import { initExpandables } from "expandables-js";
 
             update : function( notifierKey, deltaState ) {
 
-                if( !notifierKey.includes( 'transactionLine' )  ) { return; }
-                const publisher = Builder.getComponentByKey( notifierKey );
-                const summaryState = this.parent().get.state(); 
-                
-                if( publisher.get.state( 'summaryLineKey' ) === summaryState.key ) {
-                    this.calcSummary( deltaState, publisher.get.state( 'lineType' ) ); 
+                switch( true ) {
+                    case notifierKey.includes( '_transactionLine_' ) : 
+                        if( !notifierKey.includes( 'transactionLine' )  ) { return; }
+                        const publisher = Builder.getComponentByKey( notifierKey );
+                        const summaryState = this.parent().get.state(); 
+                        
+                        if( publisher.get.state( 'summaryLineKey' ) === summaryState.key ) {
+                            this.calcSummary( deltaState, publisher.get.state( 'lineType' ) ); 
+                        }
+                        break; 
                 }
 
             }, 
 
-            deleteLine : function() {
+            deleteLine : function( leaveContainerBlank = false ) {
 
                 const summaryState = this.parent().get.state(); 
                 summaryState.transactionManifest.map( transactionKey => {  
                     Builder.getComponentByKey( transactionKey ).dispatch.deleteLine();
                 });
 
+                this.parent().commit.state({ void : true }, false, false);
                 this.parent().get.inlineTemplateNode().remove(); 
 
                 if( 
                     document
-                    .querySelector( '[data-summary-line-container]' )
-                    .querySelectorAll( '[data-inline-template=summaryLine]' )
-                    .length === 0 
+                        .querySelector( '[data-summary-line-container]' )
+                        .querySelectorAll( '[data-inline-template=summaryLine]' )
+                        .length === 0 
+                    && !leaveContainerBlank
                 ) { 
                     let budgetSheetContainer = Builder.getComponentByName( 'budgetSheetContainer' ); 
                     budgetSheetContainer.dispatch.addSummaryLine();
@@ -297,8 +317,8 @@ import { initExpandables } from "expandables-js";
             },
 
             setTransactions : function( summaryLineKey = null, transactions = [{ lineType : 'credit' }]  ) { 
-                
-                if( summaryLineKey === null ) {
+
+                if( summaryLineKey === null ) { 
                     summaryLineKey = this.createNewSummaryLine();
                 }
 
@@ -320,6 +340,19 @@ import { initExpandables } from "expandables-js";
                 });
 
             },  
+
+            useTransactionTemplate : function( templateName ) {
+                const summaryState = this.parent().get.state(); 
+                summaryState.transactionManifest.map( transactionKey => {  
+                    Builder.getComponentByKey( transactionKey ).dispatch.deleteLine();
+                }); 
+
+                let transactionSummaryTemplates = this.parent().get.props( 'transactionSummaryTemplates' ); 
+                let transactionSummaryTemplate = transactionSummaryTemplates[ templateName ]; 
+                this.setTransactions( summaryState.key, transactionSummaryTemplate.transactionTemplates );
+                 
+                this.parent().get.inlineTemplateNode().querySelector( '[data-transaction-summary]' ).value = transactionSummaryTemplate.description;
+            },
 
             manifestTransaction : function( transactionLineKey ) {
 
@@ -354,13 +387,13 @@ import { initExpandables } from "expandables-js";
                 let summaryLineNode = Builder.templateToHTML( ComponentConfigs.summaryLine.template ); 
                 let containerNode = Builder.getComponentByName( 'budgetSheetContainer' ).get.inlineTemplateNode();  
                 containerNode.querySelector( '[data-summary-line-container]' ).appendChild( summaryLineNode );
+                initExpandables();
                 
                 ComponentConfigs.summaryLine.state.transactionManifest = []; // clean-up
                 let newSummaryLines = Builder.registerComponent( ComponentConfigs.summaryLine ); 
                 let newSummaryLine = newSummaryLines[ Object.keys( newSummaryLines )[0] ];
                 let summaryLineKey = newSummaryLine.get.state( 'key' );
 
-                initExpandables();
                 return summaryLineKey; 
                 
             }, 
@@ -393,20 +426,6 @@ import { initExpandables } from "expandables-js";
 
                 return summaryLineNode;
                 
-            },
-
-            useTransactionTemplate : function( templateName ) {
-            
-                const summaryState = this.parent().get.state(); 
-                summaryState.transactionManifest.map( transactionKey => {  
-                    Builder.getComponentByKey( transactionKey ).dispatch.deleteLine();
-                }); 
-
-                let transactionSummaryTemplates = this.parent().get.props( 'transactionSummaryTemplates' ); 
-                let transactionSummaryTemplate = transactionSummaryTemplates[ templateName ]; 
-                this.setTransactions( summaryState.key, transactionSummaryTemplate.transactionTemplates );
-                 
-                this.parent().get.inlineTemplateNode().querySelector( '[data-transaction-summary]' ).value = transactionSummaryTemplate.description;
             }
 
         },
@@ -415,7 +434,7 @@ import { initExpandables } from "expandables-js";
                 <div class="h-row">
                     <div class="v-col trigger-margin has-text-center has-mg-bottom-0">
                         <button class="btn-no-background" data-expandable-trigger="click">
-                            <img class="icon" src="/images/caret-right.svg" alt="Expand Summary Line"/>
+                            <img class="icon" src="${CaretRight}" alt="Expand Summary Line"/>
                         </button>
                     </div>
                     <div class="v-col expandable-body has-mg-bottom-0"> 
@@ -452,7 +471,7 @@ import { initExpandables } from "expandables-js";
                                             <input type="text" name="status" placeholder="Pending" data-status disabled/>
                                         </div>
                                         <div class="column actions-column has-text-center">
-                                            <button class="btn-no-background" data-delete-summary-line><img class="icon" src="/images/close.svg"/></button>
+                                            <button class="btn-no-background" data-delete-summary-line><img class="icon" src="${CloseIcon}"/></button>
                                         </div>
                                     </div>
                                 </form>

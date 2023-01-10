@@ -1,5 +1,7 @@
 import "./component.css"; 
 import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'ui-component-eventbus-js/ComponentBuilder'; 
+import CloseIcon from '../../../../assets/icons/close.svg'; 
+
 (function(
     Builder,
     ComponentConfigs
@@ -296,7 +298,7 @@ import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'u
                         </select>
                     </div>
                     <div class="column actions-column has-text-center">
-                        <button class="btn-no-background" role="button" data-delete-transaction-line><img class="icon" src="images/close.svg"/></button>
+                        <button class="btn-no-background" role="button" data-delete-transaction-line><img class="icon" src="${CloseIcon}"/></button>
                     </div>
                 </div> 
                 <hr class="has-mg-top-0 has-mg-bottom-0">

@@ -7,8 +7,7 @@ import { ComponentBuilder as Builder, ComponentConfigs } from 'ui-component-even
 
     // State of individual modules
     var initialState = {
-        componentName : 'summaryLineHeader', 
-        heading : 'Hello Obi'
+        componentName : 'summaryLineHeader'
     };
 
     // Return registered module (object) to developer

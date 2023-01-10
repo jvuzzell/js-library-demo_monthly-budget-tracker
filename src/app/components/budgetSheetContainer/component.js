@@ -1,6 +1,7 @@
 import "./component.css"; 
 import { ComponentBuilder as Builder, ComponentConfigs } from 'ui-component-eventbus-js/ComponentBuilder'; 
-import { Expandables } from 'expandables-js';
+import { Expandables, initExpandables } from 'expandables-js';
+
 (function(
     Builder,
     ComponentConfigs
@@ -59,17 +60,69 @@ import { Expandables } from 'expandables-js';
                 }
 
             }
-        },
+        },  
         dispatch : {
               
             update : function( notifierKey, delta ) {
 
-                if( notifierKey.includes( '_summaryLine_' ) ) { 
-                    this.calcStats( delta );
+                switch( true ) {
+                    case notifierKey.includes( '_summaryLine_' ) :  
+                        this.calcStats( delta );
+                        break; 
+                    case notifierKey.includes( '_budgetSheetSelector_' ) : 
+                        this.budgetQuery();
+                        break; 
                 }
 
             }, 
             
+            displaySelectedBudget( budgetSummary ) {
+                
+                for( let summaryKey in budgetSummary ) {
+                    this.addSummaryLine( null, budgetSummary[ summaryKey ] );
+                }
+
+            }, 
+
+            removeExistingSummaryLines() { 
+
+                let summaryLineComponents = Builder.getComponentsByName( 'summaryLine' ); 
+
+                for( let summaryKey in summaryLineComponents ) {
+                    
+                    let leaveContainerBlank = true;
+                    summaryLineComponents[ summaryKey ].dispatch.deleteLine( leaveContainerBlank );
+
+                }
+                
+            },
+
+            budgetQuery : function() {
+
+                const budgetId = this.getBudgetId();
+                const result = localStorage.getItem( budgetId ); 
+                let budgetState = {}; 
+
+                if( result === '' || result === null ) {
+                    this.removeExistingSummaryLines();
+                    this.addSummaryLine(); 
+                    return;
+                }
+
+                budgetState[ 'activeBudgetId' ] = budgetId; 
+                budgetState[ 'budgets' ] = {};
+                budgetState[ 'budgets' ][ budgetId ] = JSON.parse( result );
+
+                const activeBudgetId = budgetState.activeBudgetId; 
+                const budgetSummary = budgetState[ 'budgets' ][ activeBudgetId ]; 
+
+                this.parent().commit.state( budgetState ); 
+
+                this.removeExistingSummaryLines();
+                this.displaySelectedBudget( budgetSummary );
+
+            },
+
             calcStats : function({ 
                 derivativeDebit : derivativeSummaryLineDebit = 0 , 
                 derivativeCredit : derivativeSummaryLineCredit = 0,
@@ -93,14 +146,54 @@ import { Expandables } from 'expandables-js';
                 Builder.getComponentByName( 'summaryLine' ).dispatch.setTransactions( summaryLineKey, transactions );
             }, 
 
-            saveBudgetSheet : function() {
-                
-                console.log( Builder.getComponentsByName( 'summaryLine' ) );
+            getBudgetId : function() {
+                const budgetSheetSelector = Builder.getComponentByName( 'budgetSheetSelector' );
+                const selectState = budgetSheetSelector.get.state(); 
+                return selectState.year + "-" + selectState.month;
+            },
 
-            }, 
+            saveBudgetSheet : function() {
+                const budgetId = this.getBudgetId();
+                let budgetSheetSummary = this.compileBudgetSheetSummary();
+                let budgetJson = JSON.stringify( budgetSheetSummary );
+
+                localStorage.removeItem( budgetId ); 
+                localStorage.setItem( budgetId, budgetJson );
+            },  
+
+            compileBudgetSheetSummary : function() {
+                let summaryLineComponents = Builder.getComponentsByName( 'summaryLine' ); 
+                let budgetSheetSummary = {};
+
+                for( let summaryKey in summaryLineComponents ) {
+                    
+                    let summary = summaryLineComponents[ summaryKey ].get.state(); 
+
+                    if( summary.void ) continue;
+
+                    budgetSheetSummary[ summaryKey ] = [];
+                    summary.transactionManifest.map( transactionKey => {
+                        
+                        let transactionComponent = Builder.getComponentByKey( transactionKey ); 
+                        let transaction = transactionComponent.get.state();
+
+                        if( transaction.void ) return;
+
+                        budgetSheetSummary[ summaryKey ].push({
+                            description : transaction.description, 
+                            amount : transaction.amount, 
+                            dueDate : transaction.dueDate, 
+                            lineType : transaction.lineType
+                        }); 
+
+                    });
+                }
+        
+                return budgetSheetSummary; 
+            },
 
             finalizeBudgetSheet : function() {
-                
+     
             }
 
         }
