@@ -1,0 +1,14 @@
+{
+  "build": "public",
+  "default": "dev",
+  "targets": {
+    "dev": {
+      "publicPath" : "", 
+      "assetModuleFilename" : ""
+    }, 
+    "prod": {
+      "publicPath" : "/demo/budget-tracker/public", 
+      "assetModuleFilename" : "./demo/budget-tracker/public"
+    }
+  }
+}

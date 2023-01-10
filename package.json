@@ -4,8 +4,10 @@
     "description": "Test application to demonstrate capabilities of CnE library developed by Joshua Uzzell",
     "main": "src/app/index.html",
     "scripts": {
-        "build": "webpack",
-        "test": "jest"
+        "build": "webpack", 
+        "build:pro" : "webpack --env production && deploy/_deploy.sh",
+        "test": "jest", 
+        "deploy" : "deploy/_deploy.sh"
     },
     "keywords": [],
     "author": "Joshua Uzzell <josh.uzzell@gmail.com>",
