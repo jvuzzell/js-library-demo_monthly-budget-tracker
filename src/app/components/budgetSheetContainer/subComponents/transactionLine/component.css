@@ -1,6 +1,45 @@
 [data-inline-template="transactionLine"] {
     transition: background var(--transition-speed-fast) ease-in-out;
 }
-[data-inline-template="transactionLine"]:hover { 
-    background-color: var(--dark-gray);
+
+[data-transaction-line-container] {
+    transition: all 175ms ease-out;
+    transition-delay: 75ms;
+} 
+
+[data-inline-template="summaryLine"] [data-inline-template="transactionLine"]:hover { 
+    background-color: var(--dark-gray); 
 }
+
+[data-inline-template="summaryLine"].credit-background [data-inline-template="transactionLine"] { 
+    background-color: var( --mint );
+}
+[data-inline-template="summaryLine"].credit-background [data-inline-template="transactionLine"]:hover { 
+    background-color: var( --jade );
+}
+
+[data-inline-template="summaryLine"].debit-background [data-inline-template="transactionLine"] { 
+    background-color: var( --watermelon );
+}
+
+[data-inline-template="summaryLine"].debit-background [data-inline-template="transactionLine"]:hover { 
+    background-color: var( --salmon );
+}
+
+[data-inline-template="summaryLine"].past-due-background [data-inline-template="transactionLine"] { 
+    background-color: var( --lemon ); 
+} 
+
+[data-inline-template="summaryLine"].past-due-background [data-inline-template="transactionLine"]:hover { 
+    background-color: var( --sandstorm ); 
+} 
+
+[data-inline-template="summaryLine"].debit-background [data-inline-template="transactionLine"] hr, 
+[data-inline-template="summaryLine"].credit-background [data-inline-template="transactionLine"] hr {
+    background-color: #fff;
+}
+
+[data-inline-template="summaryLine"].past-due-background [data-inline-template="transactionLine"] hr { 
+    background-color: var(--border-1);   
+}
+
