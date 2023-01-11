@@ -12,3 +12,48 @@
     visibility: hidden; 
     display: block;
 }
+
+#banner-alerts {
+    position: fixed;
+    width: calc(100% - 40px); 
+    max-width: 1460px;
+    top: 20px; 
+    z-index: 2;
+} 
+
+@media (max-width: 1920px) {
+    
+    #banner-alerts {
+        width: calc(100% - 80px); 
+    }
+
+}
+
+#banner-alerts [data-message-type="success"] { 
+    background-color: var(--success);
+    border-radius: 15px; 
+    color: white; 
+}
+
+#banner-alerts [data-alert-message] { 
+    padding: 5px 15px;
+    text-align: center;
+    height: 40px; 
+    margin-bottom: 20px; 
+}
+
+#banner-alerts [data-alert-message] p {
+    font-weight: 500; 
+    line-height: 30px;
+}
+
+#banner-alerts [data-alert-message] > * { 
+    display: inline-block;
+    margin-bottom: 0;
+} 
+
+#banner-alerts [data-alert-message] > button { 
+    float: right; 
+    margin-top: -4px;
+    font-size: 26px;
+}

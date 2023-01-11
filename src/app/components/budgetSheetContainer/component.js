@@ -1,6 +1,7 @@
 import "./component.css"; 
 import { ComponentBuilder as Builder, ComponentConfigs } from 'ui-component-eventbus-js/ComponentBuilder'; 
 import { Expandables, initExpandables } from 'expandables-js';
+import { BannerAlert } from 'banner-alert-js';
 
 (function(
     Builder,
@@ -158,7 +159,15 @@ import { Expandables, initExpandables } from 'expandables-js';
                 let budgetJson = JSON.stringify( budgetSheetSummary );
 
                 localStorage.removeItem( budgetId ); 
-                localStorage.setItem( budgetId, budgetJson );
+                localStorage.setItem( budgetId, budgetJson ); 
+
+                let budgetSheetState = this.parent().get.state();
+                BannerAlert.transmit(
+                    'success', 
+                    'Budget sheet saved',
+                    document.querySelector( '#banner-alerts' ), 
+                    60000
+                );
             },  
 
             compileBudgetSheetSummary : function() {
