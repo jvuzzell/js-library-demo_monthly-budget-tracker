@@ -74,14 +74,16 @@ import { Expandables, initExpandables } from "expandables-js";
             selectCurrentMonth : function() {
 
                 const dateObj = new Date();
-                const month = dateObj.getUTCMonth() + 1; //months from 1-12
+                const month = dateObj.getUTCMonth() + 1; //months from 1-12 
+                const date = dateObj.getDate();
                 const year = dateObj.getUTCFullYear();
                 const triggerRender = false; 
                 const triggerNotification = true; 
 
                 this.parent().commit.state({
                         month : month, 
-                        year : year
+                        year : year, 
+                        date : date
                     }, 
                     triggerRender, 
                     triggerNotification
