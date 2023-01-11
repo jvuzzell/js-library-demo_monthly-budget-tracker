@@ -43,63 +43,111 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
                     }
                 ]
             },
-            'Freelance Service' : {
-                description : 'Project Type A', 
+            'Freelance Income' : {
+                description : 'Website Design', 
                 transactionTemplates : [
                     {
-                        description : 'Client Payment Installment 1', 
-                        amount : 120.50,  
-                        dueDate : 15, 
-                        lineType : 'credit'
-                    }, 
-                    { 
-                    description : 'Client Payment Installment 2', 
-                        amount : 120.50,  
+                        description : 'Client Payment 1 - Net 30', 
+                        amount : 1200.50,  
                         dueDate : 1, 
                         lineType : 'credit'
                     }, 
                     { 
-                        description : 'Client Payment Installment 3', 
-                        amount : 120.50, 
-                        dueDate : 20,
+                    description : 'Client Payment 2 - Net 30', 
+                        amount : 1200.50,  
+                        dueDate : 15, 
                         lineType : 'credit'
                     }, 
                     { 
-                        description : 'Supplies', 
-                        amount : 33.44, 
-                        dueDate : 2,
+                        description : 'Stock Assets', 
+                        amount : 500.00, 
+                        dueDate : 15,
                         lineType : 'debit'
                     }
                 ]
             }, 
-            'Gift' : {
-                description : 'Birthday', 
+            'Full-time Employment' : {
+                description : 'Graphic Design at Cruise Company', 
                 transactionTemplates : [
                     {
-                        description : 'Venmo from Paul', 
-                        amount : 99.57, 
-                        dueDate : 20,
+                        description : 'Paycheck 1, Gross Income', 
+                        amount : 1300.00, 
+                        dueDate : 15,
                         lineType : 'credit'
                     }, 
                     {
-                        description : 'Venmo from Paul', 
-                        amount : 99.57, 
+                        description : 'Organization Fees', 
+                        amount : 19.99, 
+                        dueDate : 15,
+                        lineType : 'debit'
+                    }, 
+                    {
+                        description : 'Paycheck 2, Gross Income', 
+                        amount : 1300.00, 
+                        dueDate : 30,
+                        lineType : 'credit'
+                    }, 
+                ]
+            },
+            'Summer Vacation' : {
+                description : 'Trip to Chicago', 
+                transactionTemplates : [
+                    {
+                        description : 'Round trip flight', 
+                        amount : 350.00, 
+                        dueDate : 5,
+                        lineType : 'debit'
+                    }, 
+                    {
+                        description : 'Air BnB - 7 night stay', 
+                        amount : 850.00, 
+                        dueDate : 15,
+                        lineType : 'debit'
+                    }, 
+                    {
+                        description : 'Food Budget', 
+                        amount : 500.00, 
                         dueDate : 20,
+                        lineType : 'debit'
+                    }, 
+                    {
+                        description : 'Annie Reimbursed me 50% of the Air BnB', 
+                        amount : 425.00, 
+                        dueDate : 5,
                         lineType : 'credit'
                     }
                 ]
             }, 
-            'NewDebt' : {
-                description : 'Birthday', 
+            'Television/Streaming' : {
+                description : 'Collection of all my streaming services', 
                 transactionTemplates : [
                     {
-                        description : 'Venmo from Paul', 
-                        amount : 99.57, 
-                        dueDate : 20,
+                        description : 'Hulu', 
+                        amount : 15.00, 
+                        dueDate : 1,
+                        lineType : 'debit'
+                    }, 
+                    {
+                        description : 'Netflix', 
+                        amount : 19.99, 
+                        dueDate : 15,
+                        lineType : 'debit'
+                    }, 
+                    {
+                        description : 'Disney Plus', 
+                        amount : 7.50, 
+                        dueDate : 30,
+                        lineType : 'debit'
+                    }, 
+                    {
+                        description : 'HBO Max', 
+                        amount : 15.00, 
+                        dueDate : 30,
                         lineType : 'debit'
                     }
-                ]
-            }
+                ], 
+            }, 
+
         },
         eventListeners : {
 
