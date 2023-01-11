@@ -137,15 +137,7 @@ import CloseIcon from '../../../../assets/icons/close.svg';
         state : ComponentProps.transactionLine.defaultTransaction, 
         props : ComponentProps.transactionLine,
         hooks : {
-
-            afterCreate : function( state ) {
-
-                if( this.parent().get.ref() === 'ssr' ) { 
-                    // this.parent().dispatch.loadServerSideRenderAttributes();
-                }
-
-            }, 
-
+            
             onMount : function( state ) {
 
                 if( state.firstRenderFlag && this.parent().get.ref() !== 'ssr' ) {
