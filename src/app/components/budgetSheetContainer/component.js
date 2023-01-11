@@ -78,9 +78,18 @@ import { BannerAlert } from 'banner-alert-js';
             }, 
             
             displaySelectedBudget( budgetSummary ) {
-                
-                for( let summaryKey in budgetSummary ) {
-                    this.addSummaryLine( null, budgetSummary[ summaryKey ] );
+                 
+                for( let summaryKey in budgetSummary ) { 
+                    let transactionLines = budgetSummary[ summaryKey ][ 'transactionLines' ]; 
+                    let description = budgetSummary[ summaryKey ][ 'summaryDescription' ]; 
+                    let transactionCode = budgetSummary[ summaryKey ][ 'transactionCode' ];  
+          
+                    this.addSummaryLine( 
+                        null, 
+                        transactionLines, 
+                        description, 
+                        transactionCode
+                    );
                 }
 
             }, 
@@ -116,7 +125,7 @@ import { BannerAlert } from 'banner-alert-js';
 
                 const activeBudgetId = budgetState.activeBudgetId; 
                 const budgetSummary = budgetState[ 'budgets' ][ activeBudgetId ]; 
-
+   
                 this.parent().commit.state( budgetState ); 
 
                 this.removeExistingSummaryLines();
@@ -143,8 +152,8 @@ import { BannerAlert } from 'banner-alert-js';
 
             }, 
 
-            addSummaryLine : function( summaryLineKey = null, transactions = [{ lineType : 'credit' }]  ) { 
-                Builder.getComponentByName( 'summaryLine' ).dispatch.setTransactions( summaryLineKey, transactions );
+            addSummaryLine : function( summaryLineKey = null, transactions = [{ lineType : 'credit' }], description = '', transactionCode = 'Default' ) { 
+                Builder.getComponentByName( 'summaryLine' ).dispatch.setTransactions( summaryLineKey, transactions, description, transactionCode );
             }, 
 
             getBudgetId : function() {
@@ -161,7 +170,6 @@ import { BannerAlert } from 'banner-alert-js';
                 localStorage.removeItem( budgetId ); 
                 localStorage.setItem( budgetId, budgetJson ); 
 
-                let budgetSheetState = this.parent().get.state();
                 BannerAlert.transmit(
                     'success', 
                     'Budget sheet saved',
@@ -180,7 +188,12 @@ import { BannerAlert } from 'banner-alert-js';
 
                     if( summary.void ) continue;
 
-                    budgetSheetSummary[ summaryKey ] = [];
+                    budgetSheetSummary[ summaryKey ] = {
+                        transactionCode : summary.transactionCode,
+                        summaryDescription : summary.description,
+                        transactionLines : []
+                    };
+                    
                     summary.transactionManifest.map( transactionKey => {
                         
                         let transactionComponent = Builder.getComponentByKey( transactionKey ); 
@@ -188,16 +201,17 @@ import { BannerAlert } from 'banner-alert-js';
 
                         if( transaction.void ) return;
 
-                        budgetSheetSummary[ summaryKey ].push({
+                        budgetSheetSummary[ summaryKey ][ 'transactionLines' ].push({
                             description : transaction.description, 
                             amount : transaction.amount, 
                             dueDate : transaction.dueDate, 
-                            lineType : transaction.lineType
+                            lineType : transaction.lineType, 
+                            status : transaction.status
                         }); 
 
                     });
                 }
-        
+
                 return budgetSheetSummary; 
             }
 

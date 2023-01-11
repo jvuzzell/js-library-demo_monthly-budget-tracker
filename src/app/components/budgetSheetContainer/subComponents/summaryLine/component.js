@@ -10,11 +10,17 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
     ComponentConfigs
 ){
 
-    ComponentProps.summaryLine = {
+    ComponentProps.summaryLine = { 
+        status : {
+            'past-due' : { displayName : 'Past Due', weight : 3 }, 
+            'pending' : { displayName : 'Pending', weight : 5 },  
+            'void' : { displayName : 'Void', weight : 1 }, 
+            'paid' : { displayName : 'Paid', weight : 8 }
+        },
         defaultState : {
             componentName : 'summaryLine', 
             budgetSheetId : 0, 
-            billingCode : 'Freelance Income', 
+            transactionCode : 'Default', 
             description : '', 
             dueDate : 1, 
             totalCredit : 0.00, 
@@ -189,14 +195,14 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
        
                 if ( !state.firstRenderFlag ) { return }; 
                 const summaryLineNode = this.parent().get.inlineTemplateNode();
-                this.parent().dispatch.loadTransactionTemplateSelect( summaryLineNode );           
+                this.parent().dispatch.loadTransactionTemplateSelect( summaryLineNode );          
 
             }, 
 
             onUpdate : function( state ) {  
                  
                 if( state.firstRenderFlag ) { return; }
-                this.parent().dispatch.renderTotals( state ); 
+                this.parent().dispatch.renderSummary( state ); 
                 this.parent().dispatch.updateTransactionColor( state.balance );
 
             }
@@ -208,12 +214,28 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
 
                 switch( true ) {
                     case notifierKey.includes( '_transactionLine_' ) : 
-                        if( !notifierKey.includes( 'transactionLine' )  ) { return; }
                         const publisher = Builder.getComponentByKey( notifierKey );
                         const summaryState = this.parent().get.state(); 
                         
                         if( publisher.get.state( 'summaryLineKey' ) === summaryState.key ) {
-                            this.calcSummary( deltaState, publisher.get.state( 'lineType' ) ); 
+
+                            for( const key of Object.keys( deltaState ) ) {
+    
+                                switch( key ) { 
+                                    case 'derivative' : 
+                                        this.calcSummaryAmounts( deltaState, publisher.get.state( 'lineType' ) );  
+                                        break;
+                                    case 'status' : 
+                                        this.calcSummaryStatus();
+                                        break;                            
+                                    case 'dueDate' : 
+                                        this.calcSummaryDueDate( deltaState )
+                                        break;
+
+                                }
+
+                            }
+
                         }
                         break; 
                 }
@@ -243,25 +265,25 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
 
             },
 
-            calcSummary : function({ derivative = 0.00, amount = 0.00 }, lineType ) {
+            calcSummaryAmounts : function({ derivative = 0.00, amount = 0.00 }, lineType ) {
 
                 let summaryState = this.parent().get.state();
                 let totalDebit = summaryState.totalDebit; 
                 let totalCredit = summaryState.totalCredit; 
                 let balance = summaryState.balance; 
-                let derivativeCredit = 0.00; // issue
-                let derivativeDebit = 0.00; // issue
+                let derivativeCredit = 0.00; 
+                let derivativeDebit = 0.00;
 
                 switch( lineType ) { 
                     case 'debit' : 
                         let currentDebitTotal = totalDebit; 
-                        totalDebit = this.calcTotalDebit( derivative ); // Calc new debit
-                        derivativeDebit = totalDebit - currentDebitTotal; // Calc difference between [new debit total] and [current debit total]
+                        totalDebit = this.calcTotalDebit( derivative ); 
+                        derivativeDebit = totalDebit - currentDebitTotal;
                         break; 
                     case 'credit' : 
                         let currentCreditTotal = totalCredit; 
-                        totalCredit = this.calcTotalCredit( derivative ); // Calc new credit
-                        derivativeCredit = totalCredit - currentCreditTotal; // Calc difference between [new credit total] and [current credit total]
+                        totalCredit = this.calcTotalCredit( derivative );
+                        derivativeCredit = totalCredit - currentCreditTotal;
                         break; 
                 }
                 
@@ -278,6 +300,99 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
                 }); 
            
                 // @todo calcDueDate and calcStatus
+
+            }, 
+
+            calcSummaryStatus : function() {
+                 
+                const summaryState = this.parent().get.state(); 
+                const statuses = this.parent().get.props( 'status' );
+                const statusKeys = Object.keys( statuses );
+                const totalTransactions = summaryState.transactionManifest.length; 
+                let summaryStatusWeight = 0;
+                let weightedStatus = [];
+                let summaryStatus = 'pending';
+
+                summaryState.transactionManifest.map( transactionKey => { summaryStatusWeight += statuses[ Builder.getComponentByKey( transactionKey ).get.state( 'status' ) ][ 'weight' ] } ); 
+                statusKeys.map( key => weightedStatus[ key ] = ( statuses[ key ][ 'weight' ] * totalTransactions ) );
+
+                const weightedStatusPaid = weightedStatus[ 'paid' ];
+                const weightedStatusPending = weightedStatus[ 'pending' ];
+                const weightedStatusVoid = weightedStatus[ 'void' ];
+                const weightedStatusPastDue = weightedStatus[ 'past-due' ];
+
+                switch( true ) { 
+                    case ( summaryStatusWeight <= weightedStatusVoid ) : 
+                        summaryStatus = 'void';
+                        break; 
+                    case ( ( summaryStatusWeight > weightedStatusVoid ) && ( summaryStatusWeight <= weightedStatusPastDue ) ) : 
+                        summaryStatus = 'past-due'
+                        break;
+                    case ( ( summaryStatusWeight > weightedStatusPending ) && ( summaryStatusWeight < weightedStatusPaid ) ) : 
+                        summaryStatus = 'pending';
+                        break;
+                    case ( summaryStatusWeight === weightedStatusPaid ) : 
+                        summaryStatus = 'paid';
+                        break; 
+                }
+
+                console.error( summaryStatusWeight );
+                console.error( weightedStatus );
+
+                this.parent().commit.state({
+                    status : summaryStatus
+                });
+
+            }, 
+
+            calcSummaryDueDate : function( transactionState ) { 
+                 
+                const transactionDueDate = transactionState.dueDate; 
+                const summaryState = this.parent().get.state(); 
+                let dueDate = 0; 
+
+                let filteredDates = this.filterTransactionDates( transactionDueDate, summaryState.transactionManifest );
+
+                if( filteredDates.length === 0 ) {
+                    dueDate = transactionDueDate;
+                } else { 
+                    dueDate = this.getLatestDate( transactionDueDate, filteredDates ); 
+                }
+
+                this.parent().commit.state({
+                    dueDate : dueDate
+                });
+
+            }, 
+
+            filterTransactionDates : function( dueDate, transactionLineKeys ) { 
+
+                let filteredTransactionDates = transactionLineKeys.map( transactionLineKey => {
+
+                    let transactionState = Builder.getComponentByKey( transactionLineKey ).get.state(); 
+                    let transactionDueDate = parseInt( transactionState.dueDate ); 
+
+                    if( this.parent().get.state( 'key' ) !== transactionState.summaryLineKey ) return; 
+                    if( transactionDueDate > dueDate ) { return transactionDueDate; }
+
+                }).filter( element => { return element !== undefined });
+
+                return filteredTransactionDates;
+
+            }, 
+
+            getLatestDate : function( dueDate, manifestIterable ) { 
+
+                let deduped = manifestIterable.filter( ( value, index ) => { return ( value === manifestIterable[ index + 1 ] ) ? false : true; });  
+                let filteredDates = deduped.filter( filteredDate => { 
+                    if( filteredDate > dueDate ) return true;
+                }); 
+                
+                if( filteredDates.length <= 1 ) {   
+                    return ( filteredDates[0] === undefined ) ? dueDate : filteredDates[0];
+                } else {
+                    return this.getLatestDate( filteredDates[0], filteredDates );
+                }
 
             },
             
@@ -316,10 +431,10 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
                 return parseFloat( totalCredit ) - parseFloat( totalDebit ); 
             },
 
-            setTransactions : function( summaryLineKey = null, transactions = [{ lineType : 'credit' }]  ) { 
+            setTransactions : function( summaryLineKey = null, transactions = [{ lineType : 'credit' }], description = '', transactionCode = 'Default'  ) { 
 
-                if( summaryLineKey === null ) { 
-                    summaryLineKey = this.createNewSummaryLine();
+                if( summaryLineKey === null ) {
+                    summaryLineKey = this.createNewSummaryLine( description, transactionCode );
                 }
 
                 transactions.map( transaction => { 
@@ -350,8 +465,7 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
                 let transactionSummaryTemplates = this.parent().get.props( 'transactionSummaryTemplates' ); 
                 let transactionSummaryTemplate = transactionSummaryTemplates[ templateName ]; 
                 this.setTransactions( summaryState.key, transactionSummaryTemplate.transactionTemplates );
-                 
-                this.parent().get.inlineTemplateNode().querySelector( '[data-transaction-summary]' ).value = transactionSummaryTemplate.description;
+                this.parent().commit.state({ transactionCode : templateName, description : transactionSummaryTemplate.description });
             },
 
             manifestTransaction : function( transactionLineKey ) {
@@ -382,8 +496,8 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
 
             },
 
-            createNewSummaryLine : function() {
-                 
+            createNewSummaryLine : function( description = '', transactionCode = 'Default' ) {
+                
                 let summaryLineNode = Builder.templateToHTML( ComponentConfigs.summaryLine.template ); 
                 let containerNode = Builder.getComponentByName( 'budgetSheetContainer' ).get.inlineTemplateNode();  
                 containerNode.querySelector( '[data-summary-line-container]' ).appendChild( summaryLineNode );
@@ -393,7 +507,7 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
                 let newSummaryLines = Builder.registerComponent( ComponentConfigs.summaryLine ); 
                 let newSummaryLine = newSummaryLines[ Object.keys( newSummaryLines )[0] ];
                 let summaryLineKey = newSummaryLine.get.state( 'key' );
-
+                newSummaryLine.commit.state({ description : description, transactionCode : transactionCode });
                 return summaryLineKey; 
                 
             }, 
@@ -406,12 +520,16 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
                 
             }, 
 
-            renderTotals : function( summaryState ) {
+            renderSummary : function( summaryState ) {
                 
                 let summaryLineNode = this.parent().get.inlineTemplateNode(); 
                 summaryLineNode.querySelector( 'input[data-income]' ).value = summaryState.totalCredit;
                 summaryLineNode.querySelector( 'input[data-expense]' ).value = summaryState.totalDebit;
-                summaryLineNode.querySelector( 'input[data-balance]' ).value = summaryState.balance;
+                summaryLineNode.querySelector( 'input[data-balance]' ).value = summaryState.balance; 
+                summaryLineNode.querySelector( '[data-transaction-summary]' ).value = summaryState.description; 
+                summaryLineNode.querySelector( '[data-transaction-codes]' ).value = summaryState.transactionCode; 
+                summaryLineNode.querySelector( '[data-transaction-due-date]' ).value = summaryState.dueDate; 
+                summaryLineNode.querySelector( '[data-transaction-status]' ).value = this.parent().get.props( 'status' )[ summaryState.status ][ 'displayName' ]; 
 
             },  
 
@@ -420,7 +538,8 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
                 let transactionSummaryTemplates = this.parent().get.props( 'transactionSummaryTemplates' ); 
                 for( let templateKey in transactionSummaryTemplates ) { 
                     let option = document.createElement( 'option' );
-                    option.text = templateKey; 
+                    option.text = templateKey;  
+                    option.value = templateKey;
                     summaryLineNode.querySelector( '[data-transaction-codes]' ).add( option );
                 }
 
@@ -468,7 +587,7 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
                                         </div>
                                         <div class="column">
                                             <label for="status">Status</label>
-                                            <input type="text" name="status" placeholder="Pending" data-status disabled/>
+                                            <input type="text" name="status" placeholder="Pending" data-transaction-status disabled/>
                                         </div>
                                         <div class="column actions-column has-text-center">
                                             <button class="btn-no-background" data-delete-summary-line><img class="icon" src="${CloseIcon}"/></button>

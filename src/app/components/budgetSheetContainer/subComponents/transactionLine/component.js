@@ -24,7 +24,7 @@ import CloseIcon from '../../../../assets/icons/close.svg';
         }, 
         eventListeners : {
 
-            updateAmounts : { 
+            updateTransaction : { 
 
                 onChangeAmount : { 
 
@@ -41,6 +41,39 @@ import CloseIcon from '../../../../assets/icons/close.svg';
                             component.commit.state({
                                 amount : newAmount, 
                                 derivative : parseFloat( newAmount ) - parseFloat( currAmount )
+                            })
+                        });
+
+                    }
+
+                }, 
+
+                onChangeStatus : { 
+
+                    eventInit : function( componentKey, component ) {
+
+                        const inlineTemplateNode = component.get.inlineTemplateNode();
+
+                        inlineTemplateNode.querySelector( '[data-transaction-status]' ).addEventListener( 'change', event => {
+                            component.commit.state({
+                                status : event.target.value
+                            })
+                        });
+
+                    }
+
+                }, 
+
+
+                onChangeDueDate : { 
+
+                    eventInit : function( componentKey, component ) {
+
+                        const inlineTemplateNode = component.get.inlineTemplateNode();
+
+                        inlineTemplateNode.querySelector( '[data-transaction-due-date]' ).addEventListener( 'change', event => {
+                            component.commit.state({ 
+                                dueDate : event.target.value
                             })
                         });
 
@@ -69,7 +102,6 @@ import CloseIcon from '../../../../assets/icons/close.svg';
                                     amount : newAmount, 
                                     derivative : parseFloat( newAmount ) - parseFloat( currAmount )
                                 })
-
                             }
                         });
 
@@ -86,7 +118,6 @@ import CloseIcon from '../../../../assets/icons/close.svg';
                             event.preventDefault();
                             event.stopPropagation();
                             component.dispatch.deleteLine(); 
-
                         });
 
                     }
@@ -157,7 +188,9 @@ import CloseIcon from '../../../../assets/icons/close.svg';
                 const transactionKey = this.parent().get.state( 'key' );
                 const lineType = templateNode.getAttribute( 'data-transaction-type' ); 
                 const dueDate = templateNode.querySelector( '[data-transaction-summary]' ).value; 
-                const description = templateNode.querySelector( '[data-transaction-due-date]' ).value;
+                const description = templateNode.querySelector( '[data-transaction-due-date]' ).value; 
+                const status = templateNode.querySelector( '[data-transaction-status]' ).value;
+
                 const triggerRender = false; 
                 const triggerNotification = true; 
 
@@ -185,7 +218,8 @@ import CloseIcon from '../../../../assets/icons/close.svg';
                         derivative : parseFloat( amount ),
                         lineType : lineType, 
                         dueDate : dueDate, 
-                        description : description  
+                        description : description , 
+                        status : status
                     },  
                     triggerRender, 
                     triggerNotification
@@ -204,11 +238,10 @@ import CloseIcon from '../../../../assets/icons/close.svg';
 
                 transactionLineNode.querySelector( '[data-transaction-summary]' ).value = transactionState.description;
                 transactionLineNode.querySelector( '[data-transaction-due-date]' ).value = transactionState.dueDate;
+                transactionLineNode.querySelector( '[data-transaction-status]' ).value = transactionState.status;
 
                 const summaryLineComponent = Builder.getComponentByKey( summaryLineKey );
                 summaryLineComponent.dispatch.manifestTransaction( transactionState.key );
-
-                // @todo Update selects for dueDate and status
                 
                 const newAmount = parseFloat( transactionState.amount ).toFixed(2); 
                 if( lineType === 'debit' ) { 
@@ -243,8 +276,8 @@ import CloseIcon from '../../../../assets/icons/close.svg';
                         <input type="text" name="transaction-summary" placeholder="Add description of individual credit/debit" data-transaction-summary required/>
                     </div>
                     <div class="column"> 
-                        <label for="transaction-codes">Transaction Due Date</label>
-                        <select name="transaction-codes" data-transaction-due-date>
+                        <label for="transaction-due-date">Transaction Due Date</label>
+                        <select name="transaction-due-date" data-transaction-due-date>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -294,7 +327,6 @@ import CloseIcon from '../../../../assets/icons/close.svg';
                             <option value="paid">Paid</option>
                             <option value="void">Void</option>
                             <option value="past-due">Past Due</option>
-                            <option value="adjusted">Adjusted</option>
                         </select>
                     </div>
                     <div class="column actions-column has-text-center">
