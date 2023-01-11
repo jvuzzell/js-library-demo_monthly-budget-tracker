@@ -166,7 +166,7 @@ import { BannerAlert } from 'banner-alert-js';
                     'success', 
                     'Budget sheet saved',
                     document.querySelector( '#banner-alerts' ), 
-                    60000
+                    5000
                 );
             },  
 
