@@ -141,7 +141,7 @@ import CloseIcon from '../../../../assets/icons/close.svg';
             afterCreate : function( state ) {
 
                 if( this.parent().get.ref() === 'ssr' ) { 
-                    this.parent().dispatch.loadServerSideRenderAttributes();
+                    // this.parent().dispatch.loadServerSideRenderAttributes();
                 }
 
             }, 
@@ -216,51 +216,6 @@ import CloseIcon from '../../../../assets/icons/close.svg';
                 });
  
                 this.parent().get.inlineTemplateNode().remove();
-
-            },
-
-            loadServerSideRenderAttributes : function() { 
-    
-                const templateNode = this.parent().get.inlineTemplateNode();  
-                const transactionKey = this.parent().get.state( 'key' );
-                const lineType = templateNode.getAttribute( 'data-transaction-type' ); 
-                const dueDate = templateNode.querySelector( '[data-transaction-summary]' ).value; 
-                const description = templateNode.querySelector( '[data-transaction-due-date]' ).value; 
-                const status = templateNode.querySelector( '[data-transaction-status]' ).value;
-
-                const triggerRender = false; 
-                const triggerNotification = true; 
-
-                let amount = 0; 
-                let selector = null; 
-                
-                switch( lineType ) {
-                    case 'credit' : 
-                        selector = '[data-income]';
-                        break; 
-                    case 'debit' : 
-                        selector = '[data-expense]';
-                        break; 
-                }
-                 
-                amount = templateNode.querySelector( selector ).value;  
- 
-                const summaryLineKey = templateNode.closest( '[data-inline-template="summaryLine"]' ).dataset.key; 
-                const summaryLineComponent = Builder.getComponentByKey( summaryLineKey );
-                summaryLineComponent.dispatch.manifestTransaction( transactionKey ); 
-
-                this.parent().commit.state({  
-                        summaryLineKey : summaryLineKey,
-                        amount : parseFloat( amount ).toFixed( 2 ),   
-                        derivative : parseFloat( amount ),
-                        lineType : lineType, 
-                        dueDate : dueDate, 
-                        description : description , 
-                        status : status
-                    },  
-                    triggerRender, 
-                    triggerNotification
-                );
 
             },
 
