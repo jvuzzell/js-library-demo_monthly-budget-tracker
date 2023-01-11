@@ -33,21 +33,3 @@
 [data-inline-template="summaryLine"] .actions-column button {
     margin-top: 3px; 
 } 
-
-[data-transaction-line-container] {
-    transition: all 175ms ease-out;
-    transition-delay: 75ms;
-} 
-
-[data-inline-template="summaryLine"].credit-background [data-inline-template="transactionLine"] { 
-    background-color: var( --mint );
-}
-
-[data-inline-template="summaryLine"].debit-background [data-inline-template="transactionLine"] { 
-    background-color: var( --watermelon );
-}
-
-[data-inline-template="summaryLine"].debit-background [data-inline-template="transactionLine"] hr, 
-[data-inline-template="summaryLine"].credit-background [data-inline-template="transactionLine"] hr {
-    background-color: #fff;
-}
