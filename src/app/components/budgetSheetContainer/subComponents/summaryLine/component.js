@@ -335,10 +335,7 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
                         summaryStatus = 'paid';
                         break; 
                 }
-
-                console.error( summaryStatusWeight );
-                console.error( weightedStatus );
-
+                
                 this.parent().commit.state({
                     status : summaryStatus
                 });
