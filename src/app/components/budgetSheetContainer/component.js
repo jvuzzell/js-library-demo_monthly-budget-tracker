@@ -190,10 +190,6 @@ import { Expandables, initExpandables } from 'expandables-js';
                 }
         
                 return budgetSheetSummary; 
-            },
-
-            finalizeBudgetSheet : function() {
-     
             }
 
         }

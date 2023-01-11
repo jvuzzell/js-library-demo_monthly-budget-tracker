@@ -46,25 +46,8 @@ import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'u
 
                 }
 
-            }, 
-
-            triggerFinalizeBudgetSheet : { 
-
-                onFinalizeClick : {
-
-                    eventInit : ( componentKey, component ) => {
+            } 
             
-                        let inlineTemplateNode = component.get.inlineTemplateNode(); 
-                        inlineTemplateNode.querySelector( '[data-trigger-finalize-budget]' ).addEventListener( 'click', (event) => {
-                            component.dispatch.triggerFinalizeBudgetSheet();
-                        });
-
-                    }
-
-                }
-
-            }
-
         }
 
     }
@@ -86,11 +69,6 @@ import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'u
             triggerSaveBudgetSheet : () => {
                 let budgetSheetContainer = Builder.getComponentByName( 'budgetSheetContainer' ); 
                 budgetSheetContainer.dispatch.saveBudgetSheet();
-            }, 
-
-            triggerFinalizeBudgetSheet : () => {
-                let budgetSheetContainer = Builder.getComponentByName( 'budgetSheetContainer' ); 
-                budgetSheetContainer.dispatch.finalizeBudgetSheet();
             }
 
         }
