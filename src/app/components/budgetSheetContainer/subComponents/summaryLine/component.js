@@ -199,11 +199,13 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
 
             }, 
 
-            onUpdate : function( state ) {  
-                 
-                if( state.firstRenderFlag ) { return; }
-                this.parent().dispatch.renderSummary( state ); 
-                this.parent().dispatch.updateTransactionColor( state.balance );
+            onUpdate : function( deltaState ) {  
+                
+                let componentState = this.parent().get.state(); 
+
+                if( componentState.firstRenderFlag ) { return; }
+                this.parent().dispatch.renderSummary( componentState ); 
+                this.parent().dispatch.updateTransactionColor( componentState.balance );
 
             }
 
@@ -308,12 +310,14 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
                 const summaryState = this.parent().get.state(); 
                 const statuses = this.parent().get.props( 'status' );
                 const statusKeys = Object.keys( statuses );
-                const totalTransactions = summaryState.transactionManifest.length; 
+                const transactionManifest = summaryState.transactionManifest; 
+                const totalTransactions = transactionManifest.length; 
                 let summaryStatusWeight = 0;
                 let weightedStatus = [];
                 let summaryStatus = 'pending';
+                let status = null; 
 
-                summaryState.transactionManifest.map( transactionKey => { summaryStatusWeight += statuses[ Builder.getComponentByKey( transactionKey ).get.state( 'status' ) ][ 'weight' ] } ); 
+                transactionManifest.map( transactionKey => { summaryStatusWeight += statuses[ Builder.getComponentByKey( transactionKey ).get.state( 'status' ) ][ 'weight' ] } ); 
                 statusKeys.map( key => weightedStatus[ key ] = ( statuses[ key ][ 'weight' ] * totalTransactions ) );
 
                 const weightedStatusPaid = weightedStatus[ 'paid' ];
@@ -326,21 +330,37 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
                         summaryStatus = 'void';
                         break; 
                     case ( ( summaryStatusWeight > weightedStatusVoid ) && ( summaryStatusWeight <= weightedStatusPastDue ) ) : 
-                        summaryStatus = 'past-due'
+                        status = 'past-due';  
+                        summaryStatus = ( this.statusExistsInTransactions( status, transactionManifest ) ) ? status : 'pending';
                         break;
-                    case ( ( summaryStatusWeight > weightedStatusPending ) && ( summaryStatusWeight < weightedStatusPaid ) ) : 
-                        summaryStatus = 'pending';
+                    case ( ( summaryStatusWeight > weightedStatusPastDue ) && ( summaryStatusWeight < weightedStatusPaid ) ) : 
+                        status = 'past-due'; 
+                        summaryStatus = ( this.statusExistsInTransactions( status, transactionManifest ) ) ? status : 'pending';
                         break;
                     case ( summaryStatusWeight === weightedStatusPaid ) : 
                         summaryStatus = 'paid';
                         break; 
                 }
-                
+
                 this.parent().commit.state({
                     status : summaryStatus
                 });
 
-            }, 
+            },  
+
+            statusExistsInTransactions : function( status, transactionManifest ) { 
+
+                let statusExists = false; 
+                for( let i = 0; i < transactionManifest.length; i++ ) { 
+                    if( status === Builder.getComponentByKey( transactionManifest[ i ] ).get.state( 'status' ) )  { 
+                        statusExists = true;
+                        break;
+                    }
+                }
+
+                return statusExists;
+
+            },
 
             calcSummaryDueDate : function( transactionState ) { 
                  

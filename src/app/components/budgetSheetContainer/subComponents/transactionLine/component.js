@@ -71,7 +71,8 @@ import CloseIcon from '../../../../assets/icons/close.svg';
 
                         const inlineTemplateNode = component.get.inlineTemplateNode();
 
-                        inlineTemplateNode.querySelector( '[data-transaction-due-date]' ).addEventListener( 'change', event => {
+                        inlineTemplateNode.querySelector( '[data-transaction-due-date]' ).addEventListener( 'change', event => {  
+
                             component.commit.state({ 
                                 dueDate : event.target.value
                             })
@@ -151,10 +152,46 @@ import CloseIcon from '../../../../assets/icons/close.svg';
                     this.parent().dispatch.mountTransactionLine();    
                 }
 
+            }, 
+
+            onUpdate : function( deltaState ) { 
+
+                for( const key of Object.keys( deltaState ) ) {
+                    switch( key ) {
+                        case 'dueDate' : 
+                            this.parent().dispatch.checkPastDue( deltaState.dueDate );
+                            break; 
+                        case 'status' : 
+                            this.parent().get.inlineTemplateNode().querySelector( '[data-transaction-status]' ).value = deltaState.status;
+                            break;
+                    }
+                }
+
             }
+
         }, 
 
         dispatch : {  
+
+            update : function( publisherKey, delta ) {
+                
+                if( publisherKey === this.parent().get.state( 'key' ) ) { 
+                    console.error( 'notified self' );
+                }   
+
+            },
+
+            checkPastDue : function( dueDate ) { 
+
+                const todaysDate = Builder.getComponentByName( 'budgetSheetSelector' ).get.state( 'date' );
+                const currentStatus = this.parent().get.state( 'status' ); 
+                let status = ( currentStatus === 'pending' && ( dueDate <= todaysDate ) ) ? 'past-due' : currentStatus;
+
+                this.parent().commit.state({ 
+                    status : status
+                })
+
+            }, 
 
             newLine : function( summaryKey, transaction = {} ) {
 
