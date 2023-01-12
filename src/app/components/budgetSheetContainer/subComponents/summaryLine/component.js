@@ -47,15 +47,15 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
                 description : 'Website Design', 
                 transactionTemplates : [
                     {
-                        description : 'Client Payment 1 - Net 30', 
+                        description : 'Client Payment 1', 
                         amount : 1200.50,  
-                        dueDate : 1, 
+                        dueDate : 15, 
                         lineType : 'credit'
                     }, 
                     { 
-                    description : 'Client Payment 2 - Net 30', 
+                    description : 'Client Payment 2', 
                         amount : 1200.50,  
-                        dueDate : 15, 
+                        dueDate : 30, 
                         lineType : 'credit'
                     }, 
                     { 
@@ -72,20 +72,20 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
                     {
                         description : 'Paycheck 1, Gross Income', 
                         amount : 1300.00, 
-                        dueDate : 15,
+                        dueDate : 1,
                         lineType : 'credit'
-                    }, 
-                    {
-                        description : 'Organization Fees', 
-                        amount : 19.99, 
-                        dueDate : 15,
-                        lineType : 'debit'
                     }, 
                     {
                         description : 'Paycheck 2, Gross Income', 
                         amount : 1300.00, 
-                        dueDate : 30,
+                        dueDate : 15,
                         lineType : 'credit'
+                    },
+                    {
+                        description : 'Organization Fees', 
+                        amount : 19.99, 
+                        dueDate : 30,
+                        lineType : 'debit'
                     }, 
                 ]
             },
@@ -95,7 +95,7 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
                     {
                         description : 'Round trip flight', 
                         amount : 350.00, 
-                        dueDate : 5,
+                        dueDate : 22,
                         lineType : 'debit'
                     }, 
                     {
@@ -113,7 +113,7 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
                     {
                         description : 'Annie Reimbursed me 50% of the Air BnB', 
                         amount : 425.00, 
-                        dueDate : 5,
+                        dueDate : 18,
                         lineType : 'credit'
                     }
                 ]
@@ -241,7 +241,7 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
 
             onMount : function( state ) { 
        
-                if ( !state.firstRenderFlag ) { return }; 
+                if ( !state.firstRenderFlag ) { return };  
                 const summaryLineNode = this.parent().get.inlineTemplateNode();
                 this.parent().dispatch.loadTransactionTemplateSelect( summaryLineNode );          
 
@@ -249,11 +249,31 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
 
             onUpdate : function( deltaState ) {  
                 
-                let componentState = this.parent().get.state(); 
-
-                if( componentState.firstRenderFlag ) { return; }
-                this.parent().dispatch.renderSummary( componentState ); 
-                this.parent().dispatch.updateTransactionColor( componentState.balance );
+                let summaryState = this.parent().get.state(); 
+                if( summaryState.firstRenderFlag ) { return; }
+                for( const key of Object.keys( deltaState ) ) {
+                    switch( key ) {
+                        case ( 'status' ) : 
+                            if( deltaState.status === 'past-due' ) { 
+                                this.parent().dispatch.updateTransactionColor( 'past-due-background' )
+                            } else {  
+                                let colorClass = this.parent().dispatch.calcColorClassOnBalance( summaryState.balance ); 
+                                this.parent().dispatch.updateTransactionColor( colorClass );
+                            }
+                            break; 
+                        case ( 'balance' ) : 
+                            if( summaryState.status === 'past-due' ) { 
+                                this.parent().dispatch.updateTransactionColor( 'past-due-background' )
+                            } else {  
+                                let colorClass = this.parent().dispatch.calcColorClassOnBalance( summaryState.balance ); 
+                                this.parent().dispatch.updateTransactionColor( colorClass );
+                            }
+                            break;
+                    }
+                }
+                
+                if( summaryState.firstRenderFlag ) { return; }
+                this.parent().dispatch.renderSummary( summaryState ); 
 
             }
 
@@ -279,13 +299,11 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
                                         this.calcSummaryStatus();
                                         break;                            
                                     case 'dueDate' : 
-                                        this.calcSummaryDueDate( deltaState )
+                                        this.calcSummaryDueDate( deltaState );
                                         break;
 
                                 }
-
                             }
-
                         }
                         break; 
                 }
@@ -355,21 +373,20 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
 
             calcSummaryStatus : function() {
                  
-                const summaryState = this.parent().get.state(); 
-                const statuses = this.parent().get.props( 'status' );
-                const statusKeys = Object.keys( statuses );
-                const transactionManifest = summaryState.transactionManifest; 
-                const totalTransactions = transactionManifest.length; 
+                let summaryState = this.parent().get.state(); 
+                let statuses = this.parent().get.props( 'status' );
+                let statusKeys = Object.keys( statuses );
+                let transactionManifest = summaryState.transactionManifest; 
+                let totalTransactions = transactionManifest.length; 
                 let summaryStatusWeight = 0;
                 let weightedStatus = [];
                 let summaryStatus = 'pending';
                 let status = null; 
 
-                transactionManifest.map( transactionKey => { summaryStatusWeight += statuses[ Builder.getComponentByKey( transactionKey ).get.state( 'status' ) ][ 'weight' ] } ); 
+                transactionManifest.map( transactionKey => { summaryStatusWeight += statuses[ Builder.getComponentByKey( transactionKey ).get.state( 'status' ) ][ 'weight' ]; } ); 
                 statusKeys.map( key => weightedStatus[ key ] = ( statuses[ key ][ 'weight' ] * totalTransactions ) );
 
                 const weightedStatusPaid = weightedStatus[ 'paid' ];
-                const weightedStatusPending = weightedStatus[ 'pending' ];
                 const weightedStatusVoid = weightedStatus[ 'void' ];
                 const weightedStatusPastDue = weightedStatus[ 'past-due' ];
 
@@ -399,7 +416,7 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
             statusExistsInTransactions : function( status, transactionManifest ) { 
 
                 let statusExists = false; 
-                for( let i = 0; i < transactionManifest.length; i++ ) { 
+                for( let i = 0; i < transactionManifest.length; i++ ) {  
                     if( status === Builder.getComponentByKey( transactionManifest[ i ] ).get.state( 'status' ) )  { 
                         statusExists = true;
                         break;
@@ -460,25 +477,40 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
                 }
 
             },
-            
-            updateTransactionColor( balance = 0.00 ) { 
-                
-                const templateNode = this.parent().get.inlineTemplateNode();
-                if( balance == 0.00 ) {
-                    templateNode.classList.remove( 'credit-background', 'debit-background' ); 
-                    return; 
-                }
-            
-                if( balance > 0.00 ) { 
-                    templateNode.classList.add( 'credit-background' ); 
-                    templateNode.classList.remove( 'debit-background' ); 
-                } 
-                else { 
-                    templateNode.classList.add( 'debit-background' ); 
-                    templateNode.classList.remove( 'credit-background' ); 
+
+            calcColorClassOnBalance( balance = 0.00 ) { 
+
+                let colorClass = null; 
+
+                switch( true ) { 
+                    case ( balance === 0.00 ) :
+                        colorClass = null;
+                        break;
+                    case ( balance > 0.00 ) : 
+                        colorClass = 'credit-background'; 
+                        break; 
+                    case ( balance < 0.00 ): 
+                        colorClass = 'debit-background';
+                        break; 
+                    default : 
+                        colorClass = null;
+                        break; 
                 }
 
-            }, 
+                return colorClass;
+
+            },
+            
+            updateTransactionColor( colorClass ) { 
+                
+                const templateNode = this.parent().get.inlineTemplateNode();
+                templateNode.classList.remove( 'credit-background', 'debit-background', 'past-due-background' );  
+
+                if( colorClass !== null ) { 
+                    templateNode.classList.add( colorClass ); 
+                }
+            
+            },
 
             calcTotalCredit( derivativeCredit = 0.00 ) {
 
@@ -522,10 +554,12 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
             },  
 
             useTransactionTemplate : function( templateName ) {
-                const summaryState = this.parent().get.state(); 
+                let summaryState = this.parent().get.state();  
                 summaryState.transactionManifest.map( transactionKey => {  
                     Builder.getComponentByKey( transactionKey ).dispatch.deleteLine();
                 }); 
+
+                this.parent().commit.state( { transactionManifest: [] }, false, false );
 
                 let transactionSummaryTemplates = this.parent().get.props( 'transactionSummaryTemplates' ); 
                 let transactionSummaryTemplate = transactionSummaryTemplates[ templateName ]; 

@@ -137,10 +137,10 @@ import CloseIcon from '../../../../assets/icons/close.svg';
         state : ComponentProps.transactionLine.defaultTransaction, 
         props : ComponentProps.transactionLine,
         hooks : {
-            
+
             onMount : function( state ) {
 
-                if( state.firstRenderFlag && this.parent().get.ref() !== 'ssr' ) {
+                if( state.firstRenderFlag ) {
                     this.parent().dispatch.mountTransactionLine();    
                 }
 
@@ -165,36 +165,19 @@ import CloseIcon from '../../../../assets/icons/close.svg';
 
         dispatch : {  
 
-            update : function( publisherKey, delta ) {
-                
-                if( publisherKey === this.parent().get.state( 'key' ) ) { 
-                    console.error( 'notified self' );
-                }   
-
-            },
-
             checkPastDue : function( dueDate ) { 
-
-                const todaysDate = Builder.getComponentByName( 'budgetSheetSelector' ).get.state( 'date' );
+     
+                const dateObj = new Date();
+                const todaysDate = dateObj.getDate();
                 const currentStatus = this.parent().get.state( 'status' ); 
-                let status = ( currentStatus === 'pending' && ( dueDate <= todaysDate ) ) ? 'past-due' : currentStatus;
+                let status = ( ( currentStatus === 'pending' ) && ( dueDate <= todaysDate ) ) ? 'past-due' : currentStatus;
+                    status = ( ( status === 'past-due' ) && ( dueDate > todaysDate ) ) ? 'pending' : status;
 
                 this.parent().commit.state({ 
                     status : status
                 })
 
             }, 
-
-            newLine : function( summaryKey, transaction = {} ) {
-
-                transaction = {
-                    'summaryLineKey' : summaryKey,
-                    ...transaction
-                }; 
-
-                this.parent().commit.state( transaction, false ); 
-
-            },
 
             deleteLine : function() {
 
@@ -226,8 +209,8 @@ import CloseIcon from '../../../../assets/icons/close.svg';
 
                 const summaryLineComponent = Builder.getComponentByKey( summaryLineKey );
                 summaryLineComponent.dispatch.manifestTransaction( transactionState.key );
-                
                 const newAmount = parseFloat( transactionState.amount ).toFixed(2); 
+
                 if( lineType === 'debit' ) { 
                     activeInput = transactionLineNode.querySelector( '[data-expense]' ); 
                     activeInput.removeAttribute( 'disabled' ); 
@@ -240,12 +223,14 @@ import CloseIcon from '../../../../assets/icons/close.svg';
                     activeInput.value = newAmount;
                 } 
 
+                this.checkPastDue( transactionState.dueDate );
                 this.parent().commit.state({
+                    ...transactionState,
                     amount : newAmount, 
-                    derivative : ( parseFloat( newAmount ) - 0 ).toFixed( 2 )
-                });
-
-                this.newLine( summaryLineKey, { lineType : lineType } );
+                    derivative : ( parseFloat( newAmount ) - 0 ).toFixed( 2 ), 
+                    lineType : lineType,  
+                    summaryLineKey : summaryLineKey
+                }, false, false );
 
             }
 
