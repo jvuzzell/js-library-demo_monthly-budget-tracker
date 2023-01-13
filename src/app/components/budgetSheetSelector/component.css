@@ -1,0 +1,11 @@
+form select[data-report-month], 
+form select[data-report-year] { 
+    width: 160px;
+    background-color: transparent; 
+    border-top: 0;
+    border-left: 0; 
+    border-right: 0; 
+    border-radius: 0;
+    font: 22px/28px "Roboto", sans-serif;
+    color: var( --secondary-color);
+} 

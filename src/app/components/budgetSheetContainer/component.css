@@ -57,3 +57,11 @@
     margin-top: -4px;
     font-size: 26px;
 }
+
+[data-inline-template=budgetSheetContainer] { 
+
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 20px;
+
+}

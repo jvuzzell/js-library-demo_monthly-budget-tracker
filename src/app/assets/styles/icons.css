@@ -2,6 +2,7 @@
 
 .icon {
     min-width: 12px;
+    max-width: 30px;
     margin-bottom: 0;
 }
 
@@ -89,13 +90,17 @@ a.icon-left img {
 }
 
 button.icon-left img {
-    padding-right: 10px;
+    margin-right: 8px;
 }
 
 button.icon-right img {
-    padding-left: 10px;
+    margin-left: 8px;
 } 
 
 button > img.icon { 
     pointer-events: none;
-} 
+}  
+
+.icon-left[class*="has-background"] img {
+    width: 20px; 
+}

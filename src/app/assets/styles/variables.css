@@ -17,10 +17,13 @@
     --gray: #E6E6E6; 
     --border-1: #B4B4B4; 
     --lemon: #FFF9B2;
-    --sandstorm: #FFD43B; 
+    --sandstorm: #FFD43B;
+    --denim: #74C0FC; 
+    --cyan: #146EBE; 
+    --beige: #FDF4E3;  
 
     /* Dropshadows */
-    --solid-dropshadow: 0px 5px 0px 0px #2B2D41; 
+    --solid-dropshadow: 0px 5px 0px 0px #fff; 
     --solid-dropshadow-lg: 0px 8px 0px 0px #2B2D41; 
     --solid-dropshadow-hover: 0px 3px 0px 1px #2B2D41; 
     --solid-dropshadow-active:  0px 0px 0px 1px #2B2D41; 
