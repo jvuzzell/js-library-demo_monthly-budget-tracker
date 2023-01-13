@@ -49,7 +49,7 @@ module.exports = ( env ) => {
           use: ['style-loader', 'css-loader', 'sass-loader']
         },  
         {
-          test: /\.(png|svg|jpg|gif|jpe?g)$/,  
+          test: /\.(png|svg|jpg|gif|jpe?g|ico)$/,  
           type: 'asset/resource',
           generator: {
             filename: 'images/[name][ext]'
@@ -69,7 +69,7 @@ module.exports = ( env ) => {
           filename: htmlFile.replace( htmlFileRegex, "" ) + ".html", 
           chunks: [ htmlFile.replace( htmlFileRegex, "" ) ]
         })
-    )
+      )
     ]
   }
 
