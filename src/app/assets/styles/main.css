@@ -96,13 +96,17 @@ table {
     border: 3px solid var(--border-1);
 }
 
-img.logo { 
+.icon-left img.logo {  
+    position: absolute;
     width: 30px; 
-    margin: -20px 10px 0 0;
     display: inline;
     vertical-align: top;
+    transition: all var(--transition-slow) ease-in-out;
+    transform: translate(0, 11px); 
+    filter: grayscale(0);
+    z-index: 3;
 }
 
 .logo + h1 { 
-    display: inline;
+    display: inline; 
 } 

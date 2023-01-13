@@ -1,5 +1,6 @@
 :root {
     /* Transition Speeds */
+    --transition-slow: 500ms;
     --transition-speed: 300ms; 
     --transition-speed-medium: 225ms; 
     --transition-speed-fast: 175ms; 

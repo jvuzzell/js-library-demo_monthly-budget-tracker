@@ -22,4 +22,11 @@
 
 .sticky-footer .legal a.has-underline:hover { 
     text-decoration: none;
+} 
+
+.sticky-footer .v-col > .button-container {
+    display: inline-block; 
+    border-radius: 32px; 
+    padding: 22px 8px 0 8px;
+    margin-top: -25px;
 }

@@ -7,13 +7,40 @@
     <title>Monthly Budget Tracker - Demo</title> 
     <link rel="shortcut icon" href="<%=require('../../../../src/app/assets/favicon/favicon.ico')%>" type="image/x-icon">
 
-</head>
-<body> 
+    <style>
+        .screen-overlay {
+            background-color: rgba(0,0,0,0.45);
+            position: fixed;
+            width: 100%; 
+            height: 100%;
+            top: 0; 
+            left: 0;
+            z-index: 2;
+            transform: translateX(0);
+        }
+        body:not([data-overlay=active]) .screen-overlay {
+            background-color: rgba(0,0,0,0.0);
+            transform: translateX(-100%);
+        }  
+        [data-loading-screen] .screen-overlay { 
+            background-color: rgba(255,255,255,1.0);
+        }  
 
+        body[data-loading-screen] img.logo.loading-screen { 
+            position: absolute;
+            width: 350px; 
+            transform: translate( calc(50% + 350px), calc(50% + 300px));
+            filter: grayscale(1);
+        } 
+
+    </style>
+</head>
+<body data-overlay="active" data-loading-screen> 
+    <div class="screen-overlay"></div>
     <hr class="has-background-color-dark thick-line has-mg-bottom-0">
     <div class="notice has-background-color-cyan has-mg-bottom-5">
         <div class="v-col has-mg-bottom-0 has-pd-top-10 has-pd-bottom-10 has-text-center">
-            <span class="has-small-font-size"><strong>Privacy: </strong> This site uses your browser's local storage enable the use of multiple budget sheets and report generation. No personal information is collected, transmitted, or stored outside of your personal device.</span>
+            <span class="has-small-font-size"><strong>Privacy Policy: </strong> This site uses your browser's local storage to facilitate multiple budget sheets and report generation. No personal information is collected, transmitted, or stored outside of your personal device.</span>
         </div>
     </div>
     <section>
@@ -23,8 +50,8 @@
                 <div class="h-row">
                     <div class="v-col lg-4 lg-x-6 has-mg-bottom-10" >
                         <div class="icon-left">
-                            <img class="logo" src="<%=require('../../../../src/app/assets/logo.svg')%>">
-                            <div style="display:inline-block"><h1 class="has-mg-bottom-0">Budget Tracker</h1><span class="has-medium-font-size">by Joshua Uzzell</span></div>
+                            <img class="logo loading-screen" src="<%=require('../../../../src/app/assets/logo.svg')%>">
+                            <div style="display:inline-block"><h1 class="has-mg-bottom-0 has-pd-left-35">Budget Tracker</h1><span class="has-medium-font-size has-pd-left-35"">by Joshua Uzzell</span></div>
                         </div>
                         
                     </div>
@@ -291,20 +318,23 @@
         <div class="content-lock">
             <div class="h-row" data-inline-template="budgetSheetFooter">
                 <div class="v-col has-text-center">
-                    <button class="icon-left btn-has-background-mint" type="button" data-trigger-add-summary>
-                        <img class="icon" src="<%=require('../../../../src/app/assets/icons/add.svg')%>">
-                        Add Transaction
-                    </button>
-                <!-- </div> 
-                <div class="v-col lg-2 has-text-right"> -->
-                    <button class="icon-left btn-has-background-sandstorm" type="button" data-trigger-save-budget>
-                        <img class="icon" src="<%=require('../../../../src/app/assets/icons/floppy-disk.svg')%>">
-                        Save Budget
-                    </button>
-                    <!-- <button class="icon-left btn-has-background-watermelon" type="button" data-trigger-clear-budget>
-                        <img class="icon" src="<%=require('../../../../src/app/assets/icons/trash-can-xmark.svg')%>">
-                        Clear
-                    </button> -->
+                    <div class="button-container has-background-color-dark">
+                        <button class="icon-left btn-has-background-mint" type="button" data-trigger-add-summary>
+                            <img class="icon" src="<%=require('../../../../src/app/assets/icons/add.svg')%>">
+                            Add Transaction
+                        </button>
+                    <!-- </div> 
+                    <div class="v-col lg-2 has-text-right"> -->
+                        <button class="icon-left btn-has-background-sandstorm" type="button" data-trigger-save-budget>
+                            <img class="icon" src="<%=require('../../../../src/app/assets/icons/floppy-disk.svg')%>">
+                            Save Budget
+                        </button>
+                        <!-- <button class="icon-left btn-has-background-watermelon" type="button" data-trigger-clear-budget>
+                            <img class="icon" src="<%=require('../../../../src/app/assets/icons/trash-can-xmark.svg')%>">
+                            Clear
+                        </button> -->
+                    </div>
+
                 </div>
             </div>
             <hr class=" has-mg-bottom-0">
