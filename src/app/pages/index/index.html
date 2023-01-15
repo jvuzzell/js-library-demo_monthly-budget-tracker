@@ -17,6 +17,9 @@
             left: 0;
             z-index: 2;
             transform: translateX(0);
+        } 
+        .screen-overlay h1 {
+            display: none;
         }
         body:not([data-overlay=active]) .screen-overlay {
             background-color: rgba(0,0,0,0.0);
@@ -25,18 +28,63 @@
         [data-loading-screen] .screen-overlay { 
             background-color: rgba(255,255,255,1.0);
         }  
-
         body[data-loading-screen] img.logo.loading-screen { 
             position: absolute;
             width: 350px; 
             transform: translate( calc(50% + 350px), calc(50% + 300px));
             filter: grayscale(1);
         } 
+        @media (max-width: 1100px) {
+            body[data-overlay=inactive] .screen-overlay { 
+                background-color: rgba(255,255,255,1.0);
+                transform: translateX(0);
+            }
+            body[data-loading-screen] img.logo.loading-screen, 
+            body[data-overlay=inactive] img.logo.loading-screen { 
+                position: absolute !important;
+                width: 240px !important; 
+                transform: translate(30px, calc(50% + 300px)) !important;
+                margin: 0 auto; 
+                left: 0; 
+                right: 0;
+                
+            } 
+            body[data-loading-screen] .screen-overlay h1  { 
+    
+                filter: grayscale(1);
+            }
+            .screen-overlay h1 { 
+                display: block;
+                position: absolute !important;
+                width: 100%; 
+                text-align: center;
+                top: 50%; 
+                transform: translateY(-50%) !important;
+                margin: 0 auto; 
+                left: 0; 
+                right: 0;
+                text-align: center;
+                color: var(--cyan); 
+                filter: grayscale(0);
+            }
+        }
+
+        @media (max-width: 800px) {
+            body[data-loading-screen] img.logo.loading-screen, 
+            body[data-overlay=inactive] img.logo.loading-screen { 
+                display: none
+                
+            } 
+
+            .screen-overlay h1 { 
+                color: var(--cyan);
+            }
+        }
 
     </style>
 </head>
 <body data-overlay="active" data-loading-screen> 
-    <div class="screen-overlay"></div>
+    <div class="screen-overlay"><h1>Mobile Friendly <br>Coming Soon</h1></div>
     <hr class="has-background-color-dark thick-line has-mg-bottom-0">
     <div class="notice has-background-color-cyan has-mg-bottom-5">
         <div class="v-col has-mg-bottom-0 has-pd-top-10 has-pd-bottom-10 has-text-center">
@@ -56,7 +104,7 @@
                         
                     </div>
                     <div class="v-col lg-4 lg-x-6 has-mg-bottom-5 has-mg-top-15 has-text-right">
-                        <a href="https://github.com/jvuzzell/demo_monthly-budget-tracker" class="icon-left has-underline " type="button" data-trigger-clear-budget>
+                        <a href="https://github.com/jvuzzell/demo_monthly-budget-tracker" class="icon-left has-underline button btn-no-background" type="button" data-trigger-clear-budget>
                             <img style="margin-right: 10px; " class="icon" src="<%=require('../../../../src/app/assets/icons/github-alt.svg')%>">Project on Github
                         </a>
                     </div>
@@ -150,8 +198,8 @@
                                 <h2>Monthly Transactions</h2>
                             </div> 
                             <div class="v-col lg-6 has-text-right">
-                                <button id="expandExpandables" class="has-underline"><strong>+</strong> Expand Transactions</button>
-                                <button id="collapseExpandables" class="has-underline"><strong>-</strong> Collapse Transactions</button>
+                                <button id="expandExpandables" class="btn-no-background has-underline"><strong>+</strong> Expand Transactions</button>
+                                <button id="collapseExpandables" class="btn-no-background has-underline"><strong>-</strong> Collapse Transactions</button>
                             </div>
                         </div>
                         <div class="h-row">
@@ -299,7 +347,7 @@
                                                 </div>  
                                                 <div class="h-row has-text-center" data-transaction-controls>
                                                     <div class="v-col has-mg-top-10">
-                                                        <button class="has-underline" data-add-credit><strong class="no-underline">+</strong> Add Credit</button><button class="has-underline" data-add-debit><strong class="no-underline has-large-font-size">-</strong> Add Debit</button>
+                                                        <button class="has-underline btn-no-background" data-add-credit><strong class="no-underline">+</strong> Add Credit</button><button class="has-underline btn-no-background" data-add-debit><strong class="no-underline has-large-font-size">-</strong> Add Debit</button>
                                                     </div>
                                                 </div>
                                             </div>

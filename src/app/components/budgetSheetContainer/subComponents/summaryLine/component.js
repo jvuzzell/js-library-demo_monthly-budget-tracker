@@ -704,7 +704,7 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
                             </div>  
                             <div class="h-row has-text-center" data-transaction-controls>
                                 <div class="v-col has-mg-top-0">
-                                    <button class="has-underline" data-add-credit><strong class="no-underline">+</strong> Add Credit</button><button class="has-underline" data-add-debit><strong class="no-underline has-large-font-size">-</strong> Add Debit</button>
+                                    <button class="has-underline btn-no-background" data-add-credit><strong class="no-underline">+</strong> Add Credit</button><button class="has-underline btn-no-background" data-add-debit><strong class="no-underline has-large-font-size">-</strong> Add Debit</button>
                                 </div>
                             </div>
                         </div>
