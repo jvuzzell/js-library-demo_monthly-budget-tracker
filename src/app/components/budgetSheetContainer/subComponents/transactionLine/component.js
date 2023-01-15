@@ -170,7 +170,7 @@ import CloseIcon from '../../../../assets/icons/close.svg';
                 const dateObj = new Date();
                 const todaysDate = dateObj.getDate();
                 const currentStatus = this.parent().get.state( 'status' ); 
-                let status = ( ( currentStatus === 'pending' ) && ( dueDate <= todaysDate ) ) ? 'past-due' : currentStatus;
+                let status = ( ( currentStatus === 'pending' ) && ( dueDate < todaysDate ) ) ? 'past-due' : currentStatus;
                     status = ( ( status === 'past-due' ) && ( dueDate > todaysDate ) ) ? 'pending' : status;
 
                 this.parent().commit.state({ 
