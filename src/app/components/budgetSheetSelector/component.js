@@ -1,17 +1,22 @@
 import "./component.css"; 
 import { ComponentBuilder as Builder, ComponentConfigs } from 'ui-component-eventbus-js/ComponentBuilder'; 
-import { Expandables, initExpandables } from "expandables-js";
+import { Expandables } from "expandables-js";
 
 (function(
     Builder,
     ComponentConfigs
 ){
 
+    const dateObj = new Date();
+    const currentMonth = dateObj.getUTCMonth() + 1; //months from 1-12 
+    const currentDate = dateObj.getDate();
+    const currentYear = dateObj.getUTCFullYear();
+
     // State of individual modules
     var initialState = {
         componentName : 'budgetSheetSelector', 
-        month : 1, 
-        year : 2023
+        month : currentMonth, 
+        year : currentYear
     };
 
     // Return registered module (object) to developer
@@ -73,23 +78,19 @@ import { Expandables, initExpandables } from "expandables-js";
 
             selectCurrentMonth : function() {
 
-                const dateObj = new Date();
-                const month = dateObj.getUTCMonth() + 1; //months from 1-12 
-                const date = dateObj.getDate();
-                const year = dateObj.getUTCFullYear();
                 const triggerRender = false; 
                 const triggerNotification = true; 
 
                 this.parent().commit.state({
-                        month : month, 
-                        year : year, 
-                        date : date
+                        month : currentMonth, 
+                        year : currentYear, 
+                        date : currentDate
                     }, 
                     triggerRender, 
                     triggerNotification
                 ); 
 
-                this.updateSelectNode( year, month );
+                this.updateSelectNode( currentYear, currentMonth );
         
             }, 
 

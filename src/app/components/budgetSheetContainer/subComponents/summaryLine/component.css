@@ -32,4 +32,30 @@
 
 [data-inline-template="summaryLine"] .actions-column button {
     margin-top: 3px; 
-} 
+}  
+
+[data-inline-template="summaryLine"].debit-background input[data-transaction-status="Pending"] { 
+    background-color: var(--watermelon);
+}
+
+[data-inline-template="summaryLine"].debit-background input[data-transaction-status="Paid"] { 
+    background-color: var(--watermelon); 
+    color: inherit;
+}
+
+[data-inline-template=summaryLine] input[data-transaction-status="Pending"] { 
+    background-color: var(--mint);
+}
+
+[data-inline-template=summaryLine] input[data-transaction-status="Past Due"] { 
+    background-color: var(--lemon);
+}
+
+[data-inline-template=summaryLine] input[data-transaction-status="Void"] { 
+    background-color: var(--gray);
+}
+
+[data-inline-template=summaryLine] input[data-transaction-status="Paid"] { 
+    background-color: var(--jade);
+    color: white;
+}

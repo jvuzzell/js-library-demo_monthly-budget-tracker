@@ -2,13 +2,18 @@ import "./component.css";
 import { ComponentBuilder as Builder, ComponentConfigs, ComponentProps } from 'ui-component-eventbus-js/ComponentBuilder'; 
 import CloseIcon from '../../../../assets/icons/close.svg'; 
 
+
 (function(
     Builder,
     ComponentConfigs
 ){
 
-    // State of individual components
+    const dateObj = new Date();
+    const currentMonth = dateObj.getUTCMonth() + 1; //months from 1-12 
+    const todaysDate = dateObj.getDate();
+    const currentYear = dateObj.getUTCFullYear();
 
+    // State of individual components
     ComponentProps.transactionLine = {
          
         defaultTransaction : {
@@ -19,8 +24,8 @@ import CloseIcon from '../../../../assets/icons/close.svg';
             lineType : 'credit', 
             amount : 0.00, 
             status : 'pending', 
-            dueDate : 1, 
-            void : false
+            dueDate : todaysDate, 
+            delete : false
         }, 
         eventListeners : {
 
@@ -36,11 +41,12 @@ import CloseIcon from '../../../../assets/icons/close.svg';
 
                         inlineTemplateNode.querySelector( selector ).addEventListener( 'change', event => {
                             const newAmount =  ( event.target.value === '' ) ? 0 : event.target.value;
-                            const currAmount = component.get.state( 'amount' ); 
+                            const currAmount = component.get.state( 'amount' );  
+                            let deritvative = ( component.get.state( 'status' ) === 'void' ) ? 0 : parseFloat( newAmount ) - parseFloat( currAmount ); 
 
                             component.commit.state({
                                 amount : newAmount, 
-                                derivative : parseFloat( newAmount ) - parseFloat( currAmount )
+                                derivative : deritvative
                             })
                         });
 
@@ -54,10 +60,33 @@ import CloseIcon from '../../../../assets/icons/close.svg';
 
                         const inlineTemplateNode = component.get.inlineTemplateNode();
 
-                        inlineTemplateNode.querySelector( '[data-transaction-status]' ).addEventListener( 'change', event => {
-                            component.commit.state({
-                                status : event.target.value
-                            })
+                        inlineTemplateNode.querySelector( '[data-transaction-status]' ).addEventListener( 'change', event => { 
+                            
+                            const transactionState = component.get.state(); 
+                            let previousStatus = transactionState.status;
+                            let status = event.target.value; 
+                            let removeLine = false; 
+
+                            switch( true ) { 
+                                case ( status === 'void' ) : 
+                                    component.dispatch.deleteLine( removeLine );
+                                    break; 
+                                case ( status !== 'void' && previousStatus === 'void' ) : 
+                                    component.commit.state({
+                                        status : event.target.value, 
+                                        amount : transactionState.amount, 
+                                        derivative : transactionState.amount * 1, 
+                                        void : false, 
+                                    });
+                                    break;
+                                default : 
+                                    component.commit.state({
+                                        status : event.target.value
+                                    });
+                                    break; 
+                            
+                            }
+
                         });
 
                     }
@@ -72,7 +101,6 @@ import CloseIcon from '../../../../assets/icons/close.svg';
                         const inlineTemplateNode = component.get.inlineTemplateNode();
 
                         inlineTemplateNode.querySelector( '[data-transaction-due-date]' ).addEventListener( 'change', event => {  
-
                             component.commit.state({ 
                                 dueDate : event.target.value
                             })
@@ -98,10 +126,11 @@ import CloseIcon from '../../../../assets/icons/close.svg';
 
                                 const newAmount =  ( input.value === '' ) ? 0 : input.value;
                                 const currAmount = component.get.state( 'amount' );
-            
+                                let deritvative = ( component.get.state( 'status' ) === 'void' ) ? 0 : parseFloat( newAmount ) - parseFloat( currAmount ); 
+    
                                 component.commit.state({
                                     amount : newAmount, 
-                                    derivative : parseFloat( newAmount ) - parseFloat( currAmount )
+                                    derivative : deritvative
                                 })
                             }
                         });
@@ -129,8 +158,7 @@ import CloseIcon from '../../../../assets/icons/close.svg';
 
         }
     }
-    
-    // Return registered component (object) to developer
+
     ComponentConfigs.transactionLine = {
 
         eventBus : [ 'GlobalComponentEvents' ],
@@ -167,32 +195,63 @@ import CloseIcon from '../../../../assets/icons/close.svg';
 
             checkPastDue : function( dueDate ) { 
      
-                const dateObj = new Date();
-                const todaysDate = dateObj.getDate();
-                const currentStatus = this.parent().get.state( 'status' ); 
-                let status = ( ( currentStatus === 'pending' ) && ( dueDate < todaysDate ) ) ? 'past-due' : currentStatus;
-                    status = ( ( status === 'past-due' ) && ( dueDate > todaysDate ) ) ? 'pending' : status;
-
+                const currentStatus = this.parent().get.state( 'status' );    
+                const budgetSheetComponent = Builder.getComponentByName( 'budgetSheetSelector' ); 
+                let budgetSheetMonth = '';
+                let budgetSheetYear = '';
+                let status = ''; 
+                
+                if( budgetSheetComponent === undefined ) { 
+                    budgetSheetMonth = currentMonth;
+                    budgetSheetYear = currentYear;
+                } else { 
+                    budgetSheetMonth = parseInt( budgetSheetComponent.get.state( 'month' ) );   
+                    budgetSheetYear = parseInt( budgetSheetComponent.get.state( 'year' ) );   
+                }
+                
+                switch( true ) { 
+                    case ( currentMonth === budgetSheetMonth && currentYear === budgetSheetYear ) : 
+                        status = ( ( currentStatus === 'pending' ) && ( dueDate < todaysDate ) ) ? 'past-due' : currentStatus;
+                        status = ( ( status === 'past-due' ) && ( dueDate >= todaysDate ) ) ? 'pending' : status;
+                        break;
+                    case ( currentYear < budgetSheetYear ) :  
+                        status = ( currentStatus === 'past-due'  ) ? 'pending' : currentStatus; 
+                        break; 
+                    case ( currentYear > budgetSheetYear ) : 
+                        status = ( currentStatus === 'pending' ) ? 'past-due' : currentStatus; 
+                        break;    
+                    default : 
+                        status = currentStatus;
+                }
+                 
                 this.parent().commit.state({ 
                     status : status
-                })
+                });
 
             }, 
 
-            deleteLine : function() {
+            deleteLine : function( removeLine = true ) {
 
                 const transactionState = this.parent().get.state();
                 const amount = transactionState.amount;
 
-                this.parent().commit.state({
-                    amount : amount, 
-                    derivative : amount * -1, 
-                    void : true
-                });
- 
-                this.parent().get.inlineTemplateNode().remove();
+                if( removeLine ) {
+                    this.parent().commit.state({
+                        amount : amount, 
+                        derivative : ( transactionState.status === 'void' ) ? 0.00 : amount * -1, 
+                        status : 'void',
+                        delete : true
+                    });
+                    this.parent().get.inlineTemplateNode().remove();
+                } else { 
+                    this.parent().commit.state({
+                        amount : amount, 
+                        derivative : amount * -1, 
+                        status : 'void'
+                    });
+                }
 
-            },
+            }, 
 
             mountTransactionLine : function() {
 
@@ -209,7 +268,7 @@ import CloseIcon from '../../../../assets/icons/close.svg';
 
                 const summaryLineComponent = Builder.getComponentByKey( summaryLineKey );
                 summaryLineComponent.dispatch.manifestTransaction( transactionState.key );
-                const newAmount = parseFloat( transactionState.amount ).toFixed(2); 
+                const newAmount = parseFloat( transactionState.amount ).toFixed( 2 ); 
 
                 if( lineType === 'debit' ) { 
                     activeInput = transactionLineNode.querySelector( '[data-expense]' ); 
@@ -222,12 +281,13 @@ import CloseIcon from '../../../../assets/icons/close.svg';
                     activeInput.removeAttribute( 'disabled' );
                     activeInput.value = newAmount;
                 } 
-
+                 
+                let deritvative = ( transactionState.status === 'void' ) ? 0.00 : ( parseFloat( newAmount ) - 0 ).toFixed( 2 ); 
                 this.checkPastDue( transactionState.dueDate );
                 this.parent().commit.state({
                     ...transactionState,
                     amount : newAmount, 
-                    derivative : ( parseFloat( newAmount ) - 0 ).toFixed( 2 ), 
+                    derivative : deritvative, 
                     lineType : lineType,  
                     summaryLineKey : summaryLineKey
                 }, false, false );

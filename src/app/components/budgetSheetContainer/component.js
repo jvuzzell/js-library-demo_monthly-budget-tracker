@@ -1,6 +1,6 @@
 import "./component.css"; 
 import { ComponentBuilder as Builder, ComponentConfigs } from 'ui-component-eventbus-js/ComponentBuilder'; 
-import { Expandables, initExpandables } from 'expandables-js';
+import { Expandables } from 'expandables-js';
 import { BannerAlert } from 'banner-alert-js';
 
 (function(
@@ -186,7 +186,7 @@ import { BannerAlert } from 'banner-alert-js';
                     
                     let summary = summaryLineComponents[ summaryKey ].get.state(); 
 
-                    if( summary.void ) continue;
+                    if( summary.delete ) continue;
 
                     budgetSheetSummary[ summaryKey ] = {
                         transactionCode : summary.transactionCode,
@@ -199,7 +199,7 @@ import { BannerAlert } from 'banner-alert-js';
                         let transactionComponent = Builder.getComponentByKey( transactionKey ); 
                         let transaction = transactionComponent.get.state();
 
-                        if( transaction.void ) return;
+                        if( transaction.delete ) return;
 
                         budgetSheetSummary[ summaryKey ][ 'transactionLines' ].push({
                             description : transaction.description, 

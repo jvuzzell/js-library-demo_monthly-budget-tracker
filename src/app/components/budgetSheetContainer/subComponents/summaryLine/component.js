@@ -10,6 +10,11 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
     ComponentConfigs
 ){
 
+    const dateObj = new Date();
+    const currentMonth = dateObj.getUTCMonth() + 1; //months from 1-12 
+    const currentDate = dateObj.getDate();
+    const currentYear = dateObj.getUTCFullYear();
+
     ComponentProps.summaryLine = { 
         status : {
             'past-due' : { displayName : 'Past Due', weight : 3 }, 
@@ -22,13 +27,15 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
             budgetSheetId : 0, 
             transactionCode : 'Default', 
             description : '', 
-            dueDate : 1, 
+            dueDate : currentDate, 
             totalCredit : 0.00, 
             totalDebit : 0.00, 
             balance : 0.00,
             status : 'pending', 
-            transactionManifest : [], 
-            void : false
+            transactionManifest : [],  
+            currentMonth : currentMonth, 
+            currentYear : currentYear,
+            delete : false
         },
 
         transactionSummaryTemplates : {
@@ -257,15 +264,15 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
                             if( deltaState.status === 'past-due' ) { 
                                 this.parent().dispatch.updateTransactionColor( 'past-due-background' )
                             } else {  
-                                let colorClass = this.parent().dispatch.calcColorClassOnBalance( summaryState.balance ); 
-                                this.parent().dispatch.updateTransactionColor( colorClass );
+                                let colorClass = this.parent().dispatch.calcColorClass( summaryState.balance, summaryState.status ); 
+                                this.parent().dispatch.updateTransactionColor( colorClass, summaryState.status );
                             }
                             break; 
                         case ( 'balance' ) : 
                             if( summaryState.status === 'past-due' ) { 
                                 this.parent().dispatch.updateTransactionColor( 'past-due-background' )
                             } else {  
-                                let colorClass = this.parent().dispatch.calcColorClassOnBalance( summaryState.balance ); 
+                                let colorClass = this.parent().dispatch.calcColorClass( summaryState.balance ); 
                                 this.parent().dispatch.updateTransactionColor( colorClass );
                             }
                             break;
@@ -317,7 +324,7 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
                     Builder.getComponentByKey( transactionKey ).dispatch.deleteLine();
                 });
 
-                this.parent().commit.state({ void : true }, false, false);
+                this.parent().commit.state({ delete : true }, false, false);
                 this.parent().get.inlineTemplateNode().remove(); 
 
                 if( 
@@ -392,7 +399,7 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
 
                 switch( true ) { 
                     case ( summaryStatusWeight <= weightedStatusVoid ) : 
-                        summaryStatus = 'void';
+                        summaryStatus = 'void'; 
                         break; 
                     case ( ( summaryStatusWeight > weightedStatusVoid ) && ( summaryStatusWeight <= weightedStatusPastDue ) ) : 
                         status = 'past-due';  
@@ -411,7 +418,7 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
                     status : summaryStatus
                 });
 
-            },  
+            },
 
             statusExistsInTransactions : function( status, transactionManifest ) { 
 
@@ -478,7 +485,7 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
 
             },
 
-            calcColorClassOnBalance( balance = 0.00 ) { 
+            calcColorClass( balance = 0.00, status) { 
 
                 let colorClass = null; 
 
@@ -495,7 +502,9 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
                     default : 
                         colorClass = null;
                         break; 
-                }
+                } 
+
+                colorClass = ( status === 'void' ) ? null : colorClass;
 
                 return colorClass;
 
@@ -621,7 +630,9 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
 
             renderSummary : function( summaryState ) {
                 
-                let summaryLineNode = this.parent().get.inlineTemplateNode(); 
+                let summaryLineNode = this.parent().get.inlineTemplateNode();  
+                let statusName = this.parent().get.props( 'status' )[ summaryState.status ][ 'displayName' ]; 
+
                 summaryLineNode.querySelector( 'input[data-income]' ).value = summaryState.totalCredit;
                 summaryLineNode.querySelector( 'input[data-expense]' ).value = summaryState.totalDebit;
                 summaryLineNode.querySelector( 'input[data-balance]' ).value = summaryState.balance; 
@@ -629,6 +640,7 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
                 summaryLineNode.querySelector( '[data-transaction-codes]' ).value = summaryState.transactionCode; 
                 summaryLineNode.querySelector( '[data-transaction-due-date]' ).value = summaryState.dueDate; 
                 summaryLineNode.querySelector( '[data-transaction-status]' ).value = this.parent().get.props( 'status' )[ summaryState.status ][ 'displayName' ]; 
+                summaryLineNode.querySelector( '[data-transaction-status]' ).setAttribute( 'data-transaction-status', statusName );
 
             },  
 
