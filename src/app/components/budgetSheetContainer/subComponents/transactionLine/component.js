@@ -93,7 +93,6 @@ import CloseIcon from '../../../../assets/icons/close.svg';
 
                 }, 
 
-
                 onChangeDueDate : { 
 
                     eventInit : function( componentKey, component ) {
@@ -368,7 +367,7 @@ import CloseIcon from '../../../../assets/icons/close.svg';
         
     }
 
-    Builder.registerComponent( ComponentConfigs.transactionLine );
+    // Builder.registerComponent( ComponentConfigs.transactionLine );
 
 })(
     Builder,

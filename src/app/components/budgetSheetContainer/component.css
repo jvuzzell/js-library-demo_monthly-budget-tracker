@@ -59,9 +59,31 @@
 }
 
 [data-inline-template=budgetSheetContainer] { 
-
     background-color: #fff;
-    padding: 30px;
+    padding: 25px;
     border-radius: 20px;
+} 
 
+.budget-sheet-heading { 
+    transform: translate( -27px, -27px );
+    padding-left: 30px; 
+    padding-top: 15px; 
+    padding-bottom: 15px; 
+    margin-bottom: 0;
+    width: calc(90%);
+    background-color: var(--secondary-color); 
+    border-top-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    color: #fff; 
+    letter-spacing: 1px;
+}
+
+[data-inline-template=budgetSheetContainer] hr {
+    width: calc(100% - 40px);
+    margin-left: 40px;
+}
+
+.summary-columns + hr { 
+    width: 100%;
+    margin: 0; 
 }

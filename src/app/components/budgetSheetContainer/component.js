@@ -99,10 +99,8 @@ import { BannerAlert } from 'banner-alert-js';
                 let summaryLineComponents = Builder.getComponentsByName( 'summaryLine' ); 
 
                 for( let summaryKey in summaryLineComponents ) {
-                    
                     let leaveContainerBlank = true;
                     summaryLineComponents[ summaryKey ].dispatch.deleteLine( leaveContainerBlank );
-
                 }
                 
             },
@@ -152,8 +150,14 @@ import { BannerAlert } from 'banner-alert-js';
 
             }, 
 
-            addSummaryLine : function( summaryLineKey = null, transactions = [{ lineType : 'credit' }], description = '', transactionCode = 'Default' ) { 
-                Builder.getComponentByName( 'summaryLine' ).dispatch.setTransactions( summaryLineKey, transactions, description, transactionCode );
+            addSummaryLine : function( summaryLineKey = null, transactions = [{ lineType : 'credit' }], description = '', transactionCode = 'Default' ) {   
+                let summaryLineComponent = Builder.getComponentByName( 'summaryLine' ); 
+                if( summaryLineComponent === undefined ) {
+                    summaryLineKey = ComponentConfigs.summaryLine.dispatch.createNewSummaryLine();
+                    Builder.getComponentByKey( summaryLineKey ).dispatch.setTransactions( summaryLineKey, transactions, description, transactionCode );
+                } else {  
+                    Builder.getComponentByName( 'summaryLine' ).dispatch.setTransactions( summaryLineKey, transactions, description, transactionCode );
+                }
             }, 
 
             getBudgetId : function() {

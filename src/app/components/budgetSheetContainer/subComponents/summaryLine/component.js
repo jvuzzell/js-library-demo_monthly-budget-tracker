@@ -279,7 +279,7 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
                     }
                 }
                 
-                if( summaryState.firstRenderFlag ) { return; }
+                if( summaryState.firstRenderFlag ) { return; } 
                 this.parent().dispatch.renderSummary( summaryState ); 
 
             }
@@ -541,6 +541,11 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
 
                 if( summaryLineKey === null ) {
                     summaryLineKey = this.createNewSummaryLine( description, transactionCode );
+                } else {
+                    Builder.getComponentByKey( summaryLineKey ).commit.state({
+                        description : description, 
+                        transactionCode : transactionCode
+                    }); 
                 }
 
                 transactions.map( transaction => { 
@@ -645,7 +650,7 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
             },  
 
             loadTransactionTemplateSelect : function( summaryLineNode ) {
-   
+                
                 let transactionSummaryTemplates = this.parent().get.props( 'transactionSummaryTemplates' ); 
                 for( let templateKey in transactionSummaryTemplates ) { 
                     let option = document.createElement( 'option' );
@@ -727,7 +732,7 @@ import CaretRight from '../../../../assets/icons/caret-right.svg';
         ` 
     }
 
-    Builder.registerComponent( ComponentConfigs.summaryLine );
+    // Builder.registerComponent( ComponentConfigs.summaryLine );
 
 })(
     Builder,
