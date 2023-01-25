@@ -1,7 +1,11 @@
 .summary-columns{ 
     display: grid;
-    grid-template-columns: 1.5fr 2.55fr .5fr repeat(3, 1fr) 1fr .5fr;
-    grid-column-gap: 20px;
+    grid-template-columns: 1.5fr 2.25fr .4fr repeat(3, 1fr) 1fr .5fr;
+    grid-column-gap: 10px;
+}
+
+.summary-columns [data-expandable-target] .h-row { 
+    overflow-x: hidden;
 }
 
 .summary-columns .column label {
@@ -60,22 +64,89 @@
 
 [data-inline-template=budgetSheetContainer] { 
     background-color: #fff;
-    padding: 25px;
+    padding: 25px 25px 10px 10px;
     border-radius: 20px;
+    margin-bottom: 100px;
 } 
 
 .budget-sheet-heading { 
-    transform: translate( -27px, -27px );
+    transform: translate( 0, -27px );
     padding-left: 30px; 
     padding-top: 15px; 
     padding-bottom: 15px; 
     margin-bottom: 0;
-    width: calc(90%);
+    width: 90%;
     background-color: var(--secondary-color); 
     border-top-left-radius: 20px;
     border-bottom-right-radius: 20px;
     color: #fff; 
     letter-spacing: 1px;
+} 
+
+@media(max-width:1279px) { 
+    .summary-columns{ 
+        grid-template-columns: 2fr 2.35fr 0.7fr 1fr 1fr 0.7fr;
+    }
+
+    .summary-columns .column:nth-child(4), 
+    .summary-columns .column:nth-child(5){
+        display: none;
+    }
+
+    [data-inline-template=transactionLine] { 
+        overflow: auto;
+    }
+
+    [data-inline-template=transactionLine] .summary-columns {
+        grid-template-columns:3.25fr 0.5fr 0.75fr 0.75fr .5fr;
+    }
+
+    [data-inline-template=transactionLine] .summary-columns .column:nth-child(4){
+        display: block;
+    }
+
+    [data-inline-template=transactionLine] .summary-columns .column:nth-child(2){
+        margin-left: 10px;
+    }
+    
+    [data-inline-template=transactionLine] .summary-columns .column:nth-child(1),
+    [data-inline-template=transactionLine] .summary-columns .column:nth-child(6){
+        display: none;
+    }
+
+}
+
+@media(max-width:640px) { 
+    .v-col.budget-sheet-heading { 
+        width: 240px;
+        text-align: center;
+        margin: 0 auto; 
+        padding: 5px;
+        position: relative;
+        left: 50%;
+        transform: translate(-50%, -27px);
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+    } 
+
+    .budget-sheet-heading + .v-col, 
+    .footer-controls .v-col:nth-child(2) { 
+        text-align: center;
+    }
+
+    .footer-controls .v-col:first-child { 
+        margin-bottom: 0; 
+        line-height: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .budget-sheet-heading + .v-col,
+    .footer-controls { 
+        padding-left: 20px;
+    }
+
 }
 
 [data-inline-template=budgetSheetContainer] hr {
