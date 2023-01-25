@@ -35,11 +35,13 @@ import { BannerAlert } from 'banner-alert-js';
                         eventInit : function( componentKey, component ) { 
 
                             const inlineTemplateNode = component.get.inlineTemplateNode();
-
-                            inlineTemplateNode.querySelector( '#collapseExpandables' ).addEventListener( 'click', event => {
-                                Expandables.collapseAll( '[data-inline-template=budgetSheetContainer]' );
-                            });
-
+                            let collapseButtons = inlineTemplateNode.querySelectorAll( '.collapseExpandables' )
+                        
+                            for( let i = 0; i < collapseButtons.length; i++ ) {
+                                collapseButtons[i].addEventListener( 'click', event => {
+                                    Expandables.collapseAll( '[data-inline-template=budgetSheetContainer]' );
+                                });
+                            }
                         }
 
                     }, 
@@ -49,10 +51,13 @@ import { BannerAlert } from 'banner-alert-js';
                         eventInit : function( componentKey, component ) { 
 
                             const inlineTemplateNode = component.get.inlineTemplateNode();
-
-                            inlineTemplateNode.querySelector( '#expandExpandables' ).addEventListener( 'click', event => {
-                                Expandables.expandAll( '[data-inline-template=budgetSheetContainer]' );
-                            });
+                            let expandButtons = inlineTemplateNode.querySelectorAll( '.expandExpandables' )
+                            
+                            for( let i = 0; i < expandButtons.length; i++ ) {
+                                expandButtons[i].addEventListener( 'click', event => {
+                                    Expandables.expandAll( '[data-inline-template=budgetSheetContainer]' );
+                                });
+                            }
 
                         }  
 
