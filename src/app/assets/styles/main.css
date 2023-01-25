@@ -1,5 +1,11 @@
 .hidden-text {
     visibility: hidden;
+    height: 0;
+    width: 0;
+    margin: 0; 
+    padding: 0;
+    line-height: 0;
+    font-size: 0;
 }
 
 /**
@@ -40,6 +46,15 @@
     .content-lock {
         padding-left: 40px; 
         padding-right: 40px;
+    }
+
+}
+
+@media (max-width: 1279px) {
+
+    .content-lock {
+        padding-left: 20px; 
+        padding-right: 20px;
     }
 
 }
@@ -96,16 +111,6 @@ table {
     border: 3px solid var(--border-1);
 }
 
-.icon-left img.logo {  
-    position: absolute;
-    width: 30px; 
-    display: inline;
-    vertical-align: top;
-    transition: all var(--transition-slow) ease-in-out;
-    transform: translate(0, 11px); 
-    filter: grayscale(0);
-    z-index: 3;
-}
 
 .logo + h1 { 
     display: inline; 
