@@ -16,7 +16,7 @@
             top: 0; 
             left: 0;
             z-index: 2;
-            transform: translateX(0);
+            transform: translateX(0); 
         } 
         .screen-overlay h1 {
             display: none;
@@ -28,32 +28,90 @@
         [data-loading-screen] .screen-overlay { 
             background-color: rgba(255,255,255,1.0);
         }  
-        body[data-loading-screen] img.logo.loading-screen { 
+        img.logo.loading-screen {  
             position: absolute;
+            width: 30px; 
+            display: inline;
+            vertical-align: top;
+            transition: all var(--transition-speed-slow) ease-in-out;
+            transform: translate(0, 11px); 
+            filter: grayscale(0);
+            z-index: 3; 
+            left: 0; 
+        }
+        body[data-loading-screen] img.logo.loading-screen { 
             width: 350px; 
-            transform: translate( calc(50% + 350px), calc(50% + 300px));
+            transform: translate(calc(-50% + 30px), calc(50vh - 50%));  
+            margin: 0 auto; 
+            left: 50%;
             filter: grayscale(1);
+        }  
+        body[data-overlay=active] .site-name { 
+            width: 100%;  
+            margin-top: -55px;
+            position: absolute;
+            left: 0; 
+            top: 0; 
         } 
-        @media (max-width: 1100px) {
-            body[data-overlay=inactive] .screen-overlay { 
+        .site-name .v-col:first-child { 
+            transition: all var(--transition-speed-slow) ease-in-out;
+        }
+        body[data-overlay=active] .site-name .v-col { 
+            width: 100%;
+        }
+        header div.icon-left {  
+            position: relative; 
+            transition: all var(--transition-slow) ease-in-out;
+            height: 70px; 
+            width: 50%;
+        }
+        body[data-overlay=active] header div.icon-left { 
+            height: 100vh;
+            width: 100%;
+        }
+        .v-col.app-tools { 
+            position: absolute;
+            top: 0; 
+            right: 0; 
+        }  
+        @media(max-width: 1366px) {
+            body[data-overlay=active] img.logo.loading-screen { 
+                width: 150px;
+                transform: translate(calc(-50% + 30px), calc(32vh - 50%));
+                margin: 0 auto;
+                left: 50%;
+            }  
+        }
+        @media(max-width: 1023px) { 
+            /* body[data-overlay=inactive] .screen-overlay { 
                 background-color: rgba(255,255,255,1.0);
                 transform: translateX(0);
-            }
-            body[data-loading-screen] img.logo.loading-screen, 
-            body[data-overlay=inactive] img.logo.loading-screen { 
-                position: absolute !important;
-                width: 240px !important; 
-                transform: translate(30px, calc(50% + 300px)) !important;
-                margin: 0 auto; 
-                left: 0; 
-                right: 0;
-                
-            } 
+            } */
             body[data-loading-screen] .screen-overlay h1  { 
-    
                 filter: grayscale(1);
             }
-            .screen-overlay h1 { 
+            body[data-overlay=active] img.logo.loading-screen,
+            body[data-overlay=inactive] img.logo.loading-screen { 
+                width: 150px;
+                transform: translate(calc(-50% + 30px), calc(32vh - 50%));
+                margin: 0 auto;
+                left: 50%;
+            }  
+            body[data-overlay=inactive] .site-name { 
+                width: 100%;  
+                margin-top: -55px;
+                position: absolute;
+                left: 0; 
+                top: 0; 
+            } 
+            body[data-overlay=inactive] .site-name .v-col { 
+                width: 100%;
+            }
+            body[data-overlay=inactive] header div.icon-left { 
+                height: 100vh;
+                width: 100%;
+            }
+            /* .screen-overlay h1 { 
                 display: block;
                 position: absolute !important;
                 width: 100%; 
@@ -66,24 +124,18 @@
                 text-align: center;
                 color: var(--cyan); 
                 filter: grayscale(0);
-            }
+            } */
         }
-
-        @media (max-width: 800px) {
-            body[data-loading-screen] img.logo.loading-screen, 
-            body[data-overlay=inactive] img.logo.loading-screen { 
-                display: none
-                
-            } 
-            .screen-overlay h1 { 
-                color: var(--cyan);
+        @media(max-width: 860px) { 
+            img.logo.loading-screen {
+                display: none;
             }
         }
 
     </style>
 </head>
 <body data-overlay="active" data-loading-screen> 
-    <div class="screen-overlay"><h1>Mobile Friendly <br>Coming Soon</h1></div>
+    <div class="screen-overlay"><h1>Mobile Version<br>Coming Soon</h1></div>
     <hr class="has-background-color-dark thick-line has-mg-bottom-0">
     <div class="notice has-background-color-cyan has-mg-bottom-5">
         <div class="v-col has-mg-bottom-0 has-pd-top-10 has-pd-bottom-10 has-text-center">
@@ -94,18 +146,19 @@
         <div class="content-lock"> 
             <div id="banner-alerts"></div>
             <header>
-                <div class="h-row">
-                    <div class="v-col lg-4 lg-x-6 has-mg-bottom-10" >
+                <div class="h-row site-name">
+                    <div class="v-col md-6 has-mg-bottom-10" >
                         <div class="icon-left">
                             <img class="logo loading-screen" src="<%=require('../../../../src/app/assets/logo.svg')%>">
                             <div style="display:inline-block"><h1 class="has-mg-bottom-0 has-pd-left-35">Budget Tracker</h1><span class="has-medium-font-size has-pd-left-35"">by Joshua Uzzell</span></div>
                         </div>
-                        
                     </div>
-                    <div class="v-col lg-4 lg-x-6 has-mg-bottom-5 has-mg-top-15 has-text-right">
-                        <a href="https://github.com/jvuzzell/demo_monthly-budget-tracker" class="icon-left has-underline button btn-no-background" type="button" data-trigger-clear-budget>
-                            <img style="margin-right: 10px; " class="icon" src="<%=require('../../../../src/app/assets/icons/github-alt.svg')%>">Project on Github
-                        </a>
+                    <div class="v-col md-6 has-mg-bottom-5 has-mg-top-15 has-text-right app-tools">
+                        <nav>
+                            <a href="https://github.com/jvuzzell/demo_monthly-budget-tracker" class="icon-left has-underline button btn-no-background" type="button" data-trigger-clear-budget>
+                                <img style="margin-right: 10px; " class="icon" src="<%=require('../../../../src/app/assets/icons/github-alt.svg')%>">Project on Github
+                            </a>
+                        </nav>
                     </div>
                 </div>
             </header>
@@ -113,12 +166,11 @@
     </section>
     <section class="main-content has-pd-top-0 has-background-color-off-white">
         <div class="content-lock">
-
             <div class="h-row">
-                <div class="v-col lg-2 has-mg-bottom-0">
+                <div class="v-col has-mg-top-20 has-mg-bottom-0">
                     <form data-inline-template="budgetSheetSelector"> 
-                        <div class="h-row">
-                            <div class="v-col lg-4">
+                        <div class="h-row ">
+                            <div class="v-col sm-2 md-2 has-font-size-0">
                                 <label for="report-year" class="hidden-text">Year</label>
                                 <select class="has-semibold-font-weight" name="report-year" data-report-year required>
                                     <option disabled>Year
@@ -135,7 +187,7 @@
                                     <option value="2030">2030
                                 </select>
                             </div>
-                            <div class="v-col lg-4">
+                            <div class="v-col sm-2 md-2 has-font-size-0">
                                 <label for="report-month" class="hidden-text">Month</label>
                                 <select class="has-semibold-font-weight" name="report-month" data-report-month required>
                                     <option disabled>Month
@@ -158,31 +210,31 @@
                 </div>
             </div>
             <div class="h-row even-6 has-mg-bottom-20">
-                <div class="v-col lg-2 lg-x-4 has-text-center">
+                <div class="v-col sm-2 md-2 lg-x-4 has-text-center">
                     <div class="standard-card" data-inline-template="quickStats" data-ref="total-income">
                         <div class="h-row">
                             <div class="v-col has-mg-bottom-10">
-                                <p class="has-x-large-font-size has-mg-bottom-5" >$<span data-amount>0.00</span></p>
+                                <p class="has-x-large-font-size" >$<span data-amount>0.00</span></p>
                                 <p class="has-medium-font-size has-semibold-font-weight" data-title>Total Income</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="v-col lg-2 lg-x-4 has-text-center">
+                <div class="v-col sm-2 md-2 lg-x-4 has-text-center">
                     <div class="standard-card" data-inline-template="quickStats" data-ref="total-expense">
                         <div class="h-row">
                             <div class="v-col has-mg-bottom-10">
-                                <p class="has-x-large-font-size has-mg-bottom-5">$<span data-amount>0.00</span></p>
+                                <p class="has-x-large-font-size">$<span data-amount>0.00</span></p>
                                 <p class="has-medium-font-size has-semibold-font-weight" data-title>Total Expenses</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="v-col lg-2 lg-x-4 has-text-center">
+                <div class="v-col sm-4 md-2 lg-x-4 has-text-center">
                     <div class="standard-card" data-inline-template="quickStats" data-ref="monthly-balance">
                         <div class="h-row">
                             <div class="v-col has-mg-bottom-10">
-                                <p class="has-x-large-font-size has-mg-bottom-5" >$<span data-amount>0.00</span></p>
+                                <p class="has-x-large-font-size" >$<span data-amount>0.00</span></p>
                                 <p class="has-medium-font-size has-semibold-font-weight" data-title>Monthly Balance</p>
                             </div>
                         </div>
@@ -193,12 +245,12 @@
                 <div class="v-col">
                     <div class="standard-card" data-inline-template="budgetSheetContainer"> 
                         <div class="h-row">
-                            <div class="v-col md-2 lg-2 has-mg-bottom-0">
-                                <h2 class="budget-sheet-heading has-large-font-size">Monthly Transactions</h2>
-                            </div> 
-                            <div class="v-col md-6 lg-6 has-text-right">
-                                <button id="expandExpandables" class="btn-no-background has-underline"><strong>+</strong> Expand Transactions</button>
-                                <button id="collapseExpandables" class="btn-no-background has-underline"><strong>-</strong> Collapse Transactions</button>
+                            <div class="v-col sm-4 md-3 lg-2 has-mg-bottom-0 budget-sheet-heading">
+                                <h2 class=" has-large-font-size">Monthly Transactions</h2>
+                            </div>
+                            <div class="v-col sm-4 md-3 lg-6 has-text-right">
+                                <button class="expandExpandables btn-no-background has-underline"><strong>+</strong> Expand Transactions</button>
+                                <button class="collapseExpandables btn-no-background has-underline"><strong>-</strong> Collapse Transactions</button>
                             </div>
                         </div>
                         <div class="h-row">
@@ -221,7 +273,13 @@
                         <div class="h-row">
                             <div class="v-col has-mg-bottom-0" data-summary-line-container>
 
-                  
+                            </div>
+                        </div>
+                        <div class="h-row footer-controls">
+                            <div class="v-col md-1 lg-1"><!--placeholder--></div>
+                            <div class="v-col sm-4 md-5 lg-7 has-text-right">
+                                <button class="expandExpandables btn-no-background has-underline"><strong>+</strong> Expand Transactions</button>
+                                <button class="collapseExpandables btn-no-background has-underline"><strong>-</strong> Collapse Transactions</button>
                             </div>
                         </div>
                     </div>
@@ -268,8 +326,6 @@
         </div>
     </section>
 
-    <div data-fly-containers>
-        
-    </div>
+    <div data-fly-containers></div>
 </body>
 </html>
