@@ -1,3 +1,4 @@
+import "./component.css"; 
 import { ComponentBuilder as Builder, ComponentConfigs } from 'ui-component-eventbus-js/ComponentBuilder'; 
 (function(
     Builder,
