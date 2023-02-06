@@ -33,5 +33,17 @@
     /* Border */
     --border-radius: 10px;  
     --border-radius-lg: 15px; 
-    --card-border: 2px solid var(--secondary-color); 
+    --card-border: 2px solid var(--secondary-color);  
+
+    /* Vertical Spacing */
+    --vertical-spacing-x-lg: 15px; 
+    --vertical-spacing-lg: 15px; 
+    --vertical-spacing-md: 15px; 
+    --vertical-spacing-sm: 10px; 
+
+    /* Gutters */
+    --gutter-x-lg: 10px; 
+    --gutter-lg: 10px; 
+    --gutter-md: 10px; 
+    --gutter-sm: 10px;
 }
