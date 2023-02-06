@@ -60,7 +60,6 @@
 }
 
 /* Card Styling */
-
 .standard-card {
     padding: 10px 20px 0 20px; /* Omit padding on bottom because of margin on v-col */
     border-radius: var(--border-radius-lg); 
