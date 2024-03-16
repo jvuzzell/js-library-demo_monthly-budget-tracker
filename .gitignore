@@ -3,3 +3,4 @@ dist
 public
 node_modules 
 archive.zip
+_deploy.sh

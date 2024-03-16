@@ -1,7 +1,7 @@
-localDir="/Users/joshuauzzell/sites/reactive-practice/demo_cable-js_budget-tracker/"
-remoteDir="/home/u159-xvisehcldaqa/www/uzzell.codes/public_html/demo/budget-tracker/"
-remoteSSHlogin="u159-xvisehcldaqa@giowm1350.siteground.biz"
-remoteSSHport="18765"
+localDir=""
+remoteDir=""
+remoteSSHlogin=""
+remoteSSHport=""
 archiveName="archive.zip"
 
 #Change directory project folder 
